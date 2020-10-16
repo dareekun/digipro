@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/show/{id}',  [ApiController::class, 'show']);
+Route::get('/index',  [ApiController::class, 'index']);
+Route::get('/update/{id}',  [ApiController::class, 'update']);
+Route::get('/reverse/{id}',  [ApiController::class, 'reverse']);

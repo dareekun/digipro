@@ -91,6 +91,7 @@ setInterval(function (){
   currentSlide(slideIndex);
   slideIndex++
   if (slideIndex == 11) {
+    console.log("HAPPY NEW YEAR!!");
     slideIndex = 1;
   }
 }, 3000);
@@ -114,6 +115,11 @@ function showSlides(n) {
   slides[slideIndex-1].style.display = "block";  
   dots[slideIndex-1].className += " active";
 }
+
+
+</script>
+<!-- script separator -->
+<script>
 function showTime() {
     var date = new Date();
     var h = date.getHours(); // 0 - 23
@@ -131,5 +137,4 @@ function showTime() {
 }
 showTime();
 </script>
-
 @endpush

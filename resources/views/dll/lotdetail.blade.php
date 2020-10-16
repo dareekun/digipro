@@ -49,7 +49,7 @@
         <tr>
             <td>Lot No </td>
             <td> : </td>
-            <td> {{date('Ymd', strtotime($dt->lotno))}}</td>
+            <td></td>
         </tr>
         <tr>
             <td>Shift </td>
@@ -66,13 +66,13 @@
             <td colspan="3">
                 <table style="width:100%">
                     <tr>
-                        <td align="center">Part Name</td>
-                        <td align="center">No Lot</td>
+                        <td align="left">Part Name</td>
+                        <td align="right" style="width:25%">No Lot</td>
                     </tr>
                     @foreach ($data1 as $dt1)
                     <tr>
-                        <td align="center">{{$dt1->partname}}</td>
-                        <td align="center">{{date('d m Y', strtotime($dt1->nolot))}}</td>
+                        <td align="left" style="font-size: 12px;">{{$dt1->partname}}</td>
+                        <td align="right" style="font-size: 12px;">{{date('d/m/Y', strtotime($dt1->nolot))}}</td>
                     </tr>
                     @endforeach
                 </table>
@@ -92,33 +92,38 @@
                         <td style="border:1px solid black" align="center">Name</td>
                     </tr>
                     <tr style="border:1px">
-                        <td style="border:1px solid black">Assembly</td>
+                        <td style="border:1px solid black;font-size: 12px;">Assembly</td>
                         <td style="border:1px solid black" align="center">{{$dt->input1}}</td>
                         <td style="border:1px solid black" align="center">{{$dt->ng1}}</td>
-                        <td style="border:1px solid black" align="center">{{date('d m Y', strtotime($dt->date1))}}</td>
+                        <td style="border:1px solid black" align="center">{{date('d/m Y', strtotime($dt->date1))}}</td>
                         <td style="border:1px solid black" align="center">{{$dt->name1}}</td>
                     </tr>
                     <tr style="border:1px">
-                        <td style="border:1px solid black">Packing</td>
+                        <td style="border:1px solid black;font-size: 12px;">Packing</td>
                         <td style="border:1px solid black" align="center">{{$dt->input2}}</td>
                         <td style="border:1px solid black" align="center">{{$dt->ng2}}</td>
-                        <td style="border:1px solid black" align="center">{{date('d m Y', strtotime($dt->date2))}}</td>
+                        <td style="border:1px solid black" align="center">{{date('d/m Y', strtotime($dt->date2))}}</td>
                         <td style="border:1px solid black" align="center">{{$dt->name2}}</td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-        <td style="width:30%">
-        </td>
-        <td style="width:30%">
+        <td style="width:40%">
         <center>
             <br>
             {!!DNS2D::getBarcodeHTML($dt->barcode, 'QRCODE',5,5)!!}
             <br>
         </center>
         </td>
-        <td style="width:30%">
+        <td colspan="2">
+        <center>
+        <table style="width:100%">
+        <tr><td style="border:1px solid black" align="center">Judgement</td></tr>
+        <tr><td style="border:1px solid black"><br><br><br></td></tr>
+        <tr><td style="border:1px solid black"><br></td></tr>
+        </table>
+        </center>
         </td>
         </tr>
     </table>
