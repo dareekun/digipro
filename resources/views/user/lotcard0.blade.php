@@ -46,8 +46,8 @@
                                         Tipe
                                     </div>
                                     <div class="col-md-3">
-                                        <select required name="tipe" class="custom-select" id="tipe">
-                                            <option selected value=""></option>
+                                    <select name="tipe" id="tipe" class="form-control selectpicker"
+                                            data-live-search="true">
                                         </select>
                                     </div>
                                 </div>
@@ -93,8 +93,9 @@ $(function() {
                 $('#tipe').empty();
 
                 $.each(response.data, function(produk, tipe) {
-                    $('#tipe').append(new Option(tipe, tipe))
+                    $('#tipe').append(new Option(tipe, tipe));
                 })
+                $('#tipe').selectpicker('refresh');
             });
     });
 });

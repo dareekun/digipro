@@ -30,11 +30,6 @@
 
     <!-- Silde Show -->
     <style>
-    .dropdown-menu {
-        max-height: 300px;
-        overflow-y: scroll;
-    }
-
     html,
     body {
         background-image: url("{{ asset('/img/bg.png') }}");

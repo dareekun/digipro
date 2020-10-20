@@ -23,7 +23,7 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index']);
 
-Route::get('/',  [InfoController::class, 'welcome2']);
+Route::get('/',  [InfoController::class, 'welcome']);
 
 Route::get('/welcome', function () {
     return view('home1');
