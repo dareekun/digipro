@@ -110,6 +110,5 @@ class HomeController extends Controller
         $data2 = DB::table('produk')->where('tempat', $request->get('temt'))->pluck('tipe');
         return response()->json($data2);
     }
-
     
 }

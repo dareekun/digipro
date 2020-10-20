@@ -6,6 +6,7 @@ use App\Http\Controllers\InfoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,8 @@ Route::get('/',  [InfoController::class, 'welcome2']);
 Route::get('/welcome', function () {
     return view('home1');
 });
+
+Route::get('/test',  [ApiController::class, 'test']);
 
 Route::get('/tabel/{id}', [InfoController::class, 'tabel']);
 Route::get('/graph/{id}', [InfoController::class, 'graph']);
@@ -101,6 +104,9 @@ Route::post('/manager/Informasi/update', [ManagerController::class, 'informasiup
 // JSON 
 Route::post('data1-json', [HomeController::class, 'select1'])->name('data1-json.data1');
 Route::post('data2-json', [HomeController::class, 'select2'])->name('data2-json.data2');
+
+Route::post('lot1-json', [HomeController::class, 'lot1'])->name('lot1-json.lot1');
+Route::post('lot2-json', [HomeController::class, 'lot2'])->name('lot2-json.lot2');
 
 Auth::routes();
 

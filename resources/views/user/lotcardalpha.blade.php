@@ -4,9 +4,10 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/font-awesome.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap-select.min.css') }}">
-    <script type="text/javascript" src="{{ asset('/js/jquery-3.5.1.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/bootstrap-select.min.js') }}"></script>
@@ -26,9 +27,9 @@
 <body>
     <br>
     <br>
-    <div class="container">
+    <div class="container w-50">
         <div class="card">
-            <div class="card-header">Lot Card Production Assembly</div>
+            <div class="card-header" align="center">Lot Card Production Assembly</div>
             <div class="card-body">
                 <div class="row">
                     <div class="center">
@@ -36,16 +37,11 @@
                             {{ csrf_field() }}
                             <table>
                                 <tr>
-                                    <td colspan="3" align="center">Lot Card Production Assembly</td>
-                                </tr>
-                                <tr>
                                     <td>Model No </td>
                                     <td> : </td>
                                     <td> <select name="tipe" id="tipe" class="form-control selectpicker"
                                             data-live-search="true">
-                                            @foreach ($tipe as $tp)
-                                            <option value="{{$tp->tipe}}">{{$tp->tipe}}</option>
-                                            @endforeach
+                                            <option value="{{$option}}">{{$option}}</option>
                                         </select></td>
                                 </tr>
                                 <tr>
@@ -69,19 +65,26 @@
                                 <tr>
                                     <td colspan="3" align="center">
                                         <table style="width:100%" id="dynamic_field">
+                                        <tr>
+                                        <td></td>
+                                        <td align="right" colspan="2"><button name="tambah" id="tambah" type="button" class="btn btn-sm btn-success"><i class="fa fa-plus-circle" aria-hidden="true"></i> Tambah</button></td>
+                                        </tr>
                                             <tr>
-                                                <td>Part Name</td>
-                                                <td>No Lot</td>
+                                                <td align="center">Part Name</td>
+                                                <td align="center">No Lot</td>
                                                 <td></td>
                                             </tr>
-                                            <tr>
+                                            @foreach ($data as $dt)
+                                            <tr id="rowa{{$i}}">
                                                 <td><input type="text" required class="form-control" name="part[]"
-                                                        value=""></td>
+                                                        value="{{$dt["c_item_code"]}}"></td>
                                                 <td><input type="date" required class="form-control" name="lotpart[]"
                                                         value="{{ date('Y-m-d') }}"></td>
-                                                <td align="center"><button name="tambah" id="tambah" type="button" class="btn btn-success"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
-                                                </td>
+                                                        <td align="center">
+                                                        <button type="button" name="remove" id="a{{$i++}}" class="btn btn-danger btn_remove"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+                                                        </td>
                                             </tr>
+                                            @endforeach
                                         </table>
                                     </td>
                                 </tr>
@@ -124,8 +127,8 @@
                                                 <td><br></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="4"></td>
-                                                <td align="right"><button type="button" class="btn btn-danger"
+                                                <td colspan="3"></td>
+                                                <td align="right" colspan="2"><button type="button" class="btn btn-danger"
                                                         data-dismiss="modal" data-toggle="modal"
                                                         data-target="kembali">Hapus</button>
 

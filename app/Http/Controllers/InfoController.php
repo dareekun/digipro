@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Validator;
+use Illuminate\Support\Facades\Http;
 
 use App\User;
 use App\DynamicField;
@@ -115,15 +116,16 @@ class InfoController extends Controller
     }
 
     public function lotcard0() {
-        $line = DB::table('produk')->where('bagian', 'Assy WD')->select('tempat')->distinct()->get();
+        $line = DB::table('produk')->select('bagian')->distinct()->get();
         return view('user.lotcard0', ['data' => $line]);
     }
 
     public function lotcardalpha(Request $request) {
+        $htta  = Http::get('http://158.118.35.22:8080/bom/'.$request->tipe)->getBody();
+        $parts = json_decode($htta, true);
         $tipe  = DB::table('produk')->where('tempat', $request->tempat)->select('tipe')->get();
         $shift = DB::table('waktu')->select('shift')->get();
-        $parts = DB::table('parts')->select('part')->where('model', $request->model)->get();
-        return view('user.lotcardalpha', ['data' => $parts, 'tipe' => $tipe, 'shift' => $shift]);
+        return view('user.lotcardalpha', ['data' => $parts, 'tipe' => $tipe, 'shift' => $shift, 'option' => $request->tipe, 'i' => 1]);
     }
 
     public function lotscaned(Request $request){

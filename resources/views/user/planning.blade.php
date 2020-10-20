@@ -27,6 +27,7 @@
                     <table id="test" class="table table-striped table-bordered">
                         <thead>
                             <tr>
+                                <th scope="col">Job Id</th>
                                 <th scope="col">Bagian</th>
                                 <th scope="col">Line</th>
                                 <th scope="col">Tipe Produk</th>
@@ -36,13 +37,18 @@
                         </thead>
                         <tbody>
                         @foreach ($data as $dt)
-                            <tr>
-                                <td>{{$dt->bagian}}</td>
-                                <td>{{$dt->tempat}}</td>
-                                <td>{{$dt->tipe}}</td>
-                                <td>{{$dt->bulan}}</td>
-                                <td>{{$dt->qty}}</td>
+                        @if ($dt["bagian"] == "")
+
+                        @else 
+                        <tr>
+                                <td>{{$dt["job_number"]}}</td>
+                                <td>{{$dt["bagian"]}}</td>
+                                <td>{{$dt["line"]}}</td>
+                                <td>{{$dt["assembly_item_name"]}}</td>
+                                <td>{{date('d M Y', strtotime($dt["job_start_date"]))}}</td>
+                                <td>{{$dt["plan_qty"]}}</td>
                             </tr>
+                        @endif
                         @endforeach
                         </tbody>
                     </table>
@@ -51,4 +57,21 @@
         </div>
     </div>
 </div>
-@endsection
+@stop
+
+@push('scripts')
+<script>
+        $(document).ready(function() {
+            $('#test').DataTable({
+                order: [[0, 'desc']],
+                scrollY: '50vh',
+                paging: false,
+                info: false,
+                dom: 'Bfrtip',
+                buttons: [
+                    'excelHtml5',
+                ]
+            });
+        });
+    </script>
+@endpush

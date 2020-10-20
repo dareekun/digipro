@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Validator;
 
+use Illuminate\Support\Facades\Http;
+
 use App\User;
 Use Redirect;
 use Auth;
@@ -587,13 +589,58 @@ class UserController extends Controller
     }
 
     public function planning(){
-        $data = DB::table('planning')->get();
-        return view('user.planning',['data' => $data, 'tipe' => '']);
+        $htta  = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+        $data0 = json_decode($htta, true);
+        $data1 = json_decode(DB::table('produk')->get(), true);
+        $total0 = count($data0);
+        $total1 = count($data1);
+        for ($i = 0; $i < $total0; $i++) {
+            for ($a = 0; $a < $total1; $a++) {
+                if ($data0[$i]['assembly_item_name'] == $data1[$a]['tipe']){
+                        $data0[$i]['bagian'] = $data1[$a]['bagian'];
+                        $data0[$i]['line'] = $data1[$a]['tempat'];
+                break;
+                }
+                else {
+                    $data0[$i]['bagian'] = "";
+                    $data0[$i]['line'] = "";
+                }
+            }
+        }
+        // return $data0;
+        return view('user.planning',['data' => $data0, 'tipe' => '']);
     }
 
     public function planning2($id){
-        $data = DB::table('planning')->where('bagian', $id)->get();
-        return view('user.planning',['data' => $data, 'tipe' => $id]);
+        $htta  = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+        $data0 = json_decode($htta, true);
+        $data1 = json_decode(DB::table('produk')->get(), true);
+        $total0 = count($data0);
+        $total1 = count($data1);
+        for ($i = 0; $i < $total0; $i++) {
+            for ($a = 0; $a < $total1; $a++) {
+                if ($data0[$i]['assembly_item_name'] == $data1[$a]['tipe']){
+                        $data0[$i]['bagian'] = $data1[$a]['bagian'];
+                        $data0[$i]['line'] = $data1[$a]['tempat'];
+                break;
+                }
+                else {
+                    $data0[$i]['bagian'] = "";
+                    $data0[$i]['line'] = "";
+                }
+            }
+        }
+        $filter = array();
+        for ($b = 0; $b < $total0; $b++) {
+                if ($data0[$b]['bagian'] == $id){
+                    array_push($filter, $data0[$b]);
+                }
+                else {
+
+                }
+            }
+        // return json_encode($filter);
+        return view('user.planning',['data' => $filter, 'tipe' => $id]);
     }
     
 }
