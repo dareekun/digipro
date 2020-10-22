@@ -36,7 +36,7 @@ $(document).ready(function() {
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="date" class="form-control form-control-sm" value="{{date('Y-m-d')}}" name="tanggal" id="id">
+                                            <input type="date" class="form-control form-control-sm" value="{{date('Y-m-d')}}" name="tanggal" id="tanggal">
                                         </td>
                                         <td>
                                         <input type="submit" class="btn btn-sm btn-dark" value="Submit">

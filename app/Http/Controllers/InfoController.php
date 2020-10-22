@@ -234,7 +234,7 @@ class InfoController extends Controller
     public function lotstatus(Request $request) {
         if (isset($request->tempat)) {
             $line = DB::table('produk')->select('bagian')->distinct()->get();
-            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->where('produk.tempat', $request->tempat)->distinct('barcode')->get();
+            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->where('produk.tempat', $request->tempat)->where('produk.lotno', $request->tanggal)->distinct('barcode')->get();
             return view('user.lotcard1', ['data' => $data, 'bagian' => $line]);
         }else {
             $line = DB::table('produk')->select('bagian')->distinct()->get();
@@ -296,7 +296,7 @@ class InfoController extends Controller
     }
 
     public function rubahlots(Request $request){
-        $status = DB::table('lotcard')->where('barcode', $id)->select('status')->distinct()->value('status');
+        $status = DB::table('lotcard')->where('barcode', $request->keyid)->select('status')->distinct()->value('status');
         if ($status == 0) {
             DB::table('lotcard')->where('barcode', $request->keyid)->update([
                 'input1' => $request->input1, 
