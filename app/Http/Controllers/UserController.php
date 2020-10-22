@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Validator;
 
 use Illuminate\Support\Facades\Http;
+use Nahid\JsonQ\Jsonq;
 
 use App\User;
 Use Redirect;
@@ -588,31 +589,9 @@ class UserController extends Controller
         }
     }
 
-    public function planning(){
+    public function planning(Request $request){
         $htta  = Http::get('http://158.118.35.22:8080/discreet')->getBody();
-        $data0 = json_decode($htta, true);
-        $data1 = json_decode(DB::table('produk')->get(), true);
-        $total0 = count($data0);
-        $total1 = count($data1);
-        for ($i = 0; $i < $total0; $i++) {
-            for ($a = 0; $a < $total1; $a++) {
-                if ($data0[$i]['assembly_item_name'] == $data1[$a]['tipe']){
-                        $data0[$i]['bagian'] = $data1[$a]['bagian'];
-                        $data0[$i]['line'] = $data1[$a]['tempat'];
-                break;
-                }
-                else {
-                    $data0[$i]['bagian'] = "";
-                    $data0[$i]['line'] = "";
-                }
-            }
-        }
-        // return $data0;
-        return view('user.planning',['data' => $data0, 'tipe' => '']);
-    }
-
-    public function planning2($id){
-        $htta  = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+        $line = DB::table('produk')->select('bagian')->distinct()->get();
         $data0 = json_decode($htta, true);
         $data1 = json_decode(DB::table('produk')->get(), true);
         $total0 = count($data0);
@@ -631,16 +610,45 @@ class UserController extends Controller
             }
         }
         $filter = array();
-        for ($b = 0; $b < $total0; $b++) {
-                if ($data0[$b]['bagian'] == $id){
-                    array_push($filter, $data0[$b]);
-                }
-                else {
-
-                }
-            }
-        // return json_encode($filter);
-        return view('user.planning',['data' => $filter, 'tipe' => $id]);
+        if (isset($request->tag1)) { 
+                if (isset($request->tag2)) { 
+                    if (isset($request->tag3)) {
+                            //  Tag yang di Copy
+                            for ($b = 0; $b < $total0; $b++) {
+                                if ($data0[$b]['line'] == $request->tag2 && date('Y-m-d', strtotime($data0[$b]['job_start_date'])) == $request->tag3){
+                                    array_push($filter, $data0[$b]);
+                                }
+                                else {
+                                }
+                            }
+                            // batas Copy
+                     } else { 
+                    //  Tag yang di Copy
+                    for ($b = 0; $b < $total0; $b++) {
+                        if ($data0[$b]['line'] == $request->tag2){
+                            array_push($filter, $data0[$b]);
+                        }
+                        else {
+                        }
+                    }
+                    // batas Copy
+                      }
+                 } else { 
+                    //  Tag yang di Copy
+                    for ($b = 0; $b < $total0; $b++) {
+                        if ($data0[$b]['bagian'] == $request->tag1){
+                            array_push($filter, $data0[$b]);
+                        }
+                        else {
+                        }
+                    }
+                    // batas Copy
+                  }
+            // return json_encode($filter);
+            return view('user.planning',['data' => $filter, 'tipe' => $request->tag1, 'bagian' => $line]);
+        }else {
+            return view('user.planning',['data' => $data0, 'tipe' => '', 'bagian' => $line]);
+        }
     }
     
 }

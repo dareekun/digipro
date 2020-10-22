@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "513dbc47590117172dcd76796226e1da",
+    "content-hash": "03356c878c475b3cb0cde0fc151aa6a7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1639,6 +1639,111 @@
                 }
             ],
             "time": "2020-07-23T08:41:23+00:00"
+        },
+        {
+            "name": "myclabs/deep-copy",
+            "version": "1.10.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/DeepCopy.git",
+                "reference": "969b211f9a51aa1f6c01d1d2aef56d3bd91598e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/969b211f9a51aa1f6c01d1d2aef56d3bd91598e5",
+                "reference": "969b211f9a51aa1f6c01d1d2aef56d3bd91598e5",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "replace": {
+                "myclabs/deep-copy": "self.version"
+            },
+            "require-dev": {
+                "doctrine/collections": "^1.0",
+                "doctrine/common": "^2.6",
+                "phpunit/phpunit": "^7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DeepCopy\\": "src/DeepCopy/"
+                },
+                "files": [
+                    "src/DeepCopy/deep_copy.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Create deep copies (clones) of your objects",
+            "keywords": [
+                "clone",
+                "copy",
+                "duplicate",
+                "object",
+                "object graph"
+            ],
+            "funding": [
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/myclabs/deep-copy",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-06-29T13:22:24+00:00"
+        },
+        {
+            "name": "nahid/qarray",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nahid/qarray.git",
+                "reference": "09f5e7d702b938301abe23d888e791d9be655456"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nahid/qarray/zipball/09f5e7d702b938301abe23d888e791d9be655456",
+                "reference": "09f5e7d702b938301abe23d888e791d9be655456",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "myclabs/deep-copy": "^1.8",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0 || ^6.0",
+                "symfony/var-dumper": "^3.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nahid\\QArray\\": "src/"
+                },
+                "files": [
+                    "helpers/qarray.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nahid Bin Azhar",
+                    "email": "nahid.dns@gmail.com"
+                }
+            ],
+            "description": "QArray is a PHP abstraction for querying array",
+            "homepage": "https://github.com/nahid/qarray",
+            "keywords": [
+                "array",
+                "php",
+                "query"
+            ],
+            "time": "2020-07-28T14:56:49+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -5585,58 +5690,65 @@
             "time": "2020-08-11T18:10:13+00:00"
         },
         {
-            "name": "myclabs/deep-copy",
-            "version": "1.10.1",
+            "name": "nahid/jsonq",
+            "version": "v6.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "969b211f9a51aa1f6c01d1d2aef56d3bd91598e5"
+                "url": "https://github.com/nahid/jsonq.git",
+                "reference": "05227383e3d7256b226964234f33fc7bfa36f6c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/969b211f9a51aa1f6c01d1d2aef56d3bd91598e5",
-                "reference": "969b211f9a51aa1f6c01d1d2aef56d3bd91598e5",
+                "url": "https://api.github.com/repos/nahid/jsonq/zipball/05227383e3d7256b226964234f33fc7bfa36f6c8",
+                "reference": "05227383e3d7256b226964234f33fc7bfa36f6c8",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 || ^8.0"
-            },
-            "replace": {
-                "myclabs/deep-copy": "self.version"
+                "ext-json": "*",
+                "nahid/qarray": "^2.0",
+                "php": ">=5.6"
             },
             "require-dev": {
-                "doctrine/collections": "^1.0",
-                "doctrine/common": "^2.6",
-                "phpunit/phpunit": "^7.1"
+                "phpunit/phpunit": "^4.8 || ^5.0",
+                "symfony/var-dumper": "^3.4"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "DeepCopy\\": "src/DeepCopy/"
+                    "Nahid\\JsonQ\\": "src/"
                 },
                 "files": [
-                    "src/DeepCopy/deep_copy.php"
+                    "helpers/jsonq.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "Create deep copies (clones) of your objects",
+            "authors": [
+                {
+                    "name": "Nahid Bin Azhar",
+                    "email": "nahid.dns@gmail.com"
+                }
+            ],
+            "description": "JsonQ is a PHP based json data query library",
+            "homepage": "https://github.com/nahid/jsonq",
             "keywords": [
-                "clone",
-                "copy",
-                "duplicate",
-                "object",
-                "object graph"
+                "json",
+                "jsonq",
+                "query"
             ],
             "funding": [
                 {
-                    "url": "https://tidelift.com/funding/github/packagist/myclabs/deep-copy",
-                    "type": "tidelift"
+                    "url": "https://beerpay.io/nahid/jsonq",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/me-shaon",
+                    "type": "github"
                 }
             ],
-            "time": "2020-06-29T13:22:24+00:00"
+            "time": "2020-08-22T18:45:44+00:00"
         },
         {
             "name": "nunomaduro/collision",

@@ -69,8 +69,7 @@ Route::get('/resume/{id}', [UserController::class, 'resume'])->middleware('can:i
 Route::get('/resumim/{id}', [UserController::class, 'resumim'])->middleware('can:isUser');
 Route::get('/refresh/{id}', [UserController::class, 'refresh'])->middleware('can:isUser');
 Route::get('/refreshing/{id}', [UserController::class, 'refreshing'])->middleware('can:isUser');
-Route::get('/user/planning', [UserController::class, 'planning'])->middleware('can:isUser');
-Route::get('/user/planning/{id}', [UserController::class, 'planning2'])->middleware('can:isUser');
+Route::any('/user/planning', [UserController::class, 'planning'])->middleware('can:isUser');
 Route::get('/lotdetail/{id}', [InfoController::class, 'lotdetail'])->middleware('can:isUser');
 Route::get('/cetaklot/{id}', [InfoController::class, 'cetaklot'])->middleware('can:isUser');
 

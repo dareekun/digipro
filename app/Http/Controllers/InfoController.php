@@ -116,7 +116,7 @@ class InfoController extends Controller
     }
 
     public function lotcard0() {
-        $line = DB::table('produk')->select('bagian')->orderBy('tempat', 'asc')->distinct()->get();
+        $line = DB::table('produk')->select('bagian')->distinct()->get();
         return view('user.lotcard0', ['data' => $line]);
     }
 

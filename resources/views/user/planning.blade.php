@@ -9,16 +9,34 @@
                 <div class="card-header">Planning {{$tipe}}</div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-10" align="left"> <a href="/user/planning/Assy WD" class="btn-sm btn-primary"
-                                role="button" aria-pressed="true">Assy WD</a>
-                            <a href="/user/planning/Metal Part" class="btn-sm btn-success" role="button"
-                                aria-pressed="true">Metal Part</a>
-                            <a href="/user/planning/Export" class="btn-sm btn-secondary" role="button"
-                                aria-pressed="true">Export</a>
+                        <div class="col-sm-2" align="left"> 
                         </div>
-                        <div class="col-sm-2" align="right">
-                            <a href="/admin/planning" class="btn btn-sm btn-outline-primary" role="button"
-                                aria-pressed="true">Tambah Planning</a>
+                        <div class="col-sm-10" align="right">
+                        <form action="/user/planning" method="post">
+                                {{ csrf_field() }}
+                                <table>
+                                    <tr>
+                                        <td><select name="tag1" class="form-control form-control-sm" id="bagian">
+                                                <option value=""></option>
+                                                @foreach($bagian as $l)
+                                                <option value="{{$l->bagian}}">{{$l->bagian}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control form-control-sm" style="width:150px" name="tag2" id="tempat">
+                                                <option value=""></option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="date" class="form-control form-control-sm" value="" name="tag3" id="tanggal">
+                                        </td>
+                                        <td>
+                                        <input type="submit" class="btn btn-sm btn-dark" value="Submit">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
                         </div>
                     </div>
                     <br>
@@ -73,5 +91,19 @@
                 ]
             });
         });
+        $(function() {
+    $('#bagian').on('change', function() {
+        axios.post('{{ route('data1-json.data1') }}', {
+                    bag: $(this).val()
+                })
+            .then(function(response) {
+                $('#tempat').empty();
+                $('#tempat').append(new Option("", ""));
+                $.each(response.data, function(tempat, tempat) {
+                    $('#tempat').append(new Option(tempat, tempat))
+                })
+            });
+    });
+});
     </script>
 @endpush
