@@ -102,7 +102,7 @@ class HomeController extends Controller
 
     public function select1(Request $request)
     {
-        $data1 = DB::table('produk')->where('bagian', $request->get('bag'))->distinct()->pluck('tempat');
+        $data1 = DB::table('produk')->where('bagian', $request->get('bag'))->orderBy('tempat', 'asc')->distinct()->pluck('tempat');
         return response()->json($data1);
     }
     public function select2(Request $request)

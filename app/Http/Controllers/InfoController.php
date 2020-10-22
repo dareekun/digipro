@@ -116,7 +116,7 @@ class InfoController extends Controller
     }
 
     public function lotcard0() {
-        $line = DB::table('produk')->select('bagian')->distinct()->get();
+        $line = DB::table('produk')->select('bagian')->orderBy('tempat', 'asc')->distinct()->get();
         return view('user.lotcard0', ['data' => $line]);
     }
 
@@ -234,7 +234,7 @@ class InfoController extends Controller
     public function lotstatus(Request $request) {
         if (isset($request->tempat)) {
             $line = DB::table('produk')->select('bagian')->distinct()->get();
-            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->where('produk.tempat', $request->tempat)->where('produk.lotno', $request->tanggal)->distinct('barcode')->get();
+            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->where('produk.tempat', $request->tempat)->where('lotcard.lotno', $request->tanggal)->distinct('barcode')->get();
             return view('user.lotcard1', ['data' => $data, 'bagian' => $line]);
         }else {
             $line = DB::table('produk')->select('bagian')->distinct()->get();
