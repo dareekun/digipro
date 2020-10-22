@@ -153,8 +153,7 @@ class InfoController extends Controller
         foreach ($shift as $q) {
             $acs .= $q[0];
         }
-        $last  = DB::table('lotcard')->select('barcode')->where('keyid', $request->keyid)->distinct('id')->count('id')+1;
-        $nlm   = DB::table('rekapprod')->select('keyid')->where('keyid', $request->keyid)->distinct('id')->count('id');
+        $last  = DB::table('lotcard')->select('barcode')->where('lotno', $request->tanggal)->where('modelno', $request->tipe)->distinct()->count('barcode')+1;
         $lotid = $acs.'N'.$last.trim($request->tipe,'-').$date;
         $parts = $request->part;
         $lotparts = $request->lotpart;
@@ -232,9 +231,17 @@ class InfoController extends Controller
         return redirect('/resume/'.$request->keyid);
     }
 
-    public function lotstatus() {
-        $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->distinct('barcode')->get();
-        return view('user.lotcard1', ['data' => $data]);
+    public function lotstatus(Request $request) {
+        if (isset($request->tempat)) {
+            $line = DB::table('produk')->select('bagian')->distinct()->get();
+            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->where('produk.tempat', $request->tempat)->distinct('barcode')->get();
+            return view('user.lotcard1', ['data' => $data, 'bagian' => $line]);
+        }else {
+            $line = DB::table('produk')->select('bagian')->distinct()->get();
+            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->distinct('barcode')->get();
+            return view('user.lotcard1', ['data' => $data, 'bagian' => $line]);
+        }
+
     }
     public function lotdetail($id) {
         $data0 = DB::table('lotcard')->where('barcode', $id)->get();
@@ -274,6 +281,38 @@ class InfoController extends Controller
         $resume = DB::table('rekapprod')->where('id', $id)->select('keyid')->value('keyid');
         DB::table('rekapprod')->where('id', $id)->delete();
         return redirect('/resume/'.$resume);
+    }
+
+    public function rubahlot($id){
+        $status = DB::table('lotcard')->where('barcode', $id)->select('status')->distinct()->value('status');
+        if ($status == 0) {
+            $data0 = DB::table('lotcard')->where('barcode', $id)->where('barcode', $id)->select('barcode', 'modelno', 'lotno', 'shift', 'input1', 'input2', 'ng1', 'ng2', 'date1', 'date2', 'name1', 'name2')->distinct()->get();
+            $data1 = DB::table('lotcard')->where('barcode', $id)->where('barcode', $id)->select('partname', 'nolot')->get();
+            return view('user.rubahlot', ['data' => $data1, 'master' => $data0, 'i' => 1]);
+        } 
+        else {
+            return back()->withInput()->withErrors(['msg', 'The Message']);
+        }
+    }
+
+    public function rubahlots(Request $request){
+        $status = DB::table('lotcard')->where('barcode', $id)->select('status')->distinct()->value('status');
+        if ($status == 0) {
+            DB::table('lotcard')->where('barcode', $request->keyid)->update([
+                'input1' => $request->input1, 
+                'ng1' => $request->ng1, 
+                'date1' => $request->date1, 
+                'name1' => $request->name1, 
+                'input2' => $request->input2, 
+                'ng2' => $request->ng2, 
+                'date2' => $request->date2, 
+                'name2' => $request->name2, 
+            ]);
+            return redirect('/cetaklot/'.$request->keyid);
+        } 
+        else {
+            return redirect('/lotstatus')->withErrors(['msg', 'The Message']);
+        }
     }
 
 }

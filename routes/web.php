@@ -34,9 +34,13 @@ Route::get('/test',  [ApiController::class, 'test']);
 Route::get('/tabel/{id}', [InfoController::class, 'tabel']);
 Route::get('/graph/{id}', [InfoController::class, 'graph']);
 Route::get('lotcard0', [InfoController::class, 'lotcard0']);
-Route::get('lotstatus', [InfoController::class, 'lotstatus']);
+Route::any('lotstatus', [InfoController::class, 'lotstatus']);
 Route::any('/lotscaned', [InfoController::class, 'lotscaned']);
 Route::get('/dellot/{id}', [InfoController::class, 'dellot']);
+Route::get('/rubahlot/{id}', [InfoController::class, 'rubahlot']);
+Route::post('/rubahlots', [InfoController::class, 'rubahlots']);
+
+
 Route::any('/graphbulan/{id}', [InfoController::class, 'graphbulan']);
 Route::post('/lotcard', [InfoController::class, 'lotcard']);
 Route::post('/lotcard1', [InfoController::class, 'lotcard1']);
