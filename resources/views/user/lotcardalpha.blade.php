@@ -103,9 +103,9 @@
                                             </tr>
                                             <tr>
                                                 <td>Assembly</td>
-                                                <td><input type="number" required class="form-control" name="input1"
+                                                <td><input type="number" class="form-control" name="input1"
                                                         value=""></td>
-                                                <td><input type="number" required class="form-control" name="ng1"
+                                                <td><input type="number" class="form-control" name="ng1"
                                                         value=""></td>
                                                 <td><input type="date" required class="form-control" name="date1"
                                                         value="{{ date('Y-m-d') }}"></td>
@@ -114,9 +114,9 @@
                                             </tr>
                                             <tr>
                                                 <td>Packing</td>
-                                                <td><input type="number" required class="form-control" name="input2"
+                                                <td><input type="number" class="form-control" name="input2"
                                                         value=""></td>
-                                                <td><input type="number" required class="form-control" name="ng2"
+                                                <td><input type="number" class="form-control" name="ng2"
                                                         value=""></td>
                                                 <td><input type="date" required class="form-control" name="date2"
                                                         value="{{ date('Y-m-d') }}"></td>
