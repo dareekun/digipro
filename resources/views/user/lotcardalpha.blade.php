@@ -23,7 +23,13 @@
     }
     </style>
 </head>
-
+@if($errors->any())
+<script>
+$(document).ready(function() {
+    $("#modallot1").modal('show');
+});
+</script>
+@endif
 <body>
     <br>
     <br>
@@ -140,45 +146,33 @@
                                     </td>
                                 </tr>
                             </table>
-
-                            <!-- Untuk Modal -->
-                            <!-- Minggir Kalian Semua -->
-                            <!-- Commentnya Tiga Baris -->
-                            <!-- Empat Dong, Biar Enak Ngeliatnya -->
-
-                            <div class="modal fade" id="kembali" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Peringatan</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body" id="modalText">
-                                            Apakah Anda Yakin Ingin Kembali?
-                                            Data Akan Dihapus
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Tidak</button>
-                                            <button type="submit" name="hapus"
-                                                class="btn btn-danger">Konfirmasi</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Untuk Batas Modal -->
-                            <!-- Minggir Kalian Semua -->
-                            <!-- Commentnya Tiga Baris -->
-                            <!-- Nambah Satu lah, Biar Enak Ngeliatnya -->
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modallot1" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            Lotcard Tidak Memiliki Part
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
     <script>
     $(document).ready(function() {
         var i = 1;

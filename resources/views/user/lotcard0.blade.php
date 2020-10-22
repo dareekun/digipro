@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+@if($errors->any())
+<script>
+$(document).ready(function() {
+    $("#modallot1").modal('show');
+});
+</script>
+@endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -65,6 +72,27 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modallot1" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            Lotcard Tidak Memiliki Part
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+    </div>
+</div>
+
 @stop
 
 @push('scripts')

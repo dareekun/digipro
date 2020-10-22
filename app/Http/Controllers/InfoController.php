@@ -121,8 +121,9 @@ class InfoController extends Controller
     }
 
     public function lotcardalpha(Request $request) {
-        $htta  = Http::get('http://158.118.35.22:8080/bom/'.$request->tipe)->getBody();
-        $parts = json_decode($htta, true);
+        // $htta  = Http::get('http://158.118.35.22:8080/bom/'.$request->tipe)->getBody();
+        // $parts = json_decode($htta, true);
+        $parts = DB::table('parts')->where('modelno', $request->tipe)->get();
         $tipe  = DB::table('produk')->where('tempat', $request->tempat)->select('tipe')->get();
         $shift = DB::table('waktu')->select('shift')->get();
         return view('user.lotcardalpha', ['data' => $parts, 'tipe' => $tipe, 'shift' => $shift, 'option' => $request->tipe, 'i' => 1]);
@@ -157,29 +158,39 @@ class InfoController extends Controller
         $lotid = $acs.'N'.$last.trim($request->tipe,'-').$date;
         $parts = $request->part;
         $lotparts = $request->lotpart;
-        for ($htng = 0; $htng < count($parts); $htng++) {
-            $data = array(
-            'id' => $lotid.$htng,
-            'barcode' => $lotid,
-            'keyid' => "Private",
-            'modelno' => $request->tipe,
-            'lotno' => $request->tanggal,
-            'shift'=> $request->shift,
-            'partname' => $parts[$htng],
-            'nolot' => $lotparts[$htng],
-            'input1' => $request->input1,
-            'input2' => $request->input2,
-            'ng1' => $request->ng1,
-            'ng2' => $request->ng2,
-            'date1' => $request->date1,
-            'date2' => $request->date2,
-            'name1' => $request->name1,
-            'name2' => $request->name2,
-            );
-            $insert_data[] = $data; 
+        if (isset($request->part)) {
+            for ($htng = 0; $htng < count($parts); $htng++) {
+                $data = array(
+                'id' => $lotid.$htng,
+                'barcode' => $lotid,
+                'keyid' => "Private",
+                'modelno' => $request->tipe,
+                'lotno' => $request->tanggal,
+                'shift'=> $request->shift,
+                'partname' => $parts[$htng],
+                'nolot' => $lotparts[$htng],
+                'input1' => $request->input1,
+                'input2' => $request->input2,
+                'ng1' => $request->ng1,
+                'ng2' => $request->ng2,
+                'date1' => $request->date1,
+                'date2' => $request->date2,
+                'name1' => $request->name1,
+                'name2' => $request->name2,
+                );
+                $insert_data[] = $data; 
+                if (DB::table('parts')->where('modelno', $request->tipe)->where('partname', $parts[$htng])->doesntExist()) {
+                    DB::table('parts')->insert([
+                        'partname' => $parts[$htng],
+                        'modelno' => $request->tipe,
+                    ]);
+                 }
+            }
+            DB::table('lotcard')->insert($insert_data);
+            return redirect('/cetaklot/'.$lotid);
+        } else {
+            return redirect('/lotcard0')->withErrors(['msg', 'The Message']);
         }
-        DB::table('lotcard')->insert($insert_data);
-        return redirect('/cetaklot/'.$lotid);
     }
 
     public function lotcard(Request $request) {
