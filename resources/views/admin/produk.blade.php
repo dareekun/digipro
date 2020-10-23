@@ -22,7 +22,9 @@
                                 <h3>Item Produk</h3>
                             </div>
                             <div class="col-md-8" align="right">
-                            <a class="btn btn-sm btn-outline-success" href="/admin/tambahproduk"><i class="fa fa-plus" aria-hidden="true"></i> Tambah Produk</a>
+                            <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal"
+                                data-target="#tambah"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Tambah
+                                Produk</button>
                             </div>
                         </div>
                         <table id="test" class="table table-striped table-bordered">
@@ -45,8 +47,7 @@
                         <td>{{$dt->qtyinner}}</td>
                         <td>{{$dt->qtyouter}}</td>
                         <td>
-                        <a class="btn btn-sm btn-outline-success" href="/admin/{{$dt->id}}"><i class="fa fa-pencil" aria-hidden="true"></i></a> 
-                        <a class="btn btn-sm btn-outline-danger" href="/admin/{{$dt->id}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapus({{$dt->id}})"><i class="fa fa-trash" aria-hidden="true"></i></button>
                         </td>
                         </tr>
                         @endforeach
@@ -57,5 +58,15 @@
             </div>
         </div>
     </div>
-    
-@endsection
+@include('dll.modalproduk')
+@stop
+
+@push('scripts')
+<script>
+function hapus(x) {
+    document.getElementById("idhapus").value = x;
+    $('#hapus').modal('show')
+}
+
+</script>
+@endpush

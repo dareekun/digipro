@@ -609,46 +609,7 @@ class UserController extends Controller
                 }
             }
         }
-        $filter = array();
-        if (isset($request->tag1)) { 
-                if (isset($request->tag2)) { 
-                    if (isset($request->tag3)) {
-                            //  Tag yang di Copy
-                            for ($b = 0; $b < $total0; $b++) {
-                                if ($data0[$b]['line'] == $request->tag2 && date('Y-m-d', strtotime($data0[$b]['job_start_date'])) == $request->tag3){
-                                    array_push($filter, $data0[$b]);
-                                }
-                                else {
-                                }
-                            }
-                            // batas Copy
-                     } else { 
-                    //  Tag yang di Copy
-                    for ($b = 0; $b < $total0; $b++) {
-                        if ($data0[$b]['line'] == $request->tag2){
-                            array_push($filter, $data0[$b]);
-                        }
-                        else {
-                        }
-                    }
-                    // batas Copy
-                      }
-                 } else { 
-                    //  Tag yang di Copy
-                    for ($b = 0; $b < $total0; $b++) {
-                        if ($data0[$b]['bagian'] == $request->tag1){
-                            array_push($filter, $data0[$b]);
-                        }
-                        else {
-                        }
-                    }
-                    // batas Copy
-                  }
-            // return json_encode($filter);
-            return view('user.planning',['data' => $filter, 'tipe' => $request->tag1, 'bagian' => $line]);
-        }else {
-            return view('user.planning',['data' => $data0, 'tipe' => '', 'bagian' => $line]);
-        }
+        return view('user.planning',['data' => $data0, 'tipe' => '', 'bagian' => $line]);
     }
     
 }

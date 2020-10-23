@@ -228,9 +228,29 @@ class AdminController extends Controller
         return redirect('/user/planning/'.$request->bagian);
     }
 
+    // =====================================
+    // ============ P R O D U K ============
+    // =====================================
+
     public function produk() {
         $produk = DB::table('produk')->get();
         return view('admin.produk', ['data' => $produk]);
+    }
+
+    public function produkditambah(Request $request) {
+        DB::table('produk')->insert([
+            'bagian' => $request->tag1,
+            'tempat' => $request->tag2,
+            'bagian' => $request->tag3,
+            'qtyinner' => $request->tag4,
+            'qtyouter' => $request->tag5,
+
+        ]);
+        return view('admin.produk', ['data' => $produk]);
+    }
+    public function produkdihapus(Request $request) {
+        DB::table('produk')->where('id', $request->idhapus)->delete();
+        return redirect('/admin/produk');
     }
 
     // =====================================

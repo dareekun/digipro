@@ -23,13 +23,6 @@
     }
     </style>
 </head>
-@if($errors->any())
-<script>
-$(document).ready(function() {
-    $("#modallot1").modal('show');
-});
-</script>
-@endif
 <body>
     <br>
     <br>
@@ -83,7 +76,7 @@ $(document).ready(function() {
                                             @foreach ($data as $dt)
                                             <tr id="rowa{{$i}}">
                                                 <td><input type="text" required class="form-control" name="part[]"
-                                                        value="{{$dt["c_item_code"]}}"></td>
+                                                        value="{{$dt->partname}}"></td>
                                                 <td><input type="date" required class="form-control" name="lotpart[]"
                                                         value="{{ date('Y-m-d') }}"></td>
                                                         <td align="center">
@@ -152,27 +145,6 @@ $(document).ready(function() {
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="modallot1" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Error</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            Lotcard Tidak Memiliki Part
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-        </div>
-    </div>
-    </div>
-
     <script>
     $(document).ready(function() {
         var i = 1;

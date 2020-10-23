@@ -181,8 +181,8 @@ class InfoController extends Controller
                 $insert_data[] = $data; 
                 if (DB::table('parts')->where('modelno', $request->tipe)->where('partname', $parts[$htng])->doesntExist()) {
                     DB::table('parts')->insert([
-                        'partname' => $parts[$htng],
-                        'modelno' => $request->tipe,
+                        'partname' => strtoupper($parts[$htng]),
+                        'modelno' => strtoupper($request->tipe),
                     ]);
                  }
             }

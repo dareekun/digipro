@@ -79,18 +79,33 @@
 
 @push('scripts')
 <script>
-        $(document).ready(function() {
-            $('#test').DataTable({
-                order: [[0, 'desc']],
-                scrollY: '50vh',
-                paging: false,
-                info: false,
-                dom: 'Bfrtip',
-                buttons: [
-                    'excelHtml5',
-                ]
-            });
-        });
+    $(document).ready(function() {
+    var table = $('#test').DataTable({
+        order: [[0, 'desc']],
+        scrollY: '50vh',
+        paging: false,
+        info: false,
+        dom: 'Bfrtip',
+        buttons: [
+            'excelHtml5',
+        ],
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+ 
+} );
         $(function() {
     $('#bagian').on('change', function() {
         axios.post('{{ route('data1-json.data1') }}', {
