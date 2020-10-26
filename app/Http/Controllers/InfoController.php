@@ -219,27 +219,32 @@ class InfoController extends Controller
                  }
             }
             DB::table('lotcard')->insert($insert_data);
-            $htta  = Http::get('http://158.118.35.22:8080/discreetdetail/'.$request->jobid)->getBody();
-            $data0 = json_decode($htta, true);
-            $sisa  = $data0[0]['plan_qty'] - $request->input1;
-            if ($sisa == 0) {
-                $status = "Completed";
+            if ($request->jobid != "") {
+                $htta  = Http::get('http://158.118.35.22:8080/discreetdetail/'.$request->jobid)->getBody();
+                $data0 = json_decode($htta, true);
+                $sisa  = $data0[0]['plan_qty'] - $request->input1;
+                if ($sisa == 0) {
+                    $status = "Completed";
+                }
+                else {
+                    $status = "Released";
+                }
+                DB::table('finish_job')->insert([
+                    'id' => $lotid,
+                    'Job' => $request->jobid,
+                    'Type' => $data0[0]['type'],
+                    'Assembly' => $request->tipe,
+                    'Class' => $data0[0]['class'],
+                    'Quantity' => $data0[0]['plan_qty'],
+                    'Status' => $status,
+                    'Start Date' => $data0[0]['job_start_date'],
+                    'Quantity Remained' => $sisa,
+                    'Overcompletion Quantity' => $request->input1,
+                ]);
             }
             else {
-                $status = "Released";
+
             }
-            DB::table('finish_job')->insert([
-                'id' => $lotid,
-                'Job' => $request->jobid,
-                'Type' => $data0[0]['type'],
-                'Assembly' => $request->tipe,
-                'Class' => $data0[0]['class'],
-                'Quantity' => $data0[0]['plan_qty'],
-                'Status' => $status,
-                'Start Date' => $data0[0]['job_start_date'],
-                'Quantity Remained' => $sisa,
-                'Overcompletion Quantity' => $request->input1,
-            ]);
             return redirect('/cetaklot/'.$lotid);
         } else {
             return redirect('/lotcard0')->withErrors(['msg', 'The Message']);
