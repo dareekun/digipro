@@ -12,8 +12,6 @@
                         <div class="col-sm-2" align="left"> 
                         </div>
                         <div class="col-sm-10" align="right">
-                        <form action="/user/planning" method="post">
-                                {{ csrf_field() }}
                                 <table>
                                     <tr>
                                         <td><select name="tag1" class="form-control form-control-sm" id="bagian">
@@ -32,11 +30,10 @@
                                             <input type="date" class="form-control form-control-sm" value="" name="tag3" id="tanggal">
                                         </td>
                                         <td>
-                                        <input type="submit" class="btn btn-sm btn-dark" value="Submit">
+                                        <button id="reset" onclick="reset()" class="btn btn-sm btn-primary">Reset</button>
                                         </td>
                                     </tr>
                                 </table>
-                            </form>
                         </div>
                     </div>
                     <br>
@@ -63,7 +60,7 @@
                                 <td>{{$dt["bagian"]}}</td>
                                 <td>{{$dt["line"]}}</td>
                                 <td>{{$dt["assembly_item_name"]}}</td>
-                                <td>{{date('d M Y', strtotime($dt["job_start_date"]))}}</td>
+                                <td>{{date('Y-m-d', strtotime($dt["job_start_date"]))}}</td>
                                 <td>{{$dt["plan_qty"]}}</td>
                             </tr>
                         @endif
@@ -92,11 +89,27 @@
         initComplete: function () {
             // Apply the search
             this.api().columns().every( function () {
-                var that = this;
  
-                $( 'input', this.footer() ).on( 'keyup change clear', function () {
-                    if ( that.search() !== this.value ) {
-                        that
+                $('#bagian').on( 'keyup change clear', function () {
+                    if ( table.column(1).search() !== document.getElementById('bagian').value ) {
+                        table
+                            .column( 1 )
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+                $('#tempat').on( 'keyup change clear', function () {
+                    if ( table.column(2).search() !== document.getElementById('tempat').value ) {
+                        table
+                            .column( 2 )
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+                $('#tanggal').on( 'keyup change clear', function () {
+                    if ( table.column(4).search() !== document.getElementById('tanggal').value ) {
+                        table
+                            .column( 4 )
                             .search( this.value )
                             .draw();
                     }
@@ -120,5 +133,12 @@
             });
     });
 });
+function reset() {
+    document.getElementById('bagian').value = '';
+    document.getElementById('tempat').value = '';
+    document.getElementById('tanggal').value = '';
+    $('#test').DataTable().columns().search('').draw();
+}
+
     </script>
 @endpush

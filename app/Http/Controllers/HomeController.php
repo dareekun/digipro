@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Validator;
 
+use Illuminate\Support\Facades\Http;
+
 use App\User;
 Use Redirect;
 use Auth;
@@ -109,6 +111,35 @@ class HomeController extends Controller
     {
         $data2 = DB::table('produk')->where('tempat', $request->get('temt'))->pluck('tipe');
         return response()->json($data2);
+    }
+    public function select3(Request $request) 
+    {
+        $htta  = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+        $line = DB::table('produk')->select('bagian')->distinct()->get();
+        $data0 = json_decode($htta, true);
+        $data1 = json_decode(DB::table('produk')->get(), true);
+        $total0 = count($data0);
+        $total1 = count($data1);
+        for ($i = 0; $i < $total0; $i++) {
+            for ($a = 0; $a < $total1; $a++) {
+                if ($data0[$i]['assembly_item_name'] == $data1[$a]['tipe']){
+                        $data0[$i]['bagian'] = $data1[$a]['bagian'];
+                        $data0[$i]['line'] = $data1[$a]['tempat'];
+                break;
+                }
+                else {
+                    $data0[$i]['bagian'] = "";
+                    $data0[$i]['line'] = "";
+                }
+            }
+        }
+        $data3 = array();
+        for ($i = 0; $i < $total0; $i++) {
+                if ($data0[$i]['line'] == $request->get('temt')){
+                        array_push($data3, $data0[$i]['assembly_item_name']);
+                }
+        }
+        return response()->json($data3);
     }
     
 }

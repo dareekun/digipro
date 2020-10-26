@@ -38,9 +38,15 @@ class ApiController extends Controller
 
         else {
             $date = date('Y-m-d');
-            Lotcard::where('barcode', $id)->update([
+            DB::table('lotcard')->where('barcode', $id)->update([
                 'status'=> 1,
                 'scandate' => $date,
+            ]);
+            $tanggal = date('Y-m-d G:I:s');
+            DB::table('lotcard')->where('barcode', $id)->update([
+                'tanda'=> 1,
+                'Completion Date' => $tanggal,
+                'Transaction Date' => $tanggal,
             ]);
     
             return response()->json([

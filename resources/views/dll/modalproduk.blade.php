@@ -14,7 +14,12 @@
 
         <div class="row">
         <div class="col-sm-3">Bagian</div>
-        <div class="col-sm-9"><input required type="text" name="tag1" class="form-control"></div>
+        <div class="col-sm-9"><Select name="tag1" id="tag1" class="form-control">
+        <option value="Assy WD">Assy WD</option>
+        <option value="Metal Part">Metal Part</option>
+        <option value="Export">Export</option>
+        
+        </Select></div>
         </div>
         <br>
         <div class="row">

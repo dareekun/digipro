@@ -34,6 +34,7 @@
                     <div class="center">
                         <form action="/plusalpha" enctype="multipart/form-data" method="post">
                             {{ csrf_field() }}
+                            <input type="text" hidden value="{{$jobid}}" name="jobid">
                             <table>
                                 <tr>
                                     <td>Model No </td>

@@ -50,6 +50,9 @@ Route::post('/plusalpha', [InfoController::class, 'plusalpha']);
 Route::post('/plusalpha', [InfoController::class, 'plusalpha']);
 
 Route::get('/lotsp/{param0}', [InfoController::class, 'lotsp']);
+
+Route::get('/laksan/{param0}', [InfoController::class, 'lotcardalpha2']);
+
 Route::get('/lotsphps/{id}', [InfoController::class, 'lotsphps']);
 
 
@@ -111,6 +114,7 @@ Route::post('/manager/Informasi/update', [ManagerController::class, 'informasiup
 // JSON 
 Route::post('data1-json', [HomeController::class, 'select1'])->name('data1-json.data1');
 Route::post('data2-json', [HomeController::class, 'select2'])->name('data2-json.data2');
+Route::post('data3-json', [HomeController::class, 'select3'])->name('data3-json.data3');
 
 Route::post('lot1-json', [HomeController::class, 'lot1'])->name('lot1-json.lot1');
 Route::post('lot2-json', [HomeController::class, 'lot2'])->name('lot2-json.lot2');

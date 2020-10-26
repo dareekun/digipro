@@ -116,32 +116,64 @@ class InfoController extends Controller
     }
 
     public function lotcard0() {
+        $htta  = Http::get('http://158.118.35.22:8080/discreet')->getBody();
         $line = DB::table('produk')->select('bagian')->distinct()->get();
-        return view('user.lotcard0', ['data' => $line]);
+        $data0 = json_decode($htta, true);
+        $data1 = json_decode(DB::table('produk')->get(), true);
+        $total0 = count($data0);
+        $total1 = count($data1);
+        for ($i = 0; $i < $total0; $i++) {
+            for ($a = 0; $a < $total1; $a++) {
+                if ($data0[$i]['assembly_item_name'] == $data1[$a]['tipe']){
+                        $data0[$i]['bagian'] = $data1[$a]['bagian'];
+                        $data0[$i]['line'] = $data1[$a]['tempat'];
+                break;
+                }
+                else {
+                    $data0[$i]['bagian'] = "";
+                    $data0[$i]['line'] = "";
+                }
+            }
+        }
+
+        $line = DB::table('produk')->select('bagian')->distinct()->get();
+        return view('user.lotcard0', ['line' => $line, 'data' => $data0]);
     }
 
     public function lotcardalpha(Request $request) {
-        // $htta  = Http::get('http://158.118.35.22:8080/bom/'.$request->tipe)->getBody();
-        // $parts = json_decode($htta, true);
         $parts = DB::table('parts')->where('modelno', $request->tipe)->get();
-        $tipe  = DB::table('produk')->where('tempat', $request->tempat)->select('tipe')->get();
         $shift = DB::table('waktu')->select('shift')->get();
-        return view('user.lotcardalpha', ['data' => $parts, 'tipe' => $tipe, 'shift' => $shift, 'option' => $request->tipe, 'i' => 1]);
+        return view('user.lotcardalpha', ['data' => $parts, 'shift' => $shift, 'option' => $request->tipe, 'i' => 1, 'jobid' => '']);
+    }
+
+    public function lotcardalpha2($param0){
+        $htta  = Http::get('http://158.118.35.22:8080/discreetdetail/'.$param0)->getBody();
+        $data0 = json_decode($htta, true);
+
+        $parts = DB::table('parts')->where('modelno', $data0[0]['assembly_item_name'])->get();
+        $shift = DB::table('waktu')->select('shift')->get();
+        return view('user.lotcardalpha', ['data' => $parts, 'shift' => $shift, 'jobid' => $data0[0]['job_number'],
+        'option' => $data0[0]['assembly_item_name'], 'i' => 1]);
     }
 
     public function lotscaned(Request $request){
         if (isset($request->scandate)) {
             $tanggal = date('d M Y', strtotime($request->scandate));
-            $data = DB::table('lotcard')->select('barcode', 'modelno', 'shift', 'lotno', 'input1', 'input2')->where('status', 1)->where('scandate', $request->scandate)->distinct()->get();
+            $data = DB::table('finish_job')
+            ->select('Job', 'Type', 'Assembly', 'Class', 'Quantity', 'Status', 'Start Date as Start_Date', 'Completion Date as Completion_Date', 'Quantity Remained as Quantity_Remained', 'FromA', 'ToA', 'Overcompletion Quantity as Overcompletion_Quantity', 'Transaction Date as Transaction_Date', 'Reference', 'Organization ID as Organization_ID')
+            ->where('tanda', 1)->whereDate('Transaction Date', $request->scandate)->distinct()->get();
         }else {
             $tanggal = date('d M Y');
-            $data = DB::table('lotcard')->select('barcode', 'modelno', 'shift', 'lotno', 'input1', 'input2')->where('status', 1)->distinct()->get();
+            $data = DB::table('finish_job')
+            ->select('Job', 'Type', 'Assembly', 'Class', 'Quantity', 'Status', 'Start Date as Start_Date', 'Completion Date as Completion_Date', 'Quantity Remained as Quantity_Remained', 'FromA', 'ToA', 'Overcompletion Quantity as Overcompletion_Quantity', 'Transaction Date as Transaction_Date', 'Reference', 'Organization ID as Organization_ID')
+            ->where('tanda', 1)->distinct()->get();
         }
         return view('user.lotscaned', ['data' => $data, 'date' => $tanggal]);
     }
 
     public function dellot($id) {
         DB::table('lotcard')->where('barcode', $id)->delete();
+        DB::table('finish_job')->where('id', $id)->delete();
         return redirect('/lotstatus');
     }
 
@@ -187,6 +219,27 @@ class InfoController extends Controller
                  }
             }
             DB::table('lotcard')->insert($insert_data);
+            $htta  = Http::get('http://158.118.35.22:8080/discreetdetail/'.$request->jobid)->getBody();
+            $data0 = json_decode($htta, true);
+            $sisa  = $data0[0]['plan_qty'] - $request->input1;
+            if ($sisa == 0) {
+                $status = "Completed";
+            }
+            else {
+                $status = "Released";
+            }
+            DB::table('finish_job')->insert([
+                'id' => $lotid,
+                'Job' => $request->jobid,
+                'Type' => $data0[0]['type'],
+                'Assembly' => $request->tipe,
+                'Class' => $data0[0]['class'],
+                'Quantity' => $data0[0]['plan_qty'],
+                'Status' => $status,
+                'Start Date' => $data0[0]['job_start_date'],
+                'Quantity Remained' => $sisa,
+                'Overcompletion Quantity' => $request->input1,
+            ]);
             return redirect('/cetaklot/'.$lotid);
         } else {
             return redirect('/lotcard0')->withErrors(['msg', 'The Message']);
@@ -318,6 +371,19 @@ class InfoController extends Controller
                 'ng2' => $request->ng2, 
                 'date2' => $request->date2, 
                 'name2' => $request->name2, 
+            ]);
+            $sisa = DB::table('finish_job')->select('Quantity')->where('id', $request->keyid)->value('Quantity') - $request->input1;
+            if ($sisa == 0 ) {
+                $stts = 'Completed';
+            }
+            else {
+                $stts = 'Released';
+            }
+            DB::table('finish_job')->where('id', $request->keyid)->update([
+                'Status' => $stts, 
+                'Quantity Remained' => $request->input1, 
+                'Overcompletion Quantity' => $request->input1, 
+
             ]);
             return redirect('/cetaklot/'.$request->keyid);
         } 
