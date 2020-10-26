@@ -31,7 +31,7 @@ $(document).ready(function() {
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="date" class="form-control form-control-sm" value="{{date('Y-m-d')}}" name="tanggal" id="tanggal">
+                                            <input type="date" class="form-control form-control-sm" name="tanggal" id="tanggal">
                                         </td>
                                         <td>
                                         <button class="btn btn-sm btn-dark" onclick="reset()">Reset</button>
@@ -163,7 +163,7 @@ $(function() {
             .then(function(response) {
                 $('#tempat').empty();
                 $('#tipe').empty();
-
+                $('#tempat').append(new Option("", ""));
                 $.each(response.data, function(tempat, tempat) {
                     $('#tempat').append(new Option(tempat, tempat))
                 })
