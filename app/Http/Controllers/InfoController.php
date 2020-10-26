@@ -372,19 +372,21 @@ class InfoController extends Controller
                 'date2' => $request->date2, 
                 'name2' => $request->name2, 
             ]);
-            $sisa = DB::table('finish_job')->select('Quantity')->where('id', $request->keyid)->value('Quantity') - $request->input1;
-            if ($sisa == 0 ) {
-                $stts = 'Completed';
+            if (DB::table('finish_job')->where('id', $request->keyid)->exists()) {
+                $sisa = DB::table('finish_job')->select('Quantity')->where('id', $request->keyid)->value('Quantity') - $request->input1;
+                if ($sisa == 0 ) {
+                    $stts = 'Completed';
+                }
+                else {
+                    $stts = 'Released';
+                }
+                DB::table('finish_job')->where('id', $request->keyid)->update([
+                    'Status' => $stts, 
+                    'Quantity Remained' => $request->input1, 
+                    'Overcompletion Quantity' => $request->input1, 
+    
+                ]);
             }
-            else {
-                $stts = 'Released';
-            }
-            DB::table('finish_job')->where('id', $request->keyid)->update([
-                'Status' => $stts, 
-                'Quantity Remained' => $request->input1, 
-                'Overcompletion Quantity' => $request->input1, 
-
-            ]);
             return redirect('/cetaklot/'.$request->keyid);
         } 
         else {

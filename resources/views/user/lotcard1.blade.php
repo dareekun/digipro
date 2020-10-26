@@ -15,12 +15,7 @@ $(document).ready(function() {
                 <div class="card-header">Lotcard</div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-2">
-                            <h3>Lot Card</h3>
-                        </div> 
-                        <div class="col-md-8" align="right">
-                            <form action="/lotstatus" method="post">
-                                {{ csrf_field() }}
+                        <div class="col-md-10" align="left">
                                 <table>
                                     <tr>
                                         <td><select name="bagian" class="form-control form-control-sm" id="bagian">
@@ -39,17 +34,17 @@ $(document).ready(function() {
                                             <input type="date" class="form-control form-control-sm" value="{{date('Y-m-d')}}" name="tanggal" id="tanggal">
                                         </td>
                                         <td>
-                                        <input type="submit" class="btn btn-sm btn-dark" value="Submit">
+                                        <button class="btn btn-sm btn-dark" onclick="reset()">Reset</button>
                                         </td>
                                     </tr>
                                 </table>
-                            </form>
                         </div>
                         <div class="col-md-2" align="right">
                             <a href="/lotcard0" class="btn btn-sm btn-success" role="button" target="_blank"
                                 aria-pressed="true"><i class="fa fa-plus" aria-hidden="true"></i> Tambah Lotcard</a>
                         </div>
                     </div>
+                    <br>
                     <table id="test" class="table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -127,19 +122,39 @@ $(document).ready(function() {
 @push('scripts')
 <script>
 $(document).ready(function() {
-    $('#test').DataTable({
-        order: [
-            [0, 'desc']
-        ],
+var table = $('#test').DataTable({
+        order: [[0, 'desc']],
         scrollY: '50vh',
         paging: false,
         info: false,
         dom: 'Bfrtip',
         buttons: [
             'excelHtml5',
-        ]
+        ],
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                $('#tempat').on( 'keyup change clear', function () {
+                    if ( table.column(0).search() !== document.getElementById('tempat').value ) {
+                        table
+                            .column(0)
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+                $('#tanggal').on( 'keyup change clear', function () {
+                    if ( table.column(2).search() !== document.getElementById('tanggal').value ) {
+                        table
+                            .column(2)
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
     });
-});
+ 
+} );
 $(function() {
     $('#bagian').on('change', function() {
         axios.post('{{ route('data1-json.data1') }}', {
@@ -155,5 +170,11 @@ $(function() {
             });
     });
 });
+function reset() {
+    document.getElementById('bagian').value = '';
+    document.getElementById('tempat').value = '';
+    document.getElementById('tanggal').value = '';
+    $('#test').DataTable().columns().search('').draw();
+}
 </script>
 @endpush

@@ -234,7 +234,19 @@ class AdminController extends Controller
 
     public function produk() {
         $produk = DB::table('produk')->get();
-        return view('admin.produk', ['data' => $produk]);
+        $line = $line = DB::table('produk')->select('bagian')->distinct()->get();
+        return view('admin.produk', ['data' => $produk, 'bagian' => $line]);
+    }
+
+    public function detailproduk($tipe) {
+        $parts = DB::table('parts')->where('modelno', $tipe)->get();
+        return view('admin.detailproduk', ['data' => $parts, 'tipe' => $tipe]);
+    }
+
+    public function hapusparts($id) {
+        $modelno = DB::table('parts')->select('modelno')->where('id', $id)->value('modelno');
+        $parts = DB::table('parts')->where('id', $id)->delete();
+        return redirect('/admin/produk/'.$modelno);
     }
 
     public function produkditambah(Request $request) {

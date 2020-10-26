@@ -119,7 +119,7 @@
     });
  
 } );
-        $(function() {
+$(function() {
     $('#bagian').on('change', function() {
         axios.post('{{ route('data1-json.data1') }}', {
                     bag: $(this).val()
@@ -139,6 +139,5 @@ function reset() {
     document.getElementById('tanggal').value = '';
     $('#test').DataTable().columns().search('').draw();
 }
-
     </script>
 @endpush

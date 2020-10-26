@@ -85,6 +85,8 @@ Route::post('/admin/delaku', [AdminController::class, 'delaku'])->middleware('ca
 Route::post('/admin/changep', [AdminController::class, 'changep'])->middleware('can:isAdmin');
 Route::get('/admin/planning', [AdminController::class, 'planning'])->middleware('can:isAdmin');
 Route::get('/admin/produk', [AdminController::class, 'produk'])->middleware('can:isAdmin');
+Route::get('/admin/produk/{tipe}', [AdminController::class, 'detailproduk'])->middleware('can:isAdmin');
+Route::get('/admin/produk/parts/hapus/{id}', [AdminController::class, 'hapusparts'])->middleware('can:isAdmin');
 Route::get('/admin/tambahproduk', [AdminController::class, 'tambahproduk'])->middleware('can:isAdmin');
 Route::post('/admin/tambahplan', [AdminController::class, 'tambahplan'])->middleware('can:isAdmin');
 

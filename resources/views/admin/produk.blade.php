@@ -18,15 +18,34 @@
                 </table></div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4">
-                                <h3>Item Produk</h3>
+                            <div class="col-md-8">
+                            <table>
+                                    <tr>
+                                        <td><select name="tag1" class="form-control form-control-sm" id="bagian">
+                                                <option value=""></option>
+                                                @foreach($bagian as $l)
+                                                <option value="{{$l->bagian}}">{{$l->bagian}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control form-control-sm" style="width:150px" name="tag2" id="tempat">
+                                                <option value=""></option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                        <button id="reset" onclick="reset()" class="btn btn-sm btn-primary">Reset</button>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="col-md-8" align="right">
+                            <div class="col-md-4" align="right">
                             <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal"
                                 data-target="#tambah"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Tambah
                                 Produk</button>
                             </div>
                         </div>
+                        <br>
                         <table id="test" class="table table-striped table-bordered">
                         <thead>
                         <tr>
@@ -43,7 +62,7 @@
                         <tr>
                         <td>{{$dt->bagian}}</td>
                         <td>{{$dt->tempat}}</td>
-                        <td>{{$dt->tipe}}</td>
+                        <td><a href="/admin/produk/{{$dt->tipe}}">{{$dt->tipe}}</a></td>
                         <td>{{$dt->qtyinner}}</td>
                         <td>{{$dt->qtyouter}}</td>
                         <td>
@@ -63,10 +82,63 @@
 
 @push('scripts')
 <script>
+$(document).ready(function() {
+    var table = $('#test').DataTable({
+        order: [[0, 'desc']],
+        scrollY: '50vh',
+        paging: false,
+        info: false,
+        dom: 'Bfrtip',
+        buttons: [
+            'excelHtml5',
+        ],
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+ 
+                $('#bagian').on( 'keyup change clear', function () {
+                    if ( table.column(0).search() !== document.getElementById('bagian').value ) {
+                        table
+                            .column(0)
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+                $('#tempat').on( 'keyup change clear', function () {
+                    if ( table.column(1).search() !== document.getElementById('tempat').value ) {
+                        table
+                            .column(1)
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+ 
+} );
+$(function() {
+    $('#bagian').on('change', function() {
+        axios.post('{{ route('data1-json.data1') }}', {
+                    bag: $(this).val()
+                })
+            .then(function(response) {
+                $('#tempat').empty();
+                $('#tempat').append(new Option("", ""));
+                $.each(response.data, function(tempat, tempat) {
+                    $('#tempat').append(new Option(tempat, tempat))
+                })
+            });
+    });
+});
+function reset() {
+    document.getElementById('bagian').value = '';
+    document.getElementById('tempat').value = '';
+    $('#test').DataTable().columns().search('').draw();
+}
 function hapus(x) {
     document.getElementById("idhapus").value = x;
     $('#hapus').modal('show')
 }
-
 </script>
 @endpush
