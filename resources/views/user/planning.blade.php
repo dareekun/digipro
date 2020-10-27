@@ -39,6 +39,7 @@
                     <br>
                     <div class="row">
                     </div>
+                    @if ($status == 200)
                     <table id="test" class="table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -67,6 +68,9 @@
                         @endforeach
                         </tbody>
                     </table>
+                    @else 
+                    {{$data}}
+                    @endif
                 </div>
             </div>
         </div>

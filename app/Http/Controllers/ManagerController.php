@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
 class ManagerController extends Controller
 {
@@ -48,5 +50,10 @@ class ManagerController extends Controller
         ]);
         // alihkan halaman ke halaman pegawai
         return redirect('/manager/Informasi');
+    }
+
+    public function test() {
+        $htta   = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+        return $htta;
     }
 }

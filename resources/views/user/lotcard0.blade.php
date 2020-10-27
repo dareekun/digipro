@@ -66,6 +66,7 @@ $(document).ready(function() {
                         </div>
                     </form>
                     </div>
+                    @if ($status == 200) 
                     <!-- Tag Planning -->
                     <div class="col-md-8">
                     <table id="test" class="table table-striped table-bordered">
@@ -96,7 +97,18 @@ $(document).ready(function() {
                     </table>
                     </div>
                     </div>
-                    
+                    @else 
+                    <div class="col-md-8">
+                    <div class="row">
+                    Error
+                    </div>
+                    <br>
+                    <div class="row">
+                    {{$data}}
+                    </div>
+                    </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

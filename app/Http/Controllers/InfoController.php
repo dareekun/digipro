@@ -116,28 +116,33 @@ class InfoController extends Controller
     }
 
     public function lotcard0() {
-        $htta  = Http::get('http://158.118.35.22:8080/discreet')->getBody();
-        $line = DB::table('produk')->select('bagian')->distinct()->get();
-        $data0 = json_decode($htta, true);
-        $data1 = json_decode(DB::table('produk')->get(), true);
-        $total0 = count($data0);
-        $total1 = count($data1);
-        for ($i = 0; $i < $total0; $i++) {
-            for ($a = 0; $a < $total1; $a++) {
-                if ($data0[$i]['assembly_item_name'] == $data1[$a]['tipe']){
-                        $data0[$i]['bagian'] = $data1[$a]['bagian'];
-                        $data0[$i]['line'] = $data1[$a]['tempat'];
-                break;
-                }
-                else {
-                    $data0[$i]['bagian'] = "";
-                    $data0[$i]['line'] = "";
+        $line   = DB::table('produk')->select('bagian')->distinct()->get();
+
+        $htts   = Http::get('http://158.118.35.22:8080/discreet')->status();
+        if ($htts == 200) {
+            $htta   = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+            $data0  = json_decode($htta, true);
+            $data1  = json_decode(DB::table('produk')->get(), true);
+            $total0 = count($data0);
+            $total1 = count($data1);
+            for ($i = 0; $i < $total0; $i++) {
+                for ($a = 0; $a < $total1; $a++) {
+                    if ($data0[$i]['assembly_item_name'] == $data1[$a]['tipe']){
+                            $data0[$i]['bagian'] = $data1[$a]['bagian'];
+                            $data0[$i]['line'] = $data1[$a]['tempat'];
+                    break;
+                    }
+                    else {
+                        $data0[$i]['bagian'] = "";
+                        $data0[$i]['line'] = "";
+                    }
                 }
             }
+        } else {
+            $data0 = Http::get('http://158.118.35.22:8080/discreet')->getBody();
         }
-
-        $line = DB::table('produk')->select('bagian')->distinct()->get();
-        return view('user.lotcard0', ['line' => $line, 'data' => $data0]);
+        
+        return view('user.lotcard0', ['line' => $line, 'data' => $data0, 'status' => $htts]);
     }
 
     public function lotcardalpha(Request $request) {
