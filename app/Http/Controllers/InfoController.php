@@ -387,7 +387,7 @@ class InfoController extends Controller
                 }
                 DB::table('finish_job')->where('id', $request->keyid)->update([
                     'Status' => $stts, 
-                    'Quantity Remained' => $request->input1, 
+                    'Quantity Remained' => $sisa, 
                     'Overcompletion Quantity' => $request->input1, 
     
                 ]);

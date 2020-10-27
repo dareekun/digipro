@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Http;
 
 class ApiController extends Controller
 {
     public function show($id)
     {
-        return Lotcard::where('barcode', $id)->select('barcode', 'modelno', 'lotno', 'shift', 'name2', 'input2')->distinct()->first();
+        $data = DB::table('lotcard')->where('barcode', $id)
+        ->leftJoin('finish_job', 'lotcard.barcode', '=', 'finish_job.id')
+        ->select('lotcard.barcode', 'lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.name2', 'lotcard.input1', 'lotcard.input2', 
+        'finish_job.Job', 'finish_job.Quantity', 'finish_job.Quantity Remained', )
+        ->distinct()->first();
+        return response()->json($data);
     }
 
     public function reverse($id)
@@ -24,7 +28,7 @@ class ApiController extends Controller
         ], 200);
     }
 
-    public function update($id)
+    public function update($id, $jumlah)
     {
 
         $check = DB::table('lotcard')->where('barcode', $id)->select('status')->distinct()->value('status');
