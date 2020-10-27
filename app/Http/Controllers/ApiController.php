@@ -32,7 +32,7 @@ class ApiController extends Controller
     {
 
         $check = DB::table('lotcard')->where('barcode', $id)->select('status')->distinct()->value('status');
-
+        $plan  = DB::table('finish_job')->where('id', $id)->select('Quantity')->distinct()->value('Quantity');
         if ($check == 1) {
             return response()->json([
                 'status' => 'Replace',
@@ -47,10 +47,19 @@ class ApiController extends Controller
                 'scandate' => $date,
             ]);
             $tanggal = date('Y-m-d G:I:s');
+            $sisa = $plan - $jumlah;
+            if ($sisa = 0) {
+                $status = 'Completed';
+            } else {
+                $status = 'Released';
+            }
             DB::table('lotcard')->where('barcode', $id)->update([
                 'tanda'=> 1,
                 'Completion Date' => $tanggal,
                 'Transaction Date' => $tanggal,
+                'Status' => $status, 
+                'Overcompletion Quantity' => $jumlah, 
+                'Quantity Remained' => $sisa
             ]);
     
             return response()->json([
