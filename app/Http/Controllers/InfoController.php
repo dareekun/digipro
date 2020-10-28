@@ -241,6 +241,7 @@ class InfoController extends Controller
                 $start = $data0[0]['job_start_date'];
                 $tanda = 0;
             }
+            // Tanpa Planning
             else {
                 $job = "1W2L50-D-".strtoupper(date('dMY'))."-".$request->tipe;
                 $type = "Standard";

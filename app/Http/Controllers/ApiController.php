@@ -33,30 +33,40 @@ class ApiController extends Controller
 
         $check = DB::table('lotcard')->where('barcode', $id)->select('status')->distinct()->value('status');
         $plan  = DB::table('finish_job')->where('id', $id)->select('Quantity')->distinct()->value('Quantity');
+        $tanda = DB::table('finish_job')->where('id', $id)->select('tanda')->distinct()->value('tanda');
         if ($check == 1) {
             return response()->json([
                 'status' => 'Replace',
                 'message' => 'Data Already Been Proccess'
             ], 200);
         }
-
         else {
             $date = date('Y-m-d');
             DB::table('lotcard')->where('barcode', $id)->update([
                 'status'=> 1,
                 'scandate' => $date,
             ]);
-            $tanggal = date('Y-m-d G:I:s');
-            $sisa = $plan - $jumlah;
-            if ($sisa = 0) {
-                $status = 'Completed';
+            if ($tanda == 0) {
+                $tanggal = date('Y-m-d G:I:s');
+                $planqty = $plan;
+                $sisa = $planqty - $jumlah;
+                if ($sisa = 0) {
+                    $status = 'Completed';
+                } else {
+                    $status = 'Released';
+                }
             } else {
-                $status = 'Released';
+                $tanggal = date('Y-m-d G:I:s');
+                $sisa = 0;
+                $status = 'Completed';
+                $planqty = $jumlah;
             }
-            DB::table('lotcard')->where('barcode', $id)->update([
-                'tanda'=> 1,
+            
+            DB::table('finish_job')->where('barcode', $id)->update([
+                'tanda'=> $tanda + 2,
                 'Completion Date' => $tanggal,
                 'Transaction Date' => $tanggal,
+                'Quantity' => $planqty,
                 'Status' => $status, 
                 'Overcompletion Quantity' => $jumlah, 
                 'Quantity Remained' => $sisa
