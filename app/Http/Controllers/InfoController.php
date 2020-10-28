@@ -239,6 +239,7 @@ class InfoController extends Controller
                 $quantity = $data0[0]['plan_qty'];
                 $type = $data0[0]['type'];
                 $start = $data0[0]['job_start_date'];
+                $tanda = 0;
             }
             else {
                 $job = "1W2L50-D-".strtoupper(date('dMY'))."-".$request->tipe;
@@ -248,6 +249,7 @@ class InfoController extends Controller
                 $start = date('Y-m-d 00:00:00');
                 $sisa = 0;
                 $status = "Completed";
+                $tanda = 1;
             }
             DB::table('finish_job')->insert([
                 'id' => $lotid,
@@ -260,6 +262,7 @@ class InfoController extends Controller
                 'Start Date' => $start,
                 'Quantity Remained' => $sisa,
                 'Overcompletion Quantity' => $request->input1,
+                'tanda' => $tanda
             ]);
             return redirect('/cetaklot/'.$lotid);
         } else {
