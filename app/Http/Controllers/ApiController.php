@@ -13,7 +13,7 @@ class ApiController extends Controller
         $data = DB::table('lotcard')->where('barcode', $id)
         ->leftJoin('finish_job', 'lotcard.barcode', '=', 'finish_job.id')
         ->select('lotcard.barcode', 'lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.name2', 'lotcard.input1', 'lotcard.input2', 
-        'finish_job.Job', 'finish_job.Quantity', 'finish_job.Quantity Remained', )
+        'finish_job.Job as job', 'finish_job.Quantity as plan', 'finish_job.Quantity Remained as qty', 'lotcard.status' )
         ->distinct()->first();
         return response()->json($data);
     }
@@ -30,7 +30,6 @@ class ApiController extends Controller
 
     public function update($id, $jumlah)
     {
-
         $check = DB::table('lotcard')->where('barcode', $id)->select('status')->distinct()->value('status');
         $plan  = DB::table('finish_job')->where('id', $id)->select('Quantity')->distinct()->value('Quantity');
         $tanda = DB::table('finish_job')->where('id', $id)->select('tanda')->distinct()->value('tanda');
@@ -61,7 +60,6 @@ class ApiController extends Controller
                 $status = 'Completed';
                 $planqty = $jumlah;
             }
-            
             DB::table('finish_job')->where('barcode', $id)->update([
                 'tanda'=> $tanda + 2,
                 'Completion Date' => $tanggal,
