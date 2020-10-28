@@ -156,6 +156,14 @@ $(document).ready(function() {
                             .draw();
                     }
                 } );
+                $('#tipe').on( 'keyup change clear', function () {
+                    if ( table.column(2).search() !== document.getElementById('tipe').value ) {
+                        table
+                            .column(2)
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
             } );
         }
     });

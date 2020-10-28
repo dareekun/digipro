@@ -47,6 +47,7 @@
                                 <th scope="col">Bagian</th>
                                 <th scope="col">Line</th>
                                 <th scope="col">Tipe Produk</th>
+                                <th hidden scope="col">Tanggal</th>
                                 <th scope="col">Tanggal</th>
                                 <th scope="col">Planning</th>
                             </tr>
@@ -61,7 +62,8 @@
                                 <td>{{$dt["bagian"]}}</td>
                                 <td>{{$dt["line"]}}</td>
                                 <td>{{$dt["assembly_item_name"]}}</td>
-                                <td>{{date('Y-m-d', strtotime($dt["job_start_date"]))}}</td>
+                                <td hidden>{{date('Y-m-d', strtotime($dt["job_start_date"]))}}</td>
+                                <td>{{date('d M Y', strtotime($dt["job_start_date"]))}}</td>
                                 <td>{{$dt["plan_qty"]}}</td>
                             </tr>
                         @endif

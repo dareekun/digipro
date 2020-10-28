@@ -50,6 +50,7 @@ $(document).ready(function() {
                             <tr>
                                 <th>Main</th>
                                 <th scope="col">Model No</th>
+                                <th hidden scope="col">Lot No</th>
                                 <th scope="col">Lot No</th>
                                 <th scope="col">PIC</th>
                                 <th scope="col">FG \ NG </th>
@@ -62,7 +63,8 @@ $(document).ready(function() {
                                 <td>{{ $d->tempat }}</td>
                                 <td><a style="color: #000" target="_blank" href="/cetaklot/{{$d->barcode}}">
                                         {{ $d->modelno }}</a></td>
-                                <td>{{ $d->lotno }} &nbsp; {{ $d->shift }}</td>
+                                <td hidden>{{ $d->lotno }}</td>
+                                <td>{{ date('d M Y', strtotime($d->lotno)) }} &nbsp; {{ $d->shift }}</td>
                                 <td>{{ $d->name2 }}</td>
                                 <td>{{ $d->input1 }} \ {{ $d->ng1 }}</td>
                                 <td>
@@ -83,7 +85,6 @@ $(document).ready(function() {
                                             class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                     @else
                                     @endif
-
                                 </td>
                             </tr>
                             @endforeach

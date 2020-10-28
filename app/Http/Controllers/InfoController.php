@@ -234,22 +234,33 @@ class InfoController extends Controller
                 else {
                     $status = "Released";
                 }
-                DB::table('finish_job')->insert([
-                    'id' => $lotid,
-                    'Job' => $request->jobid,
-                    'Type' => $data0[0]['type'],
-                    'Assembly' => $request->tipe,
-                    'Class' => $data0[0]['class'],
-                    'Quantity' => $data0[0]['plan_qty'],
-                    'Status' => $status,
-                    'Start Date' => $data0[0]['job_start_date'],
-                    'Quantity Remained' => $sisa,
-                    'Overcompletion Quantity' => $request->input1,
-                ]);
+                $job = $request->jobid;
+                $class = $data0[0]['class'];
+                $quantity = $data0[0]['plan_qty'];
+                $type = $data0[0]['type'];
+                $start = $data0[0]['job_start_date'];
             }
             else {
-
+                $job = "1W2L50-D-".strtoupper(date('dMY'))."-".$request->tipe;
+                $type = "Standard";
+                $class = "Std. A/C";
+                $quantity = $request->input1;
+                $start = date('Y-m-d 00:00:00');
+                $sisa = 0;
+                $status = "Completed";
             }
+            DB::table('finish_job')->insert([
+                'id' => $lotid,
+                'Job' => $job,
+                'Type' => $type,
+                'Assembly' => $request->tipe,
+                'Class' => $class,
+                'Quantity' => $quantity,
+                'Status' => $status,
+                'Start Date' => $start,
+                'Quantity Remained' => $sisa,
+                'Overcompletion Quantity' => $request->input1,
+            ]);
             return redirect('/cetaklot/'.$lotid);
         } else {
             return redirect('/lotcard0')->withErrors(['msg', 'The Message']);
