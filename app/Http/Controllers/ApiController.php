@@ -65,7 +65,9 @@ class ApiController extends Controller
                 'Quantity Remained' => $sisa
             ]);
             DB::table('lotcard')->where('barcode', $id)->update([
-                'status'=> 1,
+                'status' => 1,
+                'input1' => $jumlah,
+                'input2' => $jumlah,
             ]);
             return response()->json([
                 'status' => 'ok',
