@@ -43,7 +43,6 @@ class ApiController extends Controller
             $date = date('Y-m-d');
             DB::table('lotcard')->where('barcode', $id)->update([
                 'status'=> 1,
-                'scandate' => $date,
             ]);
             if ($tanda == 0) {
                 $tanggal = date('Y-m-d G:I:s');
