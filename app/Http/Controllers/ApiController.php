@@ -20,8 +20,7 @@ class ApiController extends Controller
 
     public function reverse($id)
     {
-        Lotcard::where('barcode', $id)->update(['status'=> 0]);
-
+        DB::table('lotcard')->where('barcode', $id)->update(['status'=> 0]);
         return response()->json([
             'status' => 'ok',
             'message' => 'Data was Reverse'
@@ -41,9 +40,6 @@ class ApiController extends Controller
         }
         else {
             $date = date('Y-m-d');
-            DB::table('lotcard')->where('barcode', $id)->update([
-                'status'=> 1,
-            ]);
             if ($tanda == 0) {
                 $tanggal = date('Y-m-d G:I:s');
                 $planqty = $plan;
@@ -59,7 +55,7 @@ class ApiController extends Controller
                 $status = 'Completed';
                 $planqty = $jumlah;
             }
-            DB::table('finish_job')->where('barcode', $id)->update([
+            DB::table('finish_job')->where('id', $id)->update([
                 'tanda'=> $tanda + 2,
                 'Completion Date' => $tanggal,
                 'Transaction Date' => $tanggal,
@@ -68,7 +64,9 @@ class ApiController extends Controller
                 'Overcompletion Quantity' => $jumlah, 
                 'Quantity Remained' => $sisa
             ]);
-    
+            DB::table('lotcard')->where('barcode', $id)->update([
+                'status'=> 1,
+            ]);
             return response()->json([
                 'status' => 'ok',
                 'message' => 'Data was updated'
