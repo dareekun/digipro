@@ -56,7 +56,6 @@ class ApiController extends Controller
                 $planqty = $jumlah;
             }
             DB::table('finish_job')->where('id', $id)->update([
-                'tanda'=> $tanda + 2,
                 'Completion Date' => $tanggal,
                 'Transaction Date' => $tanggal,
                 'Quantity' => $planqty,
@@ -67,7 +66,6 @@ class ApiController extends Controller
             DB::table('lotcard')->where('barcode', $id)->update([
                 'status' => 1,
                 'input1' => $jumlah,
-                'input2' => $jumlah,
             ]);
             return response()->json([
                 'status' => 'ok',

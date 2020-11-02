@@ -161,19 +161,13 @@ class InfoController extends Controller
         'option' => $data0[0]['assembly_item_name'], 'i' => 1]);
     }
 
-    public function lotscaned(Request $request){
-        if (isset($request->scandate)) {
-            $tanggal = date('d M Y', strtotime($request->scandate));
-            $data = DB::table('finish_job')
-            ->select('Job', 'Type', 'Assembly', 'Class', 'Quantity', 'Status', 'Start Date as Start_Date', 'Completion Date as Completion_Date', 'Quantity Remained as Quantity_Remained', 'FromA', 'ToA', 'Overcompletion Quantity as Overcompletion_Quantity', 'Transaction Date as Transaction_Date', 'Reference', 'Organization ID as Organization_ID')
-            ->where('tanda', 1)->whereDate('Transaction Date', $request->scandate)->distinct()->get();
-        }else {
+    public function lotscaned(){
             $tanggal = date('d M Y');
             $data = DB::table('finish_job')
-            ->select('Job', 'Type', 'Assembly', 'Class', 'Quantity', 'Status', 'Start Date as Start_Date', 'Completion Date as Completion_Date', 'Quantity Remained as Quantity_Remained', 'FromA', 'ToA', 'Overcompletion Quantity as Overcompletion_Quantity', 'Transaction Date as Transaction_Date', 'Reference', 'Organization ID as Organization_ID')
-            ->where('tanda', 1)->distinct()->get();
-        }
-        return view('user.lotscaned', ['data' => $data, 'date' => $tanggal]);
+            ->leftJoin('lotcard', 'finish_job.id', '=', 'lotcard.barcode')
+            ->select('finish_job.Job', 'finish_job.Type', 'finish_job.Assembly', 'finish_job.Class', 'finish_job.Quantity', 'finish_job.Status', 'finish_job.Start Date as Start_Date', 'finish_job.Completion Date as Completion_Date', 'finish_job.Quantity Remained as Quantity_Remained', 'finish_job.FromA', 'finish_job.ToA', 'finish_job.Overcompletion Quantity as Overcompletion_Quantity', 'finish_job.Transaction Date as Transaction_Date', 'finish_job.Reference', 'finish_job.Organization ID as Organization_ID', 'lotcard.status')
+            ->where('lotcard.status', 1)->distinct()->get();
+        return view('user.lotscaned', ['data' => $data]);
     }
 
     public function dellot($id) {
