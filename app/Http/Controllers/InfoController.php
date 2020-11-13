@@ -335,7 +335,7 @@ class InfoController extends Controller
     }
 
     public function cetaklot($id) {
-        $customPaper = array(0,0,225,600);
+        $customPaper = array(0,0,245,600);
         $data0 = DB::table('lotcard')->where('barcode', $id)->get();
         $data1 = DB::table('lotcard')->where('barcode', $id)->select('barcode', 'modelno', 'lotno', 'shift', 'input1', 'ng1', 'date1', 'name1', 'input2', 'ng2', 'date2', 'name2')->distinct('barcode')->get();
         $pdf   = PDF::loadview('dll.lotdetail', ['data' => $data1, 'data1' => $data0]);
