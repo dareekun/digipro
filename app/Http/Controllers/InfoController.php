@@ -118,9 +118,9 @@ class InfoController extends Controller
     public function lotcard0() {
         $line   = DB::table('produk')->select('bagian')->distinct()->get();
 
-        $htts   = Http::get('http://158.118.35.22:8080/discreet')->status();
+        $htts   = Http::get('http://158.118.35.24:8080/discreet')->status();
         if ($htts == 200) {
-            $htta   = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+            $htta   = Http::get('http://158.118.35.24:8080/discreet')->getBody();
             $data0  = json_decode($htta, true);
             $data1  = json_decode(DB::table('produk')->get(), true);
             $total0 = count($data0);
@@ -139,7 +139,7 @@ class InfoController extends Controller
                 }
             }
         } else {
-            $data0 = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+            $data0 = Http::get('http://158.118.35.24:8080/discreet')->getBody();
         }
         
         return view('user.lotcard0', ['line' => $line, 'data' => $data0, 'status' => $htts]);
@@ -152,7 +152,7 @@ class InfoController extends Controller
     }
 
     public function lotcardalpha2($param0){
-        $htta  = Http::get('http://158.118.35.22:8080/discreetdetail/'.$param0)->getBody();
+        $htta  = Http::get('http://158.118.35.24:8080/discreetdetail/'.$param0)->getBody();
         $data0 = json_decode($htta, true);
 
         $parts = DB::table('parts')->where('modelno', $data0[0]['assembly_item_name'])->get();
@@ -219,7 +219,7 @@ class InfoController extends Controller
             }
             DB::table('lotcard')->insert($insert_data);
             if ($request->jobid != "") {
-                $htta  = Http::get('http://158.118.35.22:8080/discreetdetail/'.$request->jobid)->getBody();
+                $htta  = Http::get('http://158.118.35.24:8080/discreetdetail/'.$request->jobid)->getBody();
                 $data0 = json_decode($htta, true);
                 $sisa  = $data0[0]['plan_qty'] - $request->input1;
                 if ($sisa == 0) {

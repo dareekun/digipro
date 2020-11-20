@@ -592,9 +592,9 @@ class UserController extends Controller
     public function planning(Request $request){
         $line = DB::table('produk')->select('bagian')->distinct()->get();
 
-        $htts   = Http::get('http://158.118.35.22:8080/discreet')->status();
+        $htts   = Http::get('http://158.118.35.24:8080/discreet')->status();
         if ($htts == 200) {
-        $htta  = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+        $htta  = Http::get('http://158.118.35.24:8080/discreet')->getBody();
         $data0 = json_decode($htta, true);
         $data1 = json_decode(DB::table('produk')->get(), true);
         $total0 = count($data0);
@@ -613,7 +613,7 @@ class UserController extends Controller
             }
         } 
         } else {
-            $data0 = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+            $data0 = Http::get('http://158.118.35.24:8080/discreet')->getBody();
         }
         return view('user.planning',['data' => $data0, 'tipe' => '', 'bagian' => $line, 'status' => $htts]);
     }

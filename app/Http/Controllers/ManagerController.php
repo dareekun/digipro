@@ -53,7 +53,7 @@ class ManagerController extends Controller
     }
 
     public function test() {
-        $htta   = Http::get('http://158.118.35.22:8080/discreet')->getBody();
+        $htta   = Http::get('http://158.118.35.24:8080/discreet')->getBody();
         return $htta;
     }
 }
