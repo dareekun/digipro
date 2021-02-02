@@ -359,4 +359,21 @@ class AdminController extends Controller
         DB::table('waktu')->where('id', $request->idhapus)->delete();
         return redirect('/pengaturan/shift');
     }
+
+    // =====================================
+    // =========== O R A C L E =============
+    // =====================================
+
+    public function akunoracle(){
+        $data = DB::table('oracle')->where('id', 'utama')->get();
+        return view('admin.akunoracle', ['data' => $data]);
+    }
+
+    public function oraclesave(Request $request){
+        DB::table('oracle')->where('id', 'utama')->update([
+            'username' => $request->username,
+            'password' => $request->password
+        ]);
+        return redirect('/admin/akunoracle');
+    }
 }

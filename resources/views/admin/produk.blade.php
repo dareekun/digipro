@@ -66,6 +66,7 @@
                         <td>{{$dt->qtyinner}}</td>
                         <td>{{$dt->qtyouter}}</td>
                         <td>
+                        <a class="btn btn-sm btn-outline-primary" href="/admin/editproduk/{{$dt->id}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                         <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapus({{$dt->id}})"><i class="fa fa-trash" aria-hidden="true"></i></button>
                         </td>
                         </tr>

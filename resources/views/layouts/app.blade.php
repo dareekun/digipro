@@ -214,6 +214,7 @@
                                 @can('isAdmin')
                                 <a href="/admin/pengaturan" class="dropdown-item">Pengaturan Pengguna</a>
                                 <a href="/pengaturan/masalah" class="dropdown-item">Pengaturan Produksi</a>
+                                <a href="/admin/akunoracle" class="dropdown-item">Akun Oracle</a>
                                 <a href="/admin/tambahakun" class="dropdown-item">Tambah Akun</a>
                                 @endcan
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();

@@ -349,9 +349,9 @@ class InfoController extends Controller
         $shift = DB::table('dataharian')->where('keyid', $keyid)->select('shift')->value('shift');
 
         $outer = DB::table('produk')->where('tipe', $tipe)->select('qtyouter')->value('qtyouter');
-        $input1 = DB::table('rekapprod')->where('id', $param0)->select('fg')->value('fg');
-        $input2 = DB::table('rekapprod')->where('id', $param0)->select('fg')->value('fg') / $outer;
-        $ng1 = DB::table('rekapprod')->where('id', $param0)->select('ngp')->value('ngp');
+        $input1 = DB::table('rekapprod')->where('id', $param0)->select('ttlprod')->value('ttlprod');
+        $input2 = DB::table('rekapprod')->where('id', $param0)->select('ttlprod')->value('ttlprod') / $outer;
+        $ng1 = 0;
         $pic = DB::table('dataharian')->where('keyid', $keyid)->select('pic')->value('pic');
 
         return view('user.lotcard', [

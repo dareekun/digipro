@@ -89,6 +89,8 @@ Route::get('/admin/produk/{tipe}', [AdminController::class, 'detailproduk'])->mi
 Route::get('/admin/produk/parts/hapus/{id}', [AdminController::class, 'hapusparts'])->middleware('can:isAdmin');
 Route::get('/admin/tambahproduk', [AdminController::class, 'tambahproduk'])->middleware('can:isAdmin');
 Route::post('/admin/tambahplan', [AdminController::class, 'tambahplan'])->middleware('can:isAdmin');
+Route::get('/admin/akunoracle', [AdminController::class, 'akunoracle'])->middleware('can:isAdmin');
+Route::post('/admin/oraclesave', [AdminController::class, 'oraclesave'])->middleware('can:isAdmin');
 
 // Pengaturan Produk
 Route::get('/admin/produk', [AdminController::class, 'produk'])->middleware('can:isAdmin');

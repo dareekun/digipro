@@ -9,26 +9,23 @@ $(document).ready(function() {
 </script>
 @else
 @endif
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <table style="width:100%">
-                        <tr>
-                            <td style="width:50%">Input</td>
-                            <td><a href="/data/Assy WD" class="btn-sm btn-info" style="color:#fff" role="button" aria-pressed="true">Assy
-                                    WD</a></td>
-                            <td><a href="/data/Assy Part Compression" style="color:#fff" class="btn-sm btn-info" role="button"
-                                    aria-pressed="true">Mesin Compression</a></td>
-                            <td><a href="/data/Assy Part Injection" style="color:#fff" class="btn-sm btn-info" role="button"
-                                    aria-pressed="true">Mesin Injection</a></td>
-                            <td><a href="/data/Metal Part" style="color:#fff" class="btn-sm btn-info" role="button"
-                                    aria-pressed="true">Metal Part</a></td>
-                            <td><a href="/data/Export" style="color:#fff" class="btn-sm btn-info" role="button"
-                                    aria-pressed="true">Export</a></td>
-                        </tr>
-                    </table>
+                <div class="row">
+                <div class="col-sm-6">
+                Input
+                </div>
+                <div class="col-sm-6" align="right">
+                <a href="/data/Assy WD" class="btn-sm btn-info" style="color:#fff" role="button" aria-pressed="true">Assy WD</a>
+                <a href="/data/Assy Part Compression" disabled style="color:#fff" class="btn-sm btn-info" role="button" aria-pressed="true">Compression</a>
+                <a href="/data/Assy Part Injection" disabled style="color:#fff" class="btn-sm btn-info" role="button" aria-pressed="true">Injection</a>
+                <a href="/data/Metal Part" style="color:#fff" class="btn-sm btn-info" role="button" aria-pressed="true">Metal Part</a>
+                <a href="/data/Export" style="color:#fff" class="btn-sm btn-info" role="button" aria-pressed="true">Export</a>
+                </div>
+                </div>
                 </div>
                 <div class="card-body">
                     <!-- Row 1 -->
@@ -47,6 +44,8 @@ $(document).ready(function() {
                         </div>
                     </div>
                     <br>
+                    <div class="row justify-center">
+                    <div class="col-12">
                     <form action="/next" method="post">
                         {{ csrf_field() }}
                         <input hidden type="text" value="{{$bagian}}" class="form-control" name="bagian">
@@ -88,7 +87,7 @@ $(document).ready(function() {
                                             <td> <input required type="number" style="width:100px" class="form-control"
                                                     name="kartap"></td>
                                             <td>Absen </td>
-                                            <td> <input required type="number" style="width:100px" class="form-control"
+                                            <td> <input required type="number" value="0" style="width:100px" class="form-control"
                                                     name="absenkartap"></td>
                                             <td>Waktu Kerja</td>
                                             <td> <input disabled type="number" style="width:100px" class="form-control"
@@ -102,7 +101,7 @@ $(document).ready(function() {
                                             <td><input required type="number" style="width:100px" class="form-control"
                                                     name="kwt"></td>
                                             <td>Absen </td>
-                                            <td> <input required type="number" style="width:100px" class="form-control"
+                                            <td> <input required type="number" value="0" style="width:100px" class="form-control"
                                                     name="absenkwt"></td>
                                             <td>Waktu Kerja</td>
                                             <td> <input disabled type="number" style="width:100px" class="form-control"
@@ -113,12 +112,12 @@ $(document).ready(function() {
                                         </tr>
                                         <tr>
                                             <td>DT, PC, KP, CT </td>
-                                            <td><input required type="number" style="width:100px" class="form-control"
+                                            <td><input required type="number" value="0" style="width:100px" class="form-control"
                                                     name="izin"></td>
                                         </tr>
                                         <tr>
                                             <td>Jumlah Operator Planning</td>
-                                            <td><input required type="number" style="width:100px" class="form-control"
+                                            <td><input required disabled type="number" style="width:100px" class="form-control"
                                                     name="jmlop"></td>
                                             <td>Start </td>
                                             <td> <input disabled type="time" style="width:100px" class="form-control"
@@ -127,7 +126,7 @@ $(document).ready(function() {
                                             <td> <input disabled type="time" style="width:100px" class="form-control"
                                                     name="finish"></td>
                                             <td>Waktu Kerja T.T </td>
-                                            <td> <input required type="number" style="width:100px" class="form-control"
+                                            <td> <input required type="number" disabled style="width:100px" class="form-control"
                                                     name="wktkrj"></td>
                                         </tr>
                                     </table>
@@ -138,7 +137,8 @@ $(document).ready(function() {
                         <button type="submit" class="btn btn-success">Next</button>
                         <br>
                     </form>
-
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>

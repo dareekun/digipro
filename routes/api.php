@@ -23,3 +23,5 @@ Route::get('/show/{id}',  [ApiController::class, 'show']);
 Route::get('/index',  [ApiController::class, 'index']);
 Route::get('/update/{id}/{jumlah}',  [ApiController::class, 'update']);
 Route::get('/reverse/{id}',  [ApiController::class, 'reverse']);
+
+Route::get('/oracle/{id}',  [ApiController::class, 'oracle']);

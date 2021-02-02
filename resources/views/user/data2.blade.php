@@ -9,12 +9,6 @@ $(document).ready(function() {
 });
 </script>
 @endforeach
-@elseif ($jmlh>0)
-<script>
-$(document).ready(function() {
-    $("#modallot1").modal('show');
-});
-</script>
 @endif
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -40,6 +34,7 @@ $(document).ready(function() {
                     <br>
                     <form name="masuk" id="masuk" action="/next2" method="post">
                         {{ csrf_field() }}
+                        <input type="text" id="id_hapus" name="id_hapus" hidden>
                         <table>
                             <tr>
                                 <td>
@@ -150,20 +145,20 @@ $(document).ready(function() {
                                         class="form-control" name="idd1"></td>
                                 <td><input disabled value="{{$d1->problem}}" type="text" style="width:100px"
                                         class="form-control-plaintext w-100" name="regprob"></td>
-                                <td><input value="{{$d1->start}}" type="time" style="width:100px" class="form-control"
+                                <td><input disabled value="{{$d1->start}}" type="time" style="width:100px" class="form-control"
                                         name="regstart"></td>
-                                <td><input value="{{$d1->stop}}" type="time" style="width:100px" class="form-control"
+                                <td><input disabled value="{{$d1->stop}}" type="time" style="width:100px" class="form-control"
                                         name="regfinish"></td>
-                                <td><input value="{{$d1->dur}}" type="number" style="width:100px" class="form-control"
+                                <td><input disabled value="{{$d1->dur}}" type="number" style="width:100px" class="form-control"
                                         name="regdur"></td>
-                                <td><select name="regprod" class="custom-select">
+                                <td><select disabled name="regprod" class="custom-select">
                                         @foreach($produk as $p)
                                         <option @if($d1->tipe==$p->tipe) selected @else @endif
                                             value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
-                                <td><input type="text" value="-" class="form-control" name="regket"></td>
+                                <td><input disabled type="text" value="{{$d1->ket}}" class="form-control" name="regket"></td>
                                 <td align="right"><a href="/"></a>
-                                    <button class="btn btn-danger" type="submit" onclick="del1()" name="rem1"><i
+                                    <button class="btn btn-danger" type="submit" onclick="del1({{$d1->id}})" name="rem1"><i
                                             class="fa fa-minus-circle" aria-hidden="true"></i></button></td>
                             </tr>
                             @endforeach
@@ -215,19 +210,19 @@ $(document).ready(function() {
                                         class="form-control" name="idd2"></td>
                                 <td><input disabled value="{{$d2->problem}}" type="text" style="width:100px"
                                         class="form-control-plaintext w-100" name="wrkprob"></td>
-                                <td><input value="{{$d2->start}}" type="time" style="width:100px" class="form-control"
+                                <td><input disabled value="{{$d2->start}}" type="time" style="width:100px" class="form-control"
                                         name="wrkstart"></td>
-                                <td><input value="{{$d2->stop}}" type="time" style="width:100px" class="form-control"
+                                <td><input disabled value="{{$d2->stop}}" type="time" style="width:100px" class="form-control"
                                         name="wrkfinish"></td>
-                                <td><input value="{{$d2->dur}}" type="number" style="width:100px" class="form-control"
+                                <td><input disabled value="{{$d2->dur}}" type="number" style="width:100px" class="form-control"
                                         name="wrkdur"></td>
-                                <td><select name="wrkprod" class="custom-select">
+                                <td><select disabled name="wrkprod" class="custom-select">
                                         @foreach($produk as $p)
                                         <option @if($d2->tipe==$p->tipe) selected @else @endif
                                             value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
-                                <td><input type="text" value="-" class="form-control" name="wrkket0"></td>
-                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del2()"
+                                <td><input disabled type="text" value="{{$d2->ket}}" class="form-control" name="wrkket"></td>
+                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del2({{$d2->id}})"
                                         name="rem2"><i class="fa fa-minus-circle"
                                             aria-hidden="true"></i></button></button></td>
                             </tr>
@@ -275,19 +270,19 @@ $(document).ready(function() {
                                         class="form-control" name="idd3"></td>
                                 <td><input disabled value="{{$d3->problem}}" type="text" style="width:100px"
                                         class="form-control-plaintext w-100" name="orprob"></td>
-                                <td><input value="{{$d3->start}}" type="time" style="width:100px" class="form-control"
+                                <td><input disabled value="{{$d3->start}}" type="time" style="width:100px" class="form-control"
                                         name="orstart"></td>
-                                <td><input value="{{$d3->stop}}" type="time" style="width:100px" class="form-control"
+                                <td><input disabled value="{{$d3->stop}}" type="time" style="width:100px" class="form-control"
                                         name="orfinish"></td>
-                                <td><input value="{{$d3->dur}}" type="number" style="width:100px" class="form-control"
+                                <td><input disabled value="{{$d3->dur}}" type="number" style="width:100px" class="form-control"
                                         name="ordur"></td>
-                                <td><select name="orprod" class="custom-select">
+                                <td><select disabled name="orprod" class="custom-select">
                                         @foreach($produk as $p)
                                         <option @if($d3->tipe==$p->tipe) selected @else @endif
                                             value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
-                                <td><input type="text" value="-" class="form-control" name="orket"></td>
-                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del3()"
+                                <td><input disabled type="text" value="{{$d3->ket}}" class="form-control" name="orket"></td>
+                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del3({{$d3->id}})"
                                         name="rem3"><i class="fa fa-minus-circle"
                                             aria-hidden="true"></i></button></button></td>
                             </tr>
@@ -335,19 +330,19 @@ $(document).ready(function() {
                                         class="form-control-plaintext" name="idd4"></td>
                                 <td><input disabled value="{{$d4->problem}}" type="text" style="width:100px"
                                         class="form-control-plaintext w-100" name="defprob"></td>
-                                <td><input value="{{$d4->start}}" type="time" style="width:100px"
+                                <td><input disabled value="{{$d4->start}}" type="time" style="width:100px"
                                         class="form-control-plaintext" name="defstart"></td>
-                                <td><input value="{{$d4->stop}}" type="time" style="width:100px"
+                                <td><input disabled value="{{$d4->stop}}" type="time" style="width:100px"
                                         class="form-control-plaintext" name="deffinish"></td>
-                                <td><input value="{{$d4->dur}}" type="number" style="width:100px"
+                                <td><input disabled value="{{$d4->dur}}" type="number" style="width:100px"
                                         class="form-control-plaintext" name="defdur"></td>
-                                <td><select name="defprod" class="form-control-plaintext">
+                                <td><select disabled name="defprod" class="form-control-plaintext">
                                         @foreach($produk as $p)
                                         <option @if($d4->tipe==$p->tipe) selected @else @endif
                                             value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
-                                <td><input type="text" value="-" class="form-control-plaintext" name="defket"></td>
-                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del4()"
+                                <td><input disabled type="text" value="{{$d4->ket}}" class="form-control-plaintext" name="defket"></td>
+                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del4({{$d4->id}})"
                                         name="rem4"><i class="fa fa-minus-circle"
                                             aria-hidden="true"></i></button></button></td>
                             </tr>
@@ -384,94 +379,75 @@ $(document).ready(function() {
                                 <td style="width:15%" align="center">Tipe Produk</td>
                                 <td align="center">Start</td>
                                 <td align="center">Stop</td>
-                                <td align="center">Total Time</td>
-                                <td align="center">Proses Time</td>
-                                <td align="center">Bantuan +</td>
-                                <td align="center">Bantuan -</td>
-                                <td align="center">Man Power</td>
-                                <td align="center">Daily Plan</td>
-                                <td align="center">NG Proses</td>
-                                <td align="center">NG Material</td>
-                                <td align="center">Actual F/G</td>
-                                <td align="center">New P/T</td>
-                                <td align="center">Eff %</td>
+                                <td align="center">Duration</td>
+                                <td align="center">Total Produksi</td>
+                                <td align="center">Produksi Org</td>
+                                <td align="center">Standart</td>
+                                <td align="center">Actual</td>
+                                <td align="center">%</td>
+                                <td align="center">Total %</td>
+                                <td align="center">Kap / Orang</td>
+                                <td align="center">Petugas</td>
                                 <td></td>
                             </tr>
                             @foreach($data5 as $d5)
                             <tr>
                                 <td><input hidden value="{{$d5->id}}" style="width:100px"
                                         class="form-control-plaintext" name="idd5"></td>
-                                <td><a href="/cetaklot/{{$d5->barcode}}" target="_blank"><input disabled value="{{$d5->modelno}}" type="text" style="width:100px"
-                                        class="form-control-plaintext" name="rekprod"></a></td>
+                                <td><input disabled value="{{$d5->tipe}}" type="text" style="width:100px"
+                                        class="form-control-plaintext" name="rekprod"></td>
                                 <td><input disabled value="{{$d5->start}}" type="time" style="width:100px"
                                         class="form-control-plaintext" name="rekstart"></td>
                                 <td><input disabled value="{{$d5->stop}}" required type="time" style="width:100px"
                                         class="form-control-plaintext" name="rekstop"></td>
-                                <td><input disabled value="{{$d5->dur}}" type="number" min="0"
+                                <td><input disabled value="{{$d5->dur}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekdur"></td>
-                                <td><input disabled value="{{$d5->time}}" type="number" min="0"
-                                        class="form-control-plaintext" name="rektime">
-                                </td>
-                                <td><input disabled value="{{$d5->plus}}" type="number" min="0"
-                                        class="form-control-plaintext" name="rekplus">
-                                </td>
-                                <td><input disabled value="{{$d5->min}}" type="number" min="0"
+                                <td><input disabled value="{{$d5->ttlprod}}" type="text" min="0"
+                                        class="form-control-plaintext" name="rektime"></td>
+                                <td><input disabled value="{{$d5->prodorg}}" type="text" min="0"
+                                        class="form-control-plaintext" name="rekplus"></td>
+                                <td><input disabled value="{{$d5->standart}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekmin"></td>
-                                <td><input disabled value="{{$d5->man}}" type="number" min="0"
+                                <td><input disabled value="{{$d5->actual}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekman"></td>
-                                <td><input value="{{$d5->daily}}" type="number" min="0" class="form-control-plaintext"
-                                        name="rekdlyp">
-                                </td>
-                                <td><input disabled value="{{$d5->ngp}}" type="number" min="0"
+                                <td><input value="{{$d5->percentage}}" type="text" min="0" 
+                                        class="form-control-plaintext" name="rekdlyp"></td>
+                                <td><input disabled value="{{$d5->ttlperc}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekngp"></td>
-                                <td><input disabled value="{{$d5->ngm}}" type="number" min="0"
+                                <td><input disabled value="{{$d5->kaporg}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekngm"></td>
-                                <td><input disabled value="{{$d5->fg}}" type="number" min="0"
-                                        class="form-control-plaintext" name="rekfg">
-                                </td>
-                                <td><input disabled value="{{$d5->pt}}" type="number" min="0"
-                                        class="form-control-plaintext" name="rekpt">
-                                </td>
-                                <td><input disabled value="{{$d5->eff}}" type="number" min="0"
-                                        class="form-control-plaintext" name="rekeff"></td>
+                                <td><input disabled value="{{$d5->petugas}}" type="text" min="0"
+                                        class="form-control-plaintext" name="rekngm"></td>
                                 <td align="left"><button class="btn btn-danger" type="submit" onclick="del5()"
-                                        name="rem5"><i class="fa fa-minus-circle"
-                                            aria-hidden="true"></i></button></button></td>
+                                        name="rem5"><i class="fa fa-minus-circle" aria-hidden="true"></i></button></button></td>
                             </tr>
                             @endforeach
                             <tr>
                                 <td></td>
-                                <td><select name="rekprod0" class="custom-select">
+                                <td><select name="rekprod0" style="width:300px" class="custom-select">
                                         @foreach($produk as $p)
                                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
                                 <td><input type="time" style="width:100px" class="form-control" name="rekstart0"></td>
                                 <td><input type="time" style="width:100px" class="form-control" name="rekstop0"></td>
-                                <td><input value="{{old('rekdur0')}}" disabled type="number" min="0" class="form-control"
-                                        name="rekdur0"></td>
-                                <td><input value="{{old('rektime0')}}" type="number" min="0" class="form-control"
-                                        name="rektime0">
+                                <td><input value="{{old('dur')}}" disabled style="width:100px" type="number" min="0" class="form-control" name="dur"></td>
+                                <td><input value="{{old('ttlprod')}}" type="number" min="0" class="form-control"
+                                        name="ttlprod"></td>
+                                <td><input value="{{old('prodorg')}}" type="number" min="0" class="form-control"
+                                        name="prodorg"></td>
+                                <td><input value="{{old('standart')}}" type="number" min="0" class="form-control"
+                                        name="standart">
                                 </td>
-                                <td><input value="{{old('rekplus0')}}" type="number" min="0" class="form-control"
-                                        name="rekplus0">
-                                </td>
-                                <td><input value="{{old('rekmin0')}}" type="number" min="0" class="form-control"
-                                        name="rekmin0"></td>
-                                <td><input value="{{old('rekman0')}}" type="number" min="0" class="form-control"
-                                        name="rekman0"></td>
-                                <td><input value="{{old('rekdlyp0')}}" type="number" min="0" class="form-control"
-                                        name="rekdlyp0">
-                                </td>
-                                <td><input value="{{old('rekngp0')}}" type="number" min="0" class="form-control"
-                                        name="rekngp0"></td>
-                                <td><input value="{{old('rekngm0')}}" type="number" min="0" class="form-control"
-                                        name="rekngm0"></td>
-                                <td><input value="{{old('rekfg0')}}" type="number" min="0" class="form-control"
-                                        name="rekfg0"></td>
-                                <td><input value="{{old('rekpt0')}}" type="number" min="0" class="form-control"
-                                        name="rekpt0"></td>
-                                <td><input value="{{old('rekeff0')}}" type="number" min="0" class="form-control"
-                                        name="rekeff0"></td>
+                                <td><input value="{{old('actual')}}" style="width:100px" disabled type="number" min="0" class="form-control"
+                                        name="actual"></td>
+                                <td><input value="{{old('percentage')}}" style="width:80px" disabled type="number" min="0" class="form-control"
+                                        name="percentage"></td>
+                                <td><input value="{{old('ttlperc')}}" style="width:80px" disabled type="number" min="0" class="form-control"
+                                        name="ttlperc"></td>
+                                <td><input value="{{old('kaporg')}}" disabled type="number" min="0" class="form-control"
+                                        name="kaporg"></td>
+                                <td><input value="{{old('petugas')}}" style="width:150px" type="text" class="form-control"
+                                        name="petugas"></td>
                                 <td align="left"><button class="btn btn-success" type="submit" onclick="data5()"
                                         name="ram5"><i class="fa fa-plus-circle"
                                             aria-hidden="true"></i></button></button></td>

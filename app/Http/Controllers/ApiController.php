@@ -27,6 +27,11 @@ class ApiController extends Controller
         ], 200);
     }
 
+    public function oracle($id){
+        $data = DB::table('oracle')->where('id', 'utama')->select($id)->value($id);
+        return $data;
+    }
+
     public function update($id, $jumlah)
     {
         $check = DB::table('lotcard')->where('barcode', $id)->select('status')->distinct()->value('status');

@@ -15,19 +15,24 @@ function showTime() {
 }
 showTime();
 
-function del1() {
+function del1(varhapus) {
+    document.getElementById("id_hapus").value= varhapus;
+    // document.getElementById("masuk").submit();
+}
+function del2(varhapus) {
+    document.getElementById("id_hapus").value= varhapus;
     document.getElementById("masuk").submit();
 }
-function del2() {
+function del3(varhapus) {
+    document.getElementById("id_hapus").value= varhapus;
     document.getElementById("masuk").submit();
 }
-function del3() {
+function del4(varhapus) {
+    document.getElementById("id_hapus").value= varhapus;
     document.getElementById("masuk").submit();
 }
-function del4() {
-    document.getElementById("masuk").submit();
-}
-function del5() {
+function del5(varhapus) {
+    document.getElementById("id_hapus").value= varhapus;
     document.getElementById("masuk").submit();
 }
 
