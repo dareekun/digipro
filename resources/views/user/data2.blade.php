@@ -587,7 +587,7 @@ $(document).ready(function() {
                                 <td><input value="{{old('reslt3a')}}" type="text" class="form-control" name="reslt3a">
                                 </td>
                                 <td>
-                                    <div class="input-group"><input value="{{$ttloss}}" style="width:100px"
+                                    <div class="input-group"><input value="{{$ttloss}}"
                                             type="number" min="0" class="form-control" name="reslt4a">
                                         <div class="input-group-append"><span class="input-group-text"
                                                 id="basic-addon2">Menit</span>
@@ -595,8 +595,7 @@ $(document).ready(function() {
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="input-group"><input value="{{old('reslt5a')}}" style="width:100px"
-                                            type="number" class="form-control" name="reslt5a">
+                                    <div class="input-group"><input value="{{old('reslt5a')}}" type="number" class="form-control" name="reslt5a">
                                         <div class="input-group-append"><span class="input-group-text"
                                                 id="basic-addon2">Person</span>
                                         </div>
