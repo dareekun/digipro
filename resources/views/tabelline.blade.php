@@ -25,7 +25,7 @@
                         <input type="month" class="form-control form-control-sm" name="tahuninput" id="tahuninput">
                         </div>
                         <div class="col-md-2">
-                        <select name="lineproduksi" class="form-control form-control-sm" id="lineproduksi">
+                        <select name="lineproduksi" class="form-control form-control-sm" required id="lineproduksi">
                         <option value=""></option>
                         @foreach ($line as $ln)
                         <option value="{{$ln->tempat}}">{{$ln->tempat}}</option>

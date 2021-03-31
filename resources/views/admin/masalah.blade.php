@@ -44,7 +44,7 @@
                         <td>Defect Loss</td>
                         <td>{{$dt1->loss}}</td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="edit({{$dt1->id}}, 0, '{{$dt1->loss}}', '{{$dt1->sect}}')"><i class="fa fa-pencil" aria-hidden="true"></i></button> 
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="edit({{$dt1->id}}, 0, '{{$dt1->loss}}')"><i class="fa fa-pencil" aria-hidden="true"></i></button> 
                          <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapus('defect_loss', {{$dt1->id}})"><i class="fa fa-trash" aria-hidden="true"></i></button>
                         </td>
                         </tr>
@@ -63,7 +63,7 @@
                         <td>{{$i++}}</td>
                         <td>Requlated Loss</td>
                         <td>{{$dt3->loss}}</td>
-                        <td><button type="button" class="btn btn-sm btn-outline-primary" onclick="edit({{$dt3->id}}, 2, '{{$dt3->loss}}', '{{$dt3->sect}}')"><i class="fa fa-pencil" aria-hidden="true"></i></button> 
+                        <td><button type="button" class="btn btn-sm btn-outline-primary" onclick="edit({{$dt3->id}}, 2, '{{$dt3->loss}}')"><i class="fa fa-pencil" aria-hidden="true"></i></button> 
                          <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapus('regulated_loss', {{$dt3->id}})"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
                         </tr>
                         @endforeach
@@ -108,18 +108,6 @@
 
 @push('scripts')
 <script>
-function test() {
-    var x = document.getElementById("jenis").value;
- if (x == "defect_loss" || x == "regulated_loss"){
-    document.getElementById("baris").removeAttribute("hidden");
-    document.getElementById("section").setAttribute("required", true); 
- }
- else {
-    document.getElementById("baris").setAttribute("hidden", true); 
-    document.getElementById("section").removeAttribute("required");
- }
-}
-
 function hapus(x, y) {
     document.getElementById("dbhapus").value = x;
     document.getElementById("idhapus").value = y;
@@ -131,20 +119,6 @@ function edit(a, b, c, d) {
 
     document.getElementById("jenisbakallock").selectedIndex = b;
     document.getElementById("jenisbakallock").disabled = true;
-
-    if (b == 0 || b == 2){
-    document.getElementById("edit03").setAttribute("required", true); 
-
-    var sect = ["biasa", "mesin"];
-    var e = sect.indexOf(d);
-
-    document.getElementById("edit03").selectedIndex = e;
- }
- else {
-    document.getElementById("edit03baris").setAttribute("hidden", true); 
-    document.getElementById("edit03").removeAttribute("required");
- }
-
     document.getElementById("edit00").value = a;
     document.getElementById("edit01").value = array[b];
     document.getElementById("edit02").value = c;

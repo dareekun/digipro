@@ -282,35 +282,17 @@ class AdminController extends Controller
 
     public function masalahditambah(Request $request){
         $database = $request->jenis;
-        if ($database == 'defect_loss' || $database == 'regulated_loss') {
-            DB::table($database)->insert([
-                'loss' => $request->masalah,
-                'sect' => $request->section
-            ]);
-        }
-        else {
             DB::table($database)->insert([
                 'loss' => $request->masalah,
             ]);
-
-        }
         return redirect('/pengaturan/masalah');
     }
 
     public function masalahdirubah(Request $request) {
         $database = $request->paramedit1;
-        if ($database == 'defect_loss' || $database == 'regulated_loss') {
-            DB::table($database)->where('id', $request->paramedit0)->update([
-                'loss' => $request->paramedit2,
-                'sect' => $request->paramedit3
-            ]);
-        }
-        else {
             DB::table($database)->where('id', $request->paramedit0)->update([
                 'loss' => $request->paramedit2,
             ]);
-
-        }
         return redirect('/pengaturan/masalah');
     }
 

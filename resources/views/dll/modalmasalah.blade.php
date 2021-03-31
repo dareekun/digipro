@@ -13,13 +13,8 @@
         {{ csrf_field() }}
 
         <div class="row">
-        <div class="col-sm-3">Masalah</div>
-        <div class="col-sm-9"><input required type="text" name="masalah" class="form-control"></div>
-        </div>
-        <br>
-        <div class="row">
         <div class="col-sm-3">Jenis Masalah</div>
-        <div class="col-sm-9"><select required name="jenis" onchange="test()" id="jenis" class="form-control">
+        <div class="col-sm-9"><select required name="jenis" id="jenis" class="form-control">
         <option value="defect_loss">Defect Loss</option>
         <option value="organization_loss">Organisation Loss</option>
         <option value="regulated_loss">Regulated Loss</option>
@@ -29,13 +24,9 @@
         </select></div>
         </div>
         <br>
-        <div class="row" id="baris">
-        <div class="col-sm-3">Bagian</div>
-        <div class="col-sm-9">
-        <select name="section" class="form-control" id="section">
-        <option value="biasa">Assy WD Manual</option>
-        <option value="mesin">Injection / Compression</option>
-        </select></div>
+        <div class="row">
+        <div class="col-sm-3">Masalah</div>
+        <div class="col-sm-9"><input required type="text" name="masalah" class="form-control"></div>
         </div>
       </div>
       <div class="modal-footer">
@@ -63,11 +54,6 @@
         <input required type="text" hidden name="paramedit0" id="edit00" class="form-control">
         <input required type="text" hidden name="paramedit1" id="edit01" class="form-control">
         <div class="row">
-        <div class="col-sm-3">Masalah</div>
-        <div class="col-sm-9"><input required type="text" name="paramedit2" id="edit02" class="form-control"></div>
-        </div>
-        <br>
-        <div class="row">
         <div class="col-sm-3">Jenis Masalah</div>
         <div class="col-sm-9"><select name="dummyedit" id="jenisbakallock" class="form-control">
         <option value="defect_loss">Defect Loss</option>
@@ -79,13 +65,9 @@
         </select></div>
         </div>
         <br>
-        <div class="row" id="edit03baris">
-        <div class="col-sm-3">Bagian</div>
-        <div class="col-sm-9">
-        <select name="paramedit3" class="form-control" id="edit03" id="section">
-        <option value="biasa">Assy WD Manual</option>
-        <option value="mesin">Injection / Compression</option>
-        </select></div>
+        <div class="row">
+        <div class="col-sm-3">Masalah</div>
+        <div class="col-sm-9"><input required type="text" name="paramedit2" id="edit02" class="form-control"></div>
         </div>
       </div>
       <div class="modal-footer">
