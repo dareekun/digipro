@@ -174,9 +174,7 @@ function reset() {
     document.getElementById('tempat').value = '';
     $('#test').DataTable().columns().search('').draw();
 }
-
-    </script>
-
+</script>
 <script>
 $(function() {
     $('#bagian').on('change', function() {

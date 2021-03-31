@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\noLoginController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\ApiController;
 
@@ -123,5 +124,7 @@ Route::post('lot1-json', [HomeController::class, 'lot1'])->name('lot1-json.lot1'
 Route::post('lot2-json', [HomeController::class, 'lot2'])->name('lot2-json.lot2');
 
 Auth::routes();
+
+Route::post('/downloadpwk', [noLoginController::class, 'pwk']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

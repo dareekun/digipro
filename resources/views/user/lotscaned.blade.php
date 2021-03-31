@@ -27,41 +27,25 @@
                         <table id="excel" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">Job</th>
-                                    <th hidden scope="col">Type</th>
-                                    <th scope="col">Assembly</th>
-                                    <th hidden scope="col">Class</th>
-                                    <th hidden scope="col">Quantity</th>
-                                    <th hidden scope="col">Status</th>
-                                    <th scope="col">Start Date</th>
-                                    <th hidden scope="col">Completion Date</th>
-                                    <th hidden scope="col">Transaction Quantity(Quantity Remained)</th>
-                                    <th hidden scope="col">From Operation Seq No</th>
-                                    <th hidden scope="col">To Operation Seq No</th>
-                                    <th scope="col">Overcompletion Quantity</th>
-                                    <th scope="col">Transaction Date</th>
-                                    <th hidden scope="col">Reference</th>
-                                    <th hidden scope="col">Organization ID</th>
+                                    <th scope="col">Kode Barang</th>
+                                    <th scope="col">No Lot</th>
+                                    <th scope="col">Qty / Box</th>
+                                    <th scope="col">Total Box</th>
+                                    <th scope="col">Total Qty</th>
+                                    <th scope="col">OK / NG</th>
+                                    <th scope="col">Remark</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data as $d)
                                 <tr>
-                                    <td>{{ $d->Job }}</td>
-                                    <td hidden>{{ $d->Type }}</td>
-                                    <td>{{ $d->Assembly }}</td>
-                                    <td hidden>{{ $d->Class }}</td>
-                                    <td hidden>{{ $d->Quantity }}</td>
-                                    <td hidden>{{ $d->Status }}</td>
-                                    <td>{{ $d->Start_Date }}</td>
-                                    <td hidden>{{ $d->Completion_Date }}</td>
-                                    <td hidden>{{ $d->Quantity_Remained }}</td>
-                                    <td hidden>{{ $d->FromA }}</td>
-                                    <td hidden>{{ $d->ToA }}</td>
-                                    <td>{{ $d->Overcompletion_Quantity }}</td>
-                                    <td>{{ $d->Transaction_Date }}</td>
-                                    <td hidden>{{ $d->Reference }}</td>
-                                    <td hidden>{{ $d->Organization_ID }}</td>
+                                    <td>{{ $d->type }}</td>
+                                    <td>{{ $d->nolot }}</td>
+                                    <td>{{ $d->qtyouter }}</td>
+                                    <td>{{ $d->totalbox }}</td>
+                                    <td>{{ $d->totalqty }}</td>
+                                    <td>{{ $d->totalqty }} / {{ $d->ng }}</td>
+                                    <td></td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -102,9 +86,9 @@ var table = $('#excel').DataTable({
             // Apply the search
             this.api().columns().every( function () {
                 $('#tanggal').on( 'keyup change clear', function () {
-                    if ( table.column(12).search() !== document.getElementById('tanggal').value ) {
+                    if ( table.column(2).search() !== document.getElementById('tanggal').value ) {
                         table
-                            .column(12)
+                            .column(2)
                             .search( this.value )
                             .draw();
                     }

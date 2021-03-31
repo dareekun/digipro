@@ -26,30 +26,27 @@ class InfoController extends Controller
     
     public function tabel($id) {
         $now = date('m');
-        if ($id == 'Compression' || $id == 'Injection') {
-            $data = DB::table('datamasin')->rightJoin('resultmesin', 'datamasin.keyid', '=', 'resultmesin.keyid')->where('datamasin.bagian', $id)->get();
-        }
-        else {
-            $data = DB::table('dataharian')->rightJoin('resultprod', 'dataharian.keyid', '=', 'resultprod.keyid')->where('dataharian.bagian', $id)->get();
-        }
-        return view('tabelline', ['data' => $data, 'tipe' => $id]);
+        $lini = DB::table('produk')->where('bagian', $id)->select('tempat')->orderBy('tempat', 'desc')->distinct()->get();
+        $data = DB::table('dataharian')->rightJoin('resultprod', 'dataharian.keyid', '=', 'resultprod.keyid')->where('dataharian.bagian', $id)->get();
+        return view('tabelline', ['data' => $data, 'tipe' => $id, 'line' => $lini]);
     }
 
     public function graph($id) {
         $lini = DB::table('produk')->where('bagian', $id)->select('tempat')->orderBy('tempat', 'desc')->distinct()->get();
         $plan = array();
         $actual = array();
-        $nown = date('m');
+        $nowm = date('m');
+        $nowy = date('Y');
         if ($id == 'Compression' || $id == 'Injection') {
             foreach ($lini as $li) {
-                $actual[]  = DB::table('rekapprod')->join('dataharian', 'dataharian.keyid', '=', 'rekapprod.keyid')->where('dataharian.bagian', $id)->where('dataharian.line', $li->tempat)->whereMonth('tanggal', '=', $nown)->orderBy('dataharian.line', 'desc')->sum('rekapprod.fg');
-                $plan[]  = DB::table('planning')->where('bagian', $id)->where('tempat', $li->tempat)->whereMonth('bulan', '=', $nown)->orderBy('tempat', 'desc')->sum('qty');
+                $actual[]  = DB::table('rekapprod')->join('dataharian', 'dataharian.keyid', '=', 'rekapprod.keyid')->where('dataharian.bagian', $id)->where('dataharian.line', $li->tempat)->whereMonth('lotcard.lotno', '=', $nowm)->orderBy('dataharian.line', 'desc')->sum('rekapprod.fg');
+                $plan[]  = DB::table('planning')->where('bagian', $id)->where('tempat', $li->tempat)->whereMonth('bulan', '=', $nowm)->orderBy('tempat', 'desc')->sum('qty');
             }
         }
         else {
             foreach ($lini as $li) {
-                $actual[]  = DB::table('rekapprod')->join('dataharian', 'dataharian.keyid', '=', 'rekapprod.keyid')->where('dataharian.bagian', $id)->where('dataharian.line', $li->tempat)->whereMonth('tanggal', '=', $nown)->orderBy('dataharian.line', 'desc')->sum('rekapprod.fg');
-                $plan[]  = DB::table('planning')->where('bagian', $id)->where('tempat', $li->tempat)->whereMonth('bulan', '=', $nown)->orderBy('tempat', 'desc')->sum('qty');
+                $actual[]  = DB::table('lotcard')->join('produk', 'lotcard.modelno', '=', 'produk.tipe')->where('produk.bagian', $id)->where('produk.tempat', $li->tempat)->whereYear('lotcard.lotno', $nowy)->whereMonth('lotcard.lotno', '=', $nowm)->orderBy('produk.line', 'desc')->sum('lotcard.input1');
+                $plan[]  = DB::table('planning')->where('bagian', $id)->where('tempat', $li->tempat)->whereMonth('bulan', '=', $nowm)->orderBy('tempat', 'desc')->sum('qty');
             }
         }
         return view('graphline', ['tipe' => $id, 'lini' => $lini, 'planning' => $plan, 'actual' => $actual]);
@@ -66,16 +63,16 @@ class InfoController extends Controller
             $tahun = date('Y');
             $ttl = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
             for ($i = 1; $i<=$ttl; $i++) {
-                $act[]  = DB::table('rekapprod')->join('dataharian', 'dataharian.keyid', '=', 'rekapprod.keyid')->where('dataharian.line', $id)
-                ->whereMonth('tanggal', '=', $bulan)->whereDay('tanggal', $i)->whereYear('tanggal', $tahun)
-                ->sum('rekapprod.fg');
+                $act[]  = DB::table('lotcard')->join('produk', 'lotcard.modelno', '=', 'produk.tipe')->where('produk.tempat', $id)
+                ->whereMonth('lotcard.lotno', '=', $bulan)->whereDay('lotcard.lotno', $i)->whereYear('lotcard.lotno', $tahun)
+                ->sum('lotcard.input1');
                 $plan[]  = DB::table('planning')->where('tempat', $id)
                 ->whereMonth('bulan', '=', $bulan)->whereDay('bulan', $i)->whereYear('bulan', $tahun)
                 ->sum('qty');
             }
 
         }
-        return view('graphbulan', ['index' => $ttl, 'planning' => $plan, 'actual' => $act]);
+        return view('graphbulan', ['index' => $ttl, 'planning' => $plan, 'actual' => $act, 'judul' => $id]);
     }
 
     public function jsonwelcome() {
@@ -163,9 +160,9 @@ class InfoController extends Controller
 
     public function lotscaned(){
             $tanggal = date('d M Y');
-            $data = DB::table('finish_job')
-            ->leftJoin('lotcard', 'finish_job.id', '=', 'lotcard.barcode')
-            ->select('finish_job.Job', 'finish_job.Type', 'finish_job.Assembly', 'finish_job.Class', 'finish_job.Quantity', 'finish_job.Status', 'finish_job.Start Date as Start_Date', 'finish_job.Completion Date as Completion_Date', 'finish_job.Quantity Remained as Quantity_Remained', 'finish_job.FromA', 'finish_job.ToA', 'finish_job.Overcompletion Quantity as Overcompletion_Quantity', 'finish_job.Transaction Date as Transaction_Date', 'finish_job.Reference', 'finish_job.Organization ID as Organization_ID', 'lotcard.status')
+            $data = DB::table('lotcard')
+            ->leftJoin('produk', 'lotcard.modelno', '=', 'produk.tipe')
+            ->select('lotcard.modelno as type', 'lotcard.lotno as nolot' , 'produk.qtyouter as qtyouter', 'lotcard.input2 as totalbox', 'lotcard.input1 as totalqty', 'lotcard.ng1 as ng')
             ->where('lotcard.status', 1)->distinct()->get();
         return view('user.lotscaned', ['data' => $data]);
     }
@@ -315,13 +312,15 @@ class InfoController extends Controller
     }
 
     public function lotstatus(Request $request) {
+        $year = date('Y');
+        $month = date('m') - 1;
         if (isset($request->tempat)) {
             $line = DB::table('produk')->select('bagian')->distinct()->get();
-            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->where('produk.tempat', $request->tempat)->where('lotcard.lotno', $request->tanggal)->distinct('barcode')->get();
+            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>=', $month)->where('produk.tempat', $request->tempat)->where('lotcard.lotno', $request->tanggal)->distinct('barcode')->get();
             return view('user.lotcard1', ['data' => $data, 'bagian' => $line]);
         }else {
             $line = DB::table('produk')->select('bagian')->distinct()->get();
-            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->distinct('barcode')->get();
+            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>=', $month)->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->distinct('barcode')->get();
             return view('user.lotcard1', ['data' => $data, 'bagian' => $line]);
         }
 

@@ -19,11 +19,9 @@ $(document).ready(function() {
                 Input
                 </div>
                 <div class="col-sm-6" align="right">
-                <a href="/data/Assy WD" class="btn-sm btn-info" style="color:#fff" role="button" aria-pressed="true">Assy WD</a>
-                <a href="/data/Assy Part Compression" disabled style="color:#fff" class="btn-sm btn-info" role="button" aria-pressed="true">Compression</a>
-                <a href="/data/Assy Part Injection" disabled style="color:#fff" class="btn-sm btn-info" role="button" aria-pressed="true">Injection</a>
-                <a href="/data/Metal Part" style="color:#fff" class="btn-sm btn-info" role="button" aria-pressed="true">Metal Part</a>
-                <a href="/data/Export" style="color:#fff" class="btn-sm btn-info" role="button" aria-pressed="true">Export</a>
+                <a href="/data/Assy WD" class="btn btn-sm btn-info" style="color:#fff" role="button" aria-pressed="true">Assy WD</a>
+                <a href="/data/Metal Part" style="color:#fff" class="btn btn-sm btn-info" role="button" aria-pressed="true">Metal Part</a>
+                <a href="/data/Export" style="color:#fff" class="btn btn-sm btn-info" role="button" aria-pressed="true">Export</a>
                 </div>
                 </div>
                 </div>

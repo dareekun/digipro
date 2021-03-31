@@ -251,14 +251,14 @@ class AdminController extends Controller
 
     public function produkditambah(Request $request) {
         DB::table('produk')->insert([
+            'tipe' => $request->tag3,
             'bagian' => $request->tag1,
             'tempat' => $request->tag2,
-            'bagian' => $request->tag3,
             'qtyinner' => $request->tag4,
             'qtyouter' => $request->tag5,
 
         ]);
-        return view('admin.produk', ['data' => $produk]);
+        return redirect('/admin/produk');
     }
     public function produkdihapus(Request $request) {
         DB::table('produk')->where('id', $request->idhapus)->delete();

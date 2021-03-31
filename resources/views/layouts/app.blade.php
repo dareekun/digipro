@@ -139,29 +139,6 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link disabled dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Compression
-                        </a>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/tabel/Compression">Tabel</a>
-                                <a class="dropdown-item" href="/graph/Compression">Graph</a>
-                                <a class="dropdown-item" href="/mesin/Compression">Input</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link disabled dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Injection
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/tabel/Injection">Tabel</a>
-                                <a class="dropdown-item" href="/graph/Injection">Graph</a>
-                                <a class="dropdown-item" href="/mesin/Injection">Input</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Metal Part

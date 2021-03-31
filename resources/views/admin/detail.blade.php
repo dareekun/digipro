@@ -195,33 +195,29 @@
                             <td style="width:15%" align="center">Tipe Produk</td>
                             <td align="center">Start</td>
                             <td align="center">Stop</td>
-                            <td align="center">Total Time</td>
-                            <td align="center">Proses Time</td>
-                            <td align="center">Bantuan +</td>
-                            <td align="center">Bantuan -</td>
-                            <td align="center">Man Power</td>
-                            <td align="center">Daily Plan</td>
-                            <td align="center">NG Proses</td>
-                            <td align="center">NG Material</td>
-                            <td align="center">Actual F/G</td>
-                            <td align="center">New P/T</td>
-                            <td align="center">Eff %</td>
+                            <td align="center">Duration</td>
+                            <td align="center">Total Produksi</td>
+                            <td align="center">Produksi Org</td>
+                            <td align="center">Standard</td>
+                            <td align="center">Actual</td>
+                            <td align="center">%</td>
+                            <td align="center">Total %</td>
+                            <td align="center">Kap/ Org</td>
+                            <td align="center">Petugas</td>
                         </tr>
                         @foreach ($data6 as $f) <tr>
                             <td>{{$f->tipe}}</td>
                             <td align="center">{{$f->start}}</td>
                             <td align="center">{{$f->stop}}</td>
                             <td align="center">{{$f->dur}}</td>
-                            <td align="center">{{$f->time}}</td>
-                            <td align="center">{{$f->plus}}</td>
-                            <td align="center">{{$f->min}}</td>
-                            <td align="center">{{$f->man}}</td>
-                            <td align="center">{{$f->daily}}</td>
-                            <td align="center">{{$f->ngp}}</td>
-                            <td align="center">{{$f->ngm}}</td>
-                            <td align="center">{{$f->fg}}</td>
-                            <td align="center">{{$f->pt}}</td>
-                            <td align="center">{{$f->eff}}</td>
+                            <td align="center">{{$f->ttlprod}}</td>
+                            <td align="center">{{$f->prodorg}}</td>
+                            <td align="center">{{$f->standart}}</td>
+                            <td align="center">{{$f->actual}}</td>
+                            <td align="center">{{$f->percentage}}</td>
+                            <td align="center">{{$f->ttlperc}}</td>
+                            <td align="center">{{$f->kaporg}}</td>
+                            <td align="center">{{$f->petugas}}</td>
                         </tr>
                         @endforeach
                     </table>
