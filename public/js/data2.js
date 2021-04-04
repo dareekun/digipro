@@ -17,7 +17,7 @@ showTime();
 
 function del1(varhapus) {
     document.getElementById("id_hapus").value= varhapus;
-    // document.getElementById("masuk").submit();
+    document.getElementById("masuk").submit();
 }
 function del2(varhapus) {
     document.getElementById("id_hapus").value= varhapus;

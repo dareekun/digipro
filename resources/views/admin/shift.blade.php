@@ -11,11 +11,11 @@
                         <tr>
                             <td>Pengaturan Shift</td>
                             <td style="width:80%" align="right">
-                                <a href="/pengaturan/masalah" class="btn-sm btn-primary" role="button"
+                                <a href="/pengaturan/masalah" class="btn btn-sm btn-primary" role="button"
                                     aria-pressed="true">Masalah</a>
-                                <a href="/pengaturan/shift" class="btn-sm btn-success" role="button"
+                                <a href="/pengaturan/shift" class="btn btn-sm btn-success" role="button"
                                     aria-pressed="true">Shift</a>
-                                <a href="/admin/produk" class="btn-sm btn-secondary" role="button"
+                                <a href="/admin/produk" class="btn btn-sm btn-secondary" role="button"
                                     aria-pressed="true">Produk</a>
                             </td>
                         </tr>
@@ -36,6 +36,7 @@
                             <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Shift</th>
+                                <th scope="col">Posisi Shift</th>
                                 <th scope="col">Start</th>
                                 <th scope="col">Finsih</th>
                                 <th scope="col">Duration</th>
@@ -47,11 +48,12 @@
                             <tr>
                                 <td>{{$i++}}</td>
                                 <td>{{$dt->shift}}</td>
+                                <td>{{$dt->value}}</td>
                                 <td>{{$dt->start}}</td>
                                 <td>{{$dt->finish}}</td>
                                 <td>{{$dt->duration}}</td>
                                 <td>
-                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="edit({{$dt->id}}, '{{$dt->shift}}', '{{$dt->start}}', '{{$dt->finish}}')"><i
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="edit({{$dt->id}},'{{$dt->shift}}', '{{$dt->value}}', '{{$dt->start}}', '{{$dt->finish}}')"><i
                                             class="fa fa-pencil" aria-hidden="true"></i></button>
                                     <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapus({{$dt->id}})"><i
                                             class="fa fa-trash" aria-hidden="true"></i></button>
@@ -65,21 +67,38 @@
         </div>
     </div>
 </div>
+
+<datalist id="shiftlist">
+@foreach ($list as $ls)
+    <option value="{{$ls->value}}">
+@endforeach
+</datalist>
+
 @include('dll.modalshift')
 @stop
 
 @push('scripts')
 <script>
+$(document).ready(function() {
+    var table = $('#test').DataTable({
+        order: [[0, 'desc']],
+        scrollY: '50vh',
+        paging: false,
+        info: false,
+    });
+} );
+
 function hapus(x) {
     document.getElementById("idhapus").value = x;
     $('#hapus').modal('show')
 }
 
-function edit(a, b, c, d) {
+function edit(a, b, c, d, e) {
     document.getElementById("idedit").value = a;
     document.getElementById("shiftedit").value = b;
-    document.getElementById("startedit").value = c;
-    document.getElementById("finishedit").value = d;
+    document.getElementById("posisiedit").value = c;
+    document.getElementById("startedit").value = d;
+    document.getElementById("finishedit").value = e;
     $('#edit').modal('show')
 }
 

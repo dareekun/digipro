@@ -10,9 +10,9 @@
                 <tr>
                 <td>Pengaturan Produk</td>
                 <td style="width:80%" align="right">
-                <a href="/pengaturan/masalah" class="btn-sm btn-primary" role="button" aria-pressed="true">Masalah</a>
-                <a href="/pengaturan/shift" class="btn-sm btn-success" role="button" aria-pressed="true">Shift</a>
-                <a href="/admin/produk" class="btn-sm btn-secondary" role="button" aria-pressed="true">Produk</a>
+                <a href="/pengaturan/masalah" class="btn btn-sm btn-primary" role="button" aria-pressed="true">Masalah</a>
+                <a href="/pengaturan/shift" class="btn btn-sm btn-success" role="button" aria-pressed="true">Shift</a>
+                <a href="/admin/produk" class="btn btn-sm btn-secondary" role="button" aria-pressed="true">Produk</a>
                 </td>
                 </tr>
                 </table></div>

@@ -141,7 +141,7 @@ $(document).ready(function() {
                             </tr>
                             @foreach($data1 as $d1)
                             <tr>
-                                <td><input hidden value="{{$d1->id}}" type="number" style="width:100px"
+                                <td><input hidden value="{{$d1->idp}}" type="number" style="width:100px"
                                         class="form-control" name="idd1"></td>
                                 <td><input disabled value="{{$d1->problem}}" type="text" style="width:100px"
                                         class="form-control-plaintext w-100" name="regprob"></td>
@@ -158,7 +158,7 @@ $(document).ready(function() {
                                         @endforeach</td>
                                 <td><input disabled type="text" value="{{$d1->ket}}" class="form-control" name="regket"></td>
                                 <td align="right"><a href="/"></a>
-                                    <button class="btn btn-danger" type="submit" onclick="del1({{$d1->id}})" name="rem1"><i
+                                    <button class="btn btn-danger" type="submit" onclick="del1({{$d1->idp}})" name="rem1"><i
                                             class="fa fa-minus-circle" aria-hidden="true"></i></button></td>
                             </tr>
                             @endforeach
@@ -184,7 +184,7 @@ $(document).ready(function() {
                                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
                                 <td><input type="text" data-placement="top" data-trigger="manual"
-                                        data-content="Required" value="{{old('regket0')}}" class="form-control"
+                                        data-content="Required" value="-" class="form-control"
                                         name="regket0">
                                 </td>
                                 <td align="right"><button class="btn btn-success" type="submit" onclick="data1()"
@@ -206,7 +206,7 @@ $(document).ready(function() {
                             </tr>
                             @foreach($data2 as $d2)
                             <tr>
-                                <td><input hidden value="{{$d2->id}}" type="number" style="width:100px"
+                                <td><input hidden value="{{$d2->idp}}" type="number" style="width:100px"
                                         class="form-control" name="idd2"></td>
                                 <td><input disabled value="{{$d2->problem}}" type="text" style="width:100px"
                                         class="form-control-plaintext w-100" name="wrkprob"></td>
@@ -222,7 +222,7 @@ $(document).ready(function() {
                                             value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
                                 <td><input disabled type="text" value="{{$d2->ket}}" class="form-control" name="wrkket"></td>
-                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del2({{$d2->id}})"
+                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del2({{$d2->idp}})"
                                         name="rem2"><i class="fa fa-minus-circle"
                                             aria-hidden="true"></i></button></button></td>
                             </tr>
@@ -244,7 +244,7 @@ $(document).ready(function() {
                                         @foreach($produk as $p)
                                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
-                                <td><input type="text" value="{{old('wrkket0')}}" class="form-control" name="wrkket0">
+                                <td><input type="text" value="-" class="form-control" name="wrkket0">
                                 </td>
                                 <td align="right"><button class="btn btn-success" type="submit" onclick="data2()"
                                         name="ram2"><i class="fa fa-plus-circle"
@@ -266,7 +266,7 @@ $(document).ready(function() {
                             </tr>
                             @foreach($data3 as $d3)
                             <tr>
-                                <td><input hidden value="{{$d3->id}}" type="number" style="width:100px"
+                                <td><input hidden value="{{$d3->idp}}" type="number" style="width:100px"
                                         class="form-control" name="idd3"></td>
                                 <td><input disabled value="{{$d3->problem}}" type="text" style="width:100px"
                                         class="form-control-plaintext w-100" name="orprob"></td>
@@ -282,7 +282,7 @@ $(document).ready(function() {
                                             value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
                                 <td><input disabled type="text" value="{{$d3->ket}}" class="form-control" name="orket"></td>
-                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del3({{$d3->id}})"
+                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del3({{$d3->idp}})"
                                         name="rem3"><i class="fa fa-minus-circle"
                                             aria-hidden="true"></i></button></button></td>
                             </tr>
@@ -304,7 +304,7 @@ $(document).ready(function() {
                                         @foreach($produk as $p)
                                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
-                                <td><input type="text" value="{{old('orket0')}}" class="form-control" name="orket0">
+                                <td><input type="text" value="-" class="form-control" name="orket0">
                                 </td>
                                 <td align="right"><button class="btn btn-success" type="submit" onclick="data3()"
                                         name="ram3"><i class="fa fa-plus-circle"
@@ -326,7 +326,7 @@ $(document).ready(function() {
                             </tr>
                             @foreach($data4 as $d4)
                             <tr>
-                                <td><input hidden value="{{$d4->id}}" type="number" style="width:100px"
+                                <td><input hidden value="{{$d4->idp}}" type="number" style="width:100px"
                                         class="form-control-plaintext" name="idd4"></td>
                                 <td><input disabled value="{{$d4->problem}}" type="text" style="width:100px"
                                         class="form-control-plaintext w-100" name="defprob"></td>
@@ -342,7 +342,7 @@ $(document).ready(function() {
                                             value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
                                 <td><input disabled type="text" value="{{$d4->ket}}" class="form-control-plaintext" name="defket"></td>
-                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del4({{$d4->id}})"
+                                <td align="right"><button class="btn btn-danger" type="submit" onclick="del4({{$d4->idp}})"
                                         name="rem4"><i class="fa fa-minus-circle"
                                             aria-hidden="true"></i></button></button></td>
                             </tr>
@@ -364,7 +364,7 @@ $(document).ready(function() {
                                         @foreach($produk as $p)
                                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
-                                <td><input type="text" value="{{old('defket')}}" class="form-control" name="defket">
+                                <td><input type="text" value="-" class="form-control" name="defket">
                                 </td>
                                 <td align="right"><button class="btn btn-success" type="submit" onclick="data4()"
                                         name="ram4"><i class="fa fa-plus-circle"
@@ -394,7 +394,7 @@ $(document).ready(function() {
                             <tr>
                                 <td><input hidden value="{{$d5->id}}" style="width:100px"
                                         class="form-control-plaintext" name="idd5"></td>
-                                <td><input disabled value="{{$d5->tipe}}" type="text" style="width:100px"
+                                <td><input disabled value="{{$d5->tipe}}" type="text" style="width:150px"
                                         class="form-control-plaintext" name="rekprod"></td>
                                 <td><input disabled value="{{$d5->start}}" type="time" style="width:100px"
                                         class="form-control-plaintext" name="rekstart"></td>
@@ -418,7 +418,7 @@ $(document).ready(function() {
                                         class="form-control-plaintext" name="rekngm"></td>
                                 <td><input disabled value="{{$d5->petugas}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekngm"></td>
-                                <td align="left"><button class="btn btn-danger" type="submit" onclick="del5()"
+                                <td align="left"><button class="btn btn-danger" type="submit" onclick="del5({{$d5->id}})"
                                         name="rem5"><i class="fa fa-minus-circle" aria-hidden="true"></i></button></button></td>
                             </tr>
                             @endforeach
@@ -557,7 +557,7 @@ $(document).ready(function() {
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="input-group"><input value="{{old('reslt5')}}"
+                                    <div class="input-group"><input value="{{$avail}}"
                                             type="number" class="form-control" name="reslt5">
                                         <div class="input-group-append"><span class="input-group-text"
                                                 id="basic-addon2">Menit</span>

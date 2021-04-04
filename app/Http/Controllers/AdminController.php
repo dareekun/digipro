@@ -19,26 +19,14 @@ class AdminController extends Controller
     $this->middleware('auth');
     }
     public function detail($id) {
-
-        if ( strstr( $id, 'CM' ) || strstr( $id, 'IM' )) {
-            $a = DB::table('datamasin')->where('keyid', $id)->get();
-            $b = DB::table('regloss')->where('keyid', $id)->get();
-            $c = DB::table('stoploss')->where('keyid', $id)->get();
-            $d = DB::table('abloss')->where('keyid', $id)->get();
-            $e = DB::table('defloss')->where('keyid', $id)->get();
-            $g = DB::table('resultmesin')->where('keyid', $id)->get();
-            return view('admin.mesin', ['data1' => $a, 'data2' => $b, 'data3' => $c, 'data4' => $d, 'data5' => $e, 'data7' => $g, 'id' => $id]);
-        }
-        else {
             $a = DB::table('dataharian')->where('keyid', $id)->get();
-            $b = DB::table('regloss')->where('keyid', $id)->get();
-            $c = DB::table('workloss')->where('keyid', $id)->get();
-            $d = DB::table('orloss')->where('keyid', $id)->get();
-            $e = DB::table('defloss')->where('keyid', $id)->get();
+            $b = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Regulated Loss')->where('keyid', $id)->get();
+            $c = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Work Loss')->where('keyid', $id)->get();
+            $d = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Organization Loss')->where('keyid', $id)->get();
+            $e = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Defect Loss')->where('keyid', $id)->get();
             $f = DB::table('rekapprod')->where('keyid', $id)->get();
             $g = DB::table('resultprod')->where('keyid', $id)->get();
             return view('admin.detail', ['data1' => $a, 'data2' => $b, 'data3' => $c, 'data4' => $d, 'data5' => $e, 'data6' => $f, 'data7' => $g, 'id' => $id]);
-        }
     }
 
     public function daftar(Request $request) {
@@ -271,33 +259,30 @@ class AdminController extends Controller
 
     public function masalah() {
         $i = 1;
-        $uni1 = DB::table('defect_loss')->get();
-        $uni2 = DB::table('organization_loss')->get();
-        $uni3 = DB::table('regulated_loss')->get();
-        $uni4 = DB::table('stop_loss')->get();
-        $uni5 = DB::table('work_loss')->get();
-        $uni6 = DB::table('ability_loss')->get();
-        return view('admin.masalah', ['i' => $i, 'data1' => $uni1, 'data2' => $uni2, 'data3' => $uni3, 'data4' => $uni4, 'data5' => $uni5, 'data6' => $uni6, ]);
+        $uni0 = DB::table('loss_type')->get();
+        $uni1 = DB::table('loss_type')->select('type')->distinct()->get();
+        return view('admin.masalah', ['i' => $i, 'data' => $uni0, 'problemtype' => $uni1]);
     }
 
     public function masalahditambah(Request $request){
         $database = $request->jenis;
-            DB::table($database)->insert([
+            DB::table('loss_type')->insert([
                 'loss' => $request->masalah,
+                'type' => $request->type,
             ]);
         return redirect('/pengaturan/masalah');
     }
 
     public function masalahdirubah(Request $request) {
-        $database = $request->paramedit1;
-            DB::table($database)->where('id', $request->paramedit0)->update([
+            DB::table('loss_type')->where('id', $request->paramedit0)->update([
+                'type' => $request->paramedit1,
                 'loss' => $request->paramedit2,
             ]);
         return redirect('/pengaturan/masalah');
     }
 
     public function masalahdihapus(Request $request){
-        DB::table($request->param1)->where('id', $request->param2)->delete();
+        DB::table('loss_type')->where('id', $request->param2)->delete();
         return redirect('/pengaturan/masalah');
     }
 
@@ -308,7 +293,8 @@ class AdminController extends Controller
     public function shift() {
         $index = 1;
         $data = DB::table('waktu')->get();
-        return view('admin.shift', ['data' => $data, 'i' =>$index]);
+        $list = DB::table('waktu')->select('value')->distinct()->get();
+        return view('admin.shift', ['data' => $data, 'i' =>$index, 'list' => $list]);
     }
 
     public function shiftditambah(Request $request) {
@@ -317,6 +303,7 @@ class AdminController extends Controller
         $mins = ($end - $start) / 60;
         DB::table('waktu')->insert([
             'shift' => $request->nama,
+            'value' => $request->posisi,
             'start' => $request->start,
             'finish' => $request->finish,
             'duration' => abs($mins)
@@ -330,6 +317,7 @@ class AdminController extends Controller
         $mins = ($end - $start) / 60;
         DB::table('waktu')->where('id', $request->idedit)->update([
             'shift' => $request->shiftedit,
+            'value' => $request->posisiedit,
             'start' => $request->startedit,
             'finish' => $request->finishedit,
             'duration' => abs($mins)

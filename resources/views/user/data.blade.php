@@ -72,7 +72,7 @@ $(document).ready(function() {
                                             <td>Shift</td>
                                             <td> <select name="shift" class="custom-select">
                                                     @foreach($waktu as $w)
-                                                    <option value="{{$w->shift}}">{{$w->shift}}</option>
+                                                    <option value="{{$w->value}}">{{$w->shift}}</option>
                                                     @endforeach
                                                 </select></td>
                                         </tr>

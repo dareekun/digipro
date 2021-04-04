@@ -18,6 +18,11 @@
         </div>
         <br>
         <div class="row">
+        <div class="col-sm-3">Posisi Shift</div>
+        <div class="col-sm-9"><input required type="text" list="shiftlist" name="posisi" id="posisi" value="" class="form-control"></div>
+        </div>
+        <br>
+        <div class="row">
         <div class="col-sm-3">Start Shift</div>
         <div class="col-sm-9"><input required type="time" name="start" class="form-control"></div>
         </div>
@@ -53,6 +58,11 @@
         <div class="row">
         <div class="col-sm-3">Shift</div>
         <div class="col-sm-9"><input required type="text" name="shiftedit" id="shiftedit" value="" class="form-control"></div>
+        </div>
+        <br>
+        <div class="row">
+        <div class="col-sm-3">Posisi Shift</div>
+        <div class="col-sm-9"><input required type="text" list="shiftlist" name="posisiedit" id="posisiedit" value="" class="form-control"></div>
         </div>
         <br>
         <div class="row">

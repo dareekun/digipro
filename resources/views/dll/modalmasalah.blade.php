@@ -14,14 +14,7 @@
 
         <div class="row">
         <div class="col-sm-3">Jenis Masalah</div>
-        <div class="col-sm-9"><select required name="jenis" id="jenis" class="form-control">
-        <option value="defect_loss">Defect Loss</option>
-        <option value="organization_loss">Organisation Loss</option>
-        <option value="regulated_loss">Regulated Loss</option>
-        <option value="stop_loss">Stop Loss</option>
-        <option value="work_loss">Work Loss</option>
-        <option value="ability_loss">Ability Loss</option>
-        </select></div>
+        <div class="col-sm-9"><input type="text" class="form-control" name="type" id="jenisbakallock" list="problemtype"></div>
         </div>
         <br>
         <div class="row">
@@ -52,17 +45,11 @@
         <form action="/masalah/dirubah" method="post">
         {{ csrf_field() }}
         <input required type="text" hidden name="paramedit0" id="edit00" class="form-control">
-        <input required type="text" hidden name="paramedit1" id="edit01" class="form-control">
         <div class="row">
         <div class="col-sm-3">Jenis Masalah</div>
-        <div class="col-sm-9"><select name="dummyedit" id="jenisbakallock" class="form-control">
-        <option value="defect_loss">Defect Loss</option>
-        <option value="organization_loss">Organisation Loss</option>
-        <option value="regulated_loss">Regulated Loss</option>
-        <option value="stop_loss">Stop Loss</option>
-        <option value="work_loss">Work Loss</option>
-        <option value="ability_loss">Ability Loss</option>
-        </select></div>
+        <div class="col-sm-9">
+        <input type="text" class="form-control" name="paramedit1" id="edit01" list="problemtype">
+        </div>
         </div>
         <br>
         <div class="row">
@@ -94,7 +81,6 @@
         <form action="/masalah/dihapus" method="post" hidden>
         {{ csrf_field() }}
         <div class="row">
-        <div class="col-sm-3"><input required type="id" name="param1" id="dbhapus" value="" class="form-control"></div>
         <div class="col-sm-9"><input required type="id" name="param2" id="idhapus" value="" class="form-control"></div>
         </div>
       </div>

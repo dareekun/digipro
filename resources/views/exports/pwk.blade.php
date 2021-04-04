@@ -45,77 +45,69 @@ table, th, td {
     </tr>
     <!-- Working Day -->
     <tr>
-        <td colspan="2">Working Day</td>
+        <td colspan="2" rowspan="2">Working Day</td>
         <td colspan="3">Working Time</td>
-        @for ($i = 0; $i < $date; $i++)             
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($i = 0; $i < count($baris1); $i++)             
+            <td align="center">{{$baris1[$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{array_sum($baris1)}}</td>
     </tr>
     <!-- Working Day Row 2 -->
     <tr>
-        <td colspan="2"></td>
-        <td colspan="3">Working Time</td>
-        @for ($i = 0; $i < $date; $i++)             
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        <td colspan="3">Overtime</td>
+        @for ($i = 0; $i < count($baris2); $i++)             
+            <td align="center">{{$baris2[$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{array_sum($baris2)}}</td>
+    </tr>
+    <!-- Working Day Total -->
+    <tr>
+        <td colspan="5"></td>
+        @for ($i = 0; $i < count($baris3); $i++)             
+            <td align="center">{{$baris3[$i]}}</td> <!-- Shift 1 -->
+        @endfor
+        <td align="right">{{array_sum($baris3)}}</td>
     </tr>
     <!-- TTL REGISTERED EMPLOYEE -->
     <tr>
         <td colspan="5">A. TTL REGISTERED EMPLOYEE</td>
-        @for ($i = 0; $i < $date; $i++)             
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($i = 0; $i < count($baris4); $i++)             
+            <td align="center">{{$baris4[$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{array_sum($baris4)}}</td>
     </tr>
     <!-- Karyawan Tetap -->
     <tr>
-        <td></td>
+        <td rowspan="4"></td>
         <td colspan="4">Karyawan Tetap</td>
-        @for ($i = 0; $i < $date; $i++)             
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($i = 0; $i < count($baris5); $i++)             
+            <td align="center">{{$baris5[$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{array_sum($baris5)}}</td>
     </tr>
     <!-- Karyawan Kontrak -->
     <tr>
-        <td></td>
         <td colspan="4">Karyawan Kontrak</td>
-        @for ($i = 0; $i < $date; $i++)             
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($i = 0; $i < count($baris6); $i++)             
+            <td align="center">{{$baris6[$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{array_sum($baris6)}}</td>
     </tr>
     <!-- Absence Employee -->
     <tr>
-        <td></td>
-        <td colspan="4">Absence Employee</td>
-        @for ($i = 0; $i < $date; $i++)             
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        <td colspan="4">B. Absence Employee</td>
+        @for ($i = 0; $i < count($baris7); $i++)             
+            <td align="center">{{$baris7[$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{array_sum($baris7)}}</td>
     </tr>
     <!-- IN/OUT Support -->
     <tr>
-        <td></td>
         <td colspan="4">IN/OUT Support +/-</td>
         @for ($i = 0; $i < $date; $i++)             
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+            <td align="center">0</td> <!-- Shift 1 -->
+            <td align="center">0</td> <!-- Shift 2 -->
+            <td align="center">0</td> <!-- Shift 3 -->
         @endfor
         <td align="right">0</td>
     </tr>
@@ -125,46 +117,38 @@ table, th, td {
     </tr>
     <!-- Avail Working Time -->
     <tr>
-        <td></td>
+        <td rowspan="3"></td>
         <td colspan="4">Avail Working Time</td>
-        @for ($i = 0; $i < $date; $i++)             
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($i = 0; $i < count($baris8); $i++)             
+            <td align="center">{{$baris8[$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{array_sum($baris8)}}</td>
     </tr>
     <!-- Overtime -->
     <tr>
-        <td></td>
         <td colspan="4">Overtime</td>
-        @for ($i = 0; $i < $date; $i++)             
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($i = 0; $i < count($baris9); $i++)             
+            <td align="center">{{$baris9[$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{array_sum($baris9)}}</td>
     </tr>
     <!-- IN/OUT Support -->
     <tr>
-        <td></td>
         <td colspan="4">In/Out Support +/-</td>
         @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+            <td align="center">0</td> <!-- Shift 1 -->
+            <td align="center">0</td> <!-- Shift 2 -->
+            <td align="center">0</td> <!-- Shift 3 -->
         @endfor
         <td align="right">0</td>
     </tr>
     <!-- TOTAL WORKING TIME -->
     <tr>
         <td colspan="5">C. TOTAL WORKING TIME</td>
-        @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($i = 0; $i < count($baris10); $i++)             
+            <td align="center">{{$baris10[$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{array_sum($baris10)}}</td>
     </tr>
     <!-- space -->
     <tr>
@@ -392,9 +376,6 @@ table, th, td {
     @endfor
     <td align="right">0</td>
     </tr>
-
-
-
     <!-- space -->
     <tr>
         <td colspan="99"></td>
@@ -474,26 +455,27 @@ table, th, td {
     @for ($i = 0; $i < $date; $i++) 
         <td colspan="3" align="center">{{$i+1}}</td>
     @endfor
-    <td align="right">0</td>
+    <td align="right">Total</td>
     </tr>
     <!-- HASIL PRODUKSI -->
     <tr>
     @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+        <td align="center">Shift 1</td> <!-- Shift 1 -->
+        <td align="center">Shift 2</td> <!-- Shift 2 -->
+        <td align="center">Shift 3</td> <!-- Shift 3 -->
     @endfor
-    <td align="right">0</td>
+    <td align="right">Total</td>
     </tr>
     @foreach ($type as $tp) 
     <tr>
     <td colspan="4">{{$tp->tipe}}</td>
-    <td>time</td>
+    <td>{{$tp->time}}</td>
     @for ($i = 0; $i < $date; $i++) 
         <td align="center">data</td> <!-- Shift 1 -->
         <td align="center">data</td> <!-- Shift 2 -->
         <td align="center">data</td> <!-- Shift 3 -->
     @endfor
+    <td align="right">0</td>
     </tr>
     @endforeach
     <!-- Plan Waktu Kerja -->

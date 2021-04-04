@@ -1481,23 +1481,23 @@
         },
         {
             "name": "maatwebsite/excel",
-            "version": "3.1.24",
+            "version": "3.1.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-                "reference": "8b267b4a940634195eb6ea60c2da62f178a15940"
+                "reference": "66f7c9584304ad0b6a267a5d8ffbfa2ff4272e85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/8b267b4a940634195eb6ea60c2da62f178a15940",
-                "reference": "8b267b4a940634195eb6ea60c2da62f178a15940",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/66f7c9584304ad0b6a267a5d8ffbfa2ff4272e85",
+                "reference": "66f7c9584304ad0b6a267a5d8ffbfa2ff4272e85",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0|^7.0|^8.0",
-                "php": "^7.0",
-                "phpoffice/phpspreadsheet": "^1.14"
+                "illuminate/support": "5.8.*|^6.0|^7.0|^8.0",
+                "php": "^7.0|^8.0",
+                "phpoffice/phpspreadsheet": "^1.15"
             },
             "require-dev": {
                 "orchestra/testbench": "^6.0",
@@ -1541,6 +1541,10 @@
                 "php",
                 "phpspreadsheet"
             ],
+            "support": {
+                "issues": "https://github.com/Maatwebsite/Laravel-Excel/issues",
+                "source": "https://github.com/Maatwebsite/Laravel-Excel/tree/3.1.26"
+            },
             "funding": [
                 {
                     "url": "https://laravel-excel.com/commercial-support",
@@ -1551,7 +1555,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-10-28T09:10:05+00:00"
+            "time": "2020-11-27T16:17:38+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -6190,67 +6194,6 @@
             "time": "2020-08-11T18:10:13+00:00"
         },
         {
-            "name": "nahid/jsonq",
-            "version": "v6.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nahid/jsonq.git",
-                "reference": "05227383e3d7256b226964234f33fc7bfa36f6c8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nahid/jsonq/zipball/05227383e3d7256b226964234f33fc7bfa36f6c8",
-                "reference": "05227383e3d7256b226964234f33fc7bfa36f6c8",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "nahid/qarray": "^2.0",
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8 || ^5.0",
-                "symfony/var-dumper": "^3.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Nahid\\JsonQ\\": "src/"
-                },
-                "files": [
-                    "helpers/jsonq.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nahid Bin Azhar",
-                    "email": "nahid.dns@gmail.com"
-                }
-            ],
-            "description": "JsonQ is a PHP based json data query library",
-            "homepage": "https://github.com/nahid/jsonq",
-            "keywords": [
-                "json",
-                "jsonq",
-                "query"
-            ],
-            "funding": [
-                {
-                    "url": "https://beerpay.io/nahid/jsonq",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/me-shaon",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-08-22T18:45:44+00:00"
-        },
-        {
             "name": "nunomaduro/collision",
             "version": "v5.0.2",
             "source": {
@@ -8123,5 +8066,5 @@
         "php": "^7.3"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
