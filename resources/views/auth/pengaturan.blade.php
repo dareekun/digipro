@@ -25,7 +25,7 @@
                 <table id="test" class="table table-striped table-bordered test">
                     <thead>
                         <tr>
-                            <th>Email</th>
+                            <th>No</th>
                             <th>Username</th>
                             <th>Role</th>
                             <th>Rubah Password</th>
@@ -35,10 +35,10 @@
                     <tbody>
                         @foreach ($data as $d)
                         <tr>
-                            <td>{{ $d->email }}</td>
+                            <td>{{ $i++ }}</td>
                             <td>{{ $d->name }}</td>
                             <td>{{ $d->role }}</td>
-                            @can('isManager')
+                            @can('isAdmin')
                             <td>
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#pass{{ $d->name }}">

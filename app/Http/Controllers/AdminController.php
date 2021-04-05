@@ -34,7 +34,6 @@ class AdminController extends Controller
         $rules = [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
-            'email' => ['required', 'string', 'max:255', 'email', 'unique:users'],
             'password' => ['required', 'string', 'min:5', 'confirmed'],
         ];
         $this->validate($request, $rules);
@@ -46,13 +45,11 @@ class AdminController extends Controller
         }
         DB::table('users')->insert([
             'name' => $request->name,
-            'username' => $request->username,
             'email' => $request->email,
             'role' => $request->role,
             'dept' => $dept,
             'password' => Hash::make($request->password)
         ]);
-
         return redirect('/admin/pengaturan');
     }
 
@@ -67,7 +64,7 @@ class AdminController extends Controller
         else {
             $data = DB::table('users')->where('role', '<>', 'developer')->where('role', '<>', 'manager')->where('role', '<>', 'admin')->where('dept', $s1->dept)->get();
         }
-        return view('auth.pengaturan', ['data' => $data]);
+        return view('auth.pengaturan', ['data' => $data, 'i' => 1]);
     }
 
     public function delaku(Request $request) {

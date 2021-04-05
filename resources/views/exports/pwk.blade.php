@@ -17,7 +17,7 @@ table, th, td {
         <td colspan="99"></td>
     </tr>
     <tr>
-        <td colspan="99"> - {{$bulan}} (MAN TIME CONTROL) / {{$tipe}}</td>
+        <td colspan="99"> - {{$bulan}} (MAN TIME CONTROL) / {{$lini}}</td>
     </tr>
     <tr>
         <td colspan="99"></td>
@@ -156,121 +156,132 @@ table, th, td {
     </tr>
     <!-- TOTAL LOST TIME GROUP START -->
     <!-- /////////////////////////// -->
+
     <!-- REGULATED LOST GROUP -->
-    @foreach ($regloss as $loss1)
+    <!-- /////////////////////////// -->
+    @for ($i = 0; $i < count($regloss[0]); $i++)
     <tr>
     <td></td>
     <td></td>
-    <td colspan="3">{{$loss1->loss}}</td>
-        @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+    <td colspan="3">{{$regloss[0][$i]}}</td>
+        @for ($n = 1, $sum1 = 0; $n < count($regloss); $n++) 
+        @php
+            $sum1 = $sum1 + $regloss[$n][$i];
+        @endphp
+            <td align="center">{{$regloss[$n][$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{$sum1}}</td>
     </tr>
-    @endforeach
+    @endfor
     <!-- Regulated LOSS TOTAL -->
     <tr>
     <td></td>
         <td colspan="4">D. REGULATED LOSS TOTAL</td>
-        @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($n = 1, $ttl1 = 0; $n < count($regloss); $n++) 
+        @php
+        $ttl1 = $ttl1 + array_sum($regloss[$n]);
+        @endphp
+            <td align="center">{{array_sum($regloss[$n])}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{$ttl1}}</td>
     </tr>
     <!-- Working LOSS GROUP -->
     <!-- ////////////////// -->
-    @foreach ($workloss as $loss2)
+    @for ($i = 0; $i < count($workloss[0]); $i++)
     <tr>
     <td></td>
     <td></td>
-    <td colspan="3">{{$loss2->loss}}</td>
-        @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+    <td colspan="3">{{$workloss[0][$i]}}</td>
+        @for ($n = 1, $sum2 = 0; $n < count($workloss); $n++) 
+        @php
+            $sum2 = $sum2 + $workloss[$n][$i];
+        @endphp
+            <td align="center">{{$workloss[$n][$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{$sum2}}</td>
     </tr>
-    @endforeach
+    @endfor
         <!-- Working LOSS TOTAL -->
         <tr>
     <td></td>
         <td colspan="4">E. WORKING LOSS TOTAL</td>
-        @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($n = 1, $ttl2 = 0; $n < count($workloss); $n++) 
+        @php
+        $ttl2 = $ttl2 + array_sum($workloss[$n]);
+        @endphp
+            <td align="center">{{array_sum($workloss[$n])}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{$ttl2}}</td>
     </tr>
     <!-- ORGANIZATION LOSS GROUP -->
-    <!-- ////////////////// -->
-    @foreach ($orgloss as $loss3)
+    <!-- /////////////////////// -->
+    @for ($i = 0; $i < count($orgloss[0]); $i++)
     <tr>
     <td></td>
     <td></td>
-    <td colspan="3">{{$loss3->loss}}</td>
-        @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+    <td colspan="3">{{$orgloss[0][$i]}}</td>
+        @for ($n = 1, $sum3 = 0; $n < count($orgloss); $n++) 
+        @php
+            $sum3 = $sum3 + $orgloss[$n][$i];
+        @endphp
+            <td align="center">{{$orgloss[$n][$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{$sum3}}</td>
     </tr>
-    @endforeach
+    @endfor
         <!-- Organization LOSS TOTAL -->
         <tr>
     <td></td>
         <td colspan="4">F. ORGANIZATION LOSS TOTAL</td>
-        @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($n = 1, $ttl3 = 0; $n < count($orgloss); $n++) 
+        @php
+        $ttl3 = $ttl3 + array_sum($orgloss[$n]);
+        @endphp
+            <td align="center">{{array_sum($orgloss[$n])}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{$ttl3}}</td>
     </tr>
     <!-- DEFECT LOSS GROUP -->
     <!-- ////////////////// -->
-    @foreach ($defloss as $loss4)
+    @for ($i = 0; $i < count($defloss[0]); $i++)
     <tr>
     <td></td>
     <td></td>
-    <td colspan="3">{{$loss4->loss}}</td>
-        @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+    <td colspan="3">{{$defloss[0][$i]}}</td>
+        @for ($n = 1, $sum4 = 0; $n < count($defloss); $n++) 
+        @php
+            $sum4 = $sum4 + $defloss[$n][$i];
+        @endphp
+            <td align="center">{{$defloss[$n][$i]}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{$sum4}}</td>
     </tr>
-    @endforeach
+    @endfor
         <!-- Defect LOSS TOTAL -->
         <tr>
     <td></td>
         <td colspan="4">G. DEFECT LOSS TOTAL</td>
-        @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+        @for ($n = 1, $ttl4 = 0; $n < count($defloss); $n++) 
+        @php
+        $ttl4 = $ttl4 + array_sum($defloss[$n]);
+        @endphp
+            <td align="center">{{array_sum($defloss[$n])}}</td> <!-- Shift 1 -->
         @endfor
-        <td align="right">0</td>
+        <td align="right">{{$ttl4}}</td>
     </tr>
     <!-- CALCULATION LOST TIME TOTAL -->
     <!-- ////////////////// -->
     <tr>
     <td colspan="5">H. LOST TIME TOTAL</td>
-    @for ($i = 0; $i < $date; $i++) 
-            <td align="center">data</td> <!-- Shift 1 -->
-            <td align="center">data</td> <!-- Shift 2 -->
-            <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 1, $ttlall = 0; $i < count($defloss); $i++) 
+        <td align="center">{{$sum = array_sum($regloss[$i]) + array_sum($workloss[$i]) + array_sum($orgloss[$i]) + array_sum($defloss[$i])}}</td> <!-- Shift 1 -->
+        @php
+        $ttlall = $ttlall + $sum;
+        @endphp
         @endfor
     <!-- /////////////////////////// -->
     <!-- TOTAL LOST TIME GROUP END -->
-    <td align="right">0</td>
+    <td align="right">{{$ttlall}}</td>
     </tr>
     <!-- space -->
     <tr>
@@ -316,9 +327,9 @@ table, th, td {
     @endfor
     <td align="right">0</td>
     </tr>
-    <!-- (L)STD PROCESS TIME=ST TIMEx(J+K) -->
+    <!-- L. STD PROCESS TIME=ST TIMEx(J+K) -->
     <tr>
-    <td colspan="5">(L)STD PROCESS TIME=ST TIMEx(J+K)</td>
+    <td colspan="5">L. STD PROCESS TIME=ST TIMEx(J+K)</td>
     @for ($i = 0; $i < $date; $i++) 
         <td align="center">data</td> <!-- Shift 1 -->
         <td align="center">data</td> <!-- Shift 2 -->
@@ -466,18 +477,19 @@ table, th, td {
     @endfor
     <td align="right">Total</td>
     </tr>
-    @foreach ($type as $tp) 
+    @for ($i = 0; $i < count($type[0]); $i++)
     <tr>
-    <td colspan="4">{{$tp->tipe}}</td>
-    <td>{{$tp->time}}</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    <td colspan="4">{{$type[0][$i]}}</td>
+    <td>{{$type[1][$i]}} s</td>
+    @for ($n = 2, $hslttl = 0; $n < count($type); $n++) 
+        <td align="center">{{$type[$n][$i]}}</td> <!-- Shift 1 -->
+        @php
+        $hslttl = $hslttl + $type[$n][$i];
+        @endphp
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{$hslttl}}</td>
     </tr>
-    @endforeach
+    @endfor
     <!-- Plan Waktu Kerja -->
     <tr>
     <td colspan="5" rowspan="2">PLAN WAKTU KERJA</td>
