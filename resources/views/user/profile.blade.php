@@ -34,10 +34,6 @@
                             <td> : {{ $d->username }}</td>
                         </tr>
                         <tr>
-                            <td>Email </td>
-                            <td> : {{ $d->email }}</td>
-                        </tr>
-                        <tr>
                             <td>Passwrod </td>
                             <td> : {{ $d->role }}</td>
                         </tr>
@@ -47,12 +43,12 @@
                     <br>
                     Update Password
                     <br>
-                    <form action="update" method="post">
+                    <form action="/user/update" method="post">
                         {{ csrf_field() }}
                         <table>
                         <tr>
                         <td>
-                        Password
+                        Old Password
                         <input type="password" class="form-control" name="oldpass" placeholder="Type The Password"></td>
                         <td></td>
                         </tr>

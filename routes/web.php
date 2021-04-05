@@ -74,9 +74,10 @@ Route::get('/cetaklot/{id}', [InfoController::class, 'cetaklot'])->middleware('c
 
 //admin level
 Route::post('/user/update', [HomeController::class, 'profileupdate'])->middleware('can:isUser');
-Route::get('admin/tambahakun', function () {return view('auth.register');})->middleware('can:isAdmin');
-Route::post('/daftar', [AdminController::class, 'daftar'])->middleware('can:isAdmin');
+Route::get('/admin/tambahakun', function () {return view('auth.register');})->middleware('can:isAdmin');
+Route::post('/baru/tambahakun', [AdminController::class, 'daftar'])->middleware('can:isAdmin');
 Route::get('/admin/pengaturan', [AdminController::class, 'urus'])->middleware('can:isAdmin');
+
 Route::post('/admin/delaku', [AdminController::class, 'delaku'])->middleware('can:isAdmin');
 Route::post('/admin/changep', [AdminController::class, 'changep'])->middleware('can:isAdmin');
 Route::get('/admin/planning', [AdminController::class, 'planning'])->middleware('can:isAdmin');
@@ -119,7 +120,10 @@ Route::post('lot1-json', [HomeController::class, 'lot1'])->name('lot1-json.lot1'
 Route::post('lot2-json', [HomeController::class, 'lot2'])->name('lot2-json.lot2');
 
 Auth::routes();
-
-Route::post('/downloadpwk', [noLoginController::class, 'pwk']);
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+// Route No Login Needed
+Route::post('/downloadpwk', [noLoginController::class, 'pwk']);
+Route::get('/grafik/{id}', [noLoginController::class, 'grafik']);
+

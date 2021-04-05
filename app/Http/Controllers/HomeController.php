@@ -72,14 +72,14 @@ class HomeController extends Controller
 
     public function profileupdate(Request $request) {
         $s1 = Auth::user();
-        $user = User::where('username', '=', $s1->username)->first();
+        $user = Auth::user()->where('username', '=', $s1->username)->first();
         $rules = [
             'password' => ['required', 'string', 'confirmed'],
         ];
         $message = ['password.confirmed' => 'Password Tidak Sama',];
         $this->validate($request, $rules, $message);
         if (Hash::check($request->oldpass, $user->password)) {
-            DB::table('users')->where('email', $user->email)->update(
+            DB::table('users')->where('username', $user->username)->update(
                 [
                     'password' => bcrypt($request->password),
                 ]
@@ -98,7 +98,6 @@ class HomeController extends Controller
             return Redirect::back()->withErrors($errors);
                 }
         else {
-
         }
     }
 

@@ -34,20 +34,23 @@ class AdminController extends Controller
         $rules = [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:5', 'confirmed'],
+            'password' => ['required', 'string', 'confirmed'],
         ];
-        $this->validate($request, $rules);
-        if ($s1->dept=='developer') {
-            $dept = $request->dept;
+        $message = [
+            'password.confirmed' => 'Password Tidak Sama',
+            'username.unique' => 'Username sudah diambil',
+        ];
+        $this->validate($request, $rules, $message);
+        if ($s1->role == 'developer' || $s1->role == 'manager' ) {
+            $role = $request->role;
         }
         else {
-            $dept = $s1->dept;
+            $role = 'user';
         }
         DB::table('users')->insert([
             'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role,
-            'dept' => $dept,
+            'username' => $request->username,
+            'role' => $role,
             'password' => Hash::make($request->password)
         ]);
         return redirect('/admin/pengaturan');
@@ -59,10 +62,10 @@ class AdminController extends Controller
             $data = DB::table('users')->where('role', '<>', 'developer')->get();
         }
         else if ($s1->role == 'manager') {
-            $data = DB::table('users')->where('role', '<>', 'developer')->where('role', '<>', 'manager')->where('dept', $s1->dept)->get();
+            $data = DB::table('users')->where('role', '<>', 'developer')->where('role', '<>', 'manager')->get();
         }
         else {
-            $data = DB::table('users')->where('role', '<>', 'developer')->where('role', '<>', 'manager')->where('role', '<>', 'admin')->where('dept', $s1->dept)->get();
+            $data = DB::table('users')->where('role', '<>', 'developer')->where('role', '<>', 'manager')->where('role', '<>', 'admin')->get();
         }
         return view('auth.pengaturan', ['data' => $data, 'i' => 1]);
     }
@@ -71,7 +74,6 @@ class AdminController extends Controller
         $s1 = Auth::user();
         $data = DB::table('users')->where('username', $request->data0)->get();
         $role = DB::table('users')->select('role')->where('username', $request->data0)->value('role');
-        $dept = DB::table('users')->select('dept')->where('username', $request->data0)->value('dept');
         $rules = [
             'password' => ['required', 'string', 'confirmed'],
         ];
@@ -128,7 +130,6 @@ class AdminController extends Controller
         $s1 = Auth::user();
         $data = DB::table('users')->where('username', $request->data0)->get();
         $role = DB::table('users')->select('role')->where('username', $request->data0)->value('role');
-        $dept = DB::table('users')->select('dept')->where('username', $request->data0)->value('dept');
         $rules = [
             'password' => ['required', 'string', 'confirmed'],
         ];
@@ -148,9 +149,6 @@ class AdminController extends Controller
                         ]   
                     );
                 }
-            }
-            elseif ($s1->dept != $dept) {
-                return redirect('/home');
             }
             else{
                 if ($s1->role == 'manager') {
@@ -181,36 +179,15 @@ class AdminController extends Controller
                     return redirect('/home');
                 }
             }
-            
-
             $errors = ['oldpass' => ['Password Berhasil Dirubah']]; 
             return Redirect::back()->withErrors($errors);
         }
-
         if(strcmp($request->password, $s1->password) == 1){
             $errors = ['username' => ['Password Salah']]; 
             return Redirect::back()->withErrors($errors);
                 }
         else {
-
         }
-
-    }
-
-    public function planning(){
-       $line = DB::table('produk')->select('bagian')->distinct()->get();
-       return view('admin.planning', ['line' => $line]);
-    }
-
-    public function tambahplan(Request $request){
-        DB::table('planning')->insert([
-            'bulan' => $request->tanggal,
-            'tipe' => $request->tipe,
-            'tempat' => $request->tempat,
-            'bagian' => $request->bagian,
-            'qty' => $request->qty,
-        ]);
-        return redirect('/user/planning/'.$request->bagian);
     }
 
     // =====================================

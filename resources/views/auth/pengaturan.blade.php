@@ -16,8 +16,7 @@
                         @endif
                     </div>
                     <div class="col-md-7" align="right">
-                        <a href="/admin/tambahakun" style="text-decoration:none" class="btn-sm btn-info" role="button"
-                            aria-pressed="true">Tambah Pengguna</a>
+                        <a href="/admin/tambahakun" class="btn btn-sm btn-outline-success" role="button" aria-pressed="true">Tambah Pengguna</a>
                     </div>
                 </div>
                 <br>
@@ -26,10 +25,10 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Nama</th>
                             <th>Username</th>
                             <th>Role</th>
-                            <th>Rubah Password</th>
-                            <th>Hapus Pengguna</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,26 +36,18 @@
                         <tr>
                             <td>{{ $i++ }}</td>
                             <td>{{ $d->name }}</td>
+                            <td>{{ $d->username }}</td>
                             <td>{{ $d->role }}</td>
                             @can('isAdmin')
                             <td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#pass{{ $d->name }}">
-                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                </button>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger" data-toggle="modal"
-                                    data-target="#confrim{{ $d->name }}">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
-
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#pass{{ $d->name }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Password</button> 
+                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#confrim{{ $d->name }}"><i class="fa fa-trash" aria-hidden="true"></i> Hapus Akun</button>
                             </td>
                             @elsecan('isUser')
-                            <td><a href="change/{{$d->id}}" class="btn btn-sm btn-info disabled"><i class="fa fa-pencil"
-                                        aria-hidden="true"></i></a></td>
-                            <td><a href="delaku/{{$d->id}}" class="btn btn-sm btn-danger disabled"><i
-                                        class="fa fa-trash" aria-hidden="true"></i></a></td>
+                            <td>
+                            <button type="button" class="btn btn-sm btn-primary disabled" disabled data-toggle="modal" data-target="#pass{{ $d->name }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Password</button> 
+                            <button type="button" class="btn btn-sm btn-danger disabled" disabled data-toggle="modal" data-target="#confrim{{ $d->name }}"><i class="fa fa-trash" aria-hidden="true"></i> Hapus Akun</button>
+                            </td>
                             @endcan
 
                         </tr>
