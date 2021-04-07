@@ -31,6 +31,11 @@
         <div class="col-sm-3">End Shift</div>
         <div class="col-sm-9"><input required type="time" name="finish" class="form-control"></div>
         </div>
+        <br>
+        <div class="row">
+        <div class="col-sm-3">Break Shift</div>
+        <div class="col-sm-9"><input required type="number" name="break" id="break" value="" class="form-control"></div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-success">Simpan Shift</button>
@@ -73,6 +78,11 @@
         <div class="row">
         <div class="col-sm-3">End Shift</div>
         <div class="col-sm-9"><input required type="time" name="finishedit" id="finishedit" value="" class="form-control"></div>
+        </div>
+        <br>
+        <div class="row">
+        <div class="col-sm-3">Break Shift</div>
+        <div class="col-sm-9"><input required type="number" name="breakedit" id="breakedit" value="" class="form-control"></div>
         </div>
       </div>
       <div class="modal-footer">

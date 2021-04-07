@@ -31,7 +31,6 @@ Route::get('/welcome', function () {
 });
 
 Route::get('/test',  [ManagerController::class, 'test']);
-
 Route::get('/tabel/{id}', [InfoController::class, 'tabel']);
 Route::get('/graph/{id}', [InfoController::class, 'graph']);
 Route::get('lotcard0', [InfoController::class, 'lotcard0']);
@@ -40,20 +39,14 @@ Route::any('/lotscaned', [InfoController::class, 'lotscaned']);
 Route::get('/dellot/{id}', [InfoController::class, 'dellot']);
 Route::get('/rubahlot/{id}', [InfoController::class, 'rubahlot']);
 Route::post('/rubahlots', [InfoController::class, 'rubahlots']);
-
-
 Route::any('/graphbulan/{id}', [InfoController::class, 'graphbulan']);
 Route::post('/lotcard', [InfoController::class, 'lotcard']);
 Route::post('/lotcard1', [InfoController::class, 'lotcard1']);
 Route::post('/lotcardalpha', [InfoController::class, 'lotcardalpha']);
 Route::post('/plusalpha', [InfoController::class, 'plusalpha']);
-
 Route::post('/plusalpha', [InfoController::class, 'plusalpha']);
-
 Route::get('/lotsp/{param0}', [InfoController::class, 'lotsp']);
-
 Route::get('/laksan/{param0}', [InfoController::class, 'lotcardalpha2']);
-
 Route::get('/lotsphps/{id}', [InfoController::class, 'lotsphps']);
 
 
@@ -119,7 +112,6 @@ Route::post('data2-json', [HomeController::class, 'select2'])->name('data2-json.
 Route::post('lot1-json', [HomeController::class, 'lot1'])->name('lot1-json.lot1');
 Route::post('lot2-json', [HomeController::class, 'lot2'])->name('lot2-json.lot2');
 
-Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 

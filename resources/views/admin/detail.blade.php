@@ -49,6 +49,14 @@
                                         <td>: {{$a->line}}</td>
                                     </tr>
                                     <tr>
+                                        <td>Bantuan + Terdaftar</td>
+                                        <td>: {{$a->bantuan_masuk}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bantuan - Terdaftar</td>
+                                        <td>: {{$a->bantuan_keluar}}</td>
+                                    </tr>
+                                    <tr>
                                         <td>Pic</td>
                                         <td>: {{$a->pic}}</td>
                                     </tr>
@@ -79,6 +87,14 @@
                                         <td>: {{$a->waktukwt}}</td>
                                         <td>Overtime </td>
                                         <td>: {{$a->otkwt}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Waktu Kerja Bantuan +</td>
+                                        <td>: {{$a->bantuan_masuk_waktu}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Waktu Kerja Bantuan -</td>
+                                        <td>: {{$a->bantuan_keluar_waktu}}</td>
                                     </tr>
                                     <tr>
                                         <td>DT, PC, KP, CT </td>

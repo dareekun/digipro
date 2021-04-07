@@ -68,6 +68,22 @@ $(document).ready(function() {
                                                     @endforeach
                                                 </select></td>
                                         </tr>
+                                        <tr>
+                                            <td>
+                                                Bantuan Masuk 
+                                            </td>
+                                            <td>
+                                            <input type="number" class="form-control" value="{{$d->bantuan_masuk}}" name="bantuanmasuk">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Bantuan Keluar 
+                                            </td>
+                                            <td>
+                                            <input type="number" class="form-control" value="{{$d->bantuan_keluar}}" name="bantuankeluar">
+                                            </td>
+                                        </tr>
                                     </table>
                                 </td>
                                 <td>
@@ -120,6 +136,22 @@ $(document).ready(function() {
                                             <td>Waktu Kerja T.T </td>
                                             <td> <input required value="{{$d->waktukerja}}" type="number"
                                                     style="width:100px" class="form-control" name="waktukerja"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Waktu Bantuan Masuk
+                                            </td>
+                                            <td>
+                                            <input type="number" class="form-control" style="width:100px" value="{{$d->bantuan_masuk_waktu}}" name="waktumasuk">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Waktu Bantuan Keluar
+                                            </td>
+                                            <td>
+                                            <input type="number" class="form-control" style="width:100px" value="{{$d->bantuan_keluar_waktu}}" name="waktukeluar">
+                                            </td>
                                         </tr>
                                     </table>
                                 </td>
@@ -380,14 +412,12 @@ $(document).ready(function() {
                                 <td align="center">Start</td>
                                 <td align="center">Stop</td>
                                 <td align="center">Duration</td>
-                                <td align="center">Total Produksi</td>
-                                <td align="center">Produksi Org</td>
-                                <td align="center">Standart</td>
-                                <td align="center">Actual</td>
-                                <td align="center">%</td>
-                                <td align="center">Total %</td>
-                                <td align="center">Kap / Orang</td>
-                                <td align="center">Petugas</td>
+                                <td align="center">Daily Plan</td>
+                                <td align="center">Daily Actual</td>
+                                <td align="center">Daily (+/-)</td>
+                                <td align="center">NG Process</td>
+                                <td align="center">NG Material</td>
+                                <td align="center">Ket</td>
                                 <td></td>
                             </tr>
                             @foreach($data5 as $d5)
@@ -402,21 +432,17 @@ $(document).ready(function() {
                                         class="form-control-plaintext" name="rekstop"></td>
                                 <td><input disabled value="{{$d5->dur}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekdur"></td>
-                                <td><input disabled value="{{$d5->ttlprod}}" type="text" min="0"
+                                <td><input disabled value="{{$d5->daily_plan}}" type="text" min="0"
                                         class="form-control-plaintext" name="rektime"></td>
-                                <td><input disabled value="{{$d5->prodorg}}" type="text" min="0"
+                                <td><input disabled value="{{$d5->daily_actual}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekplus"></td>
-                                <td><input disabled value="{{$d5->standart}}" type="text" min="0"
+                                <td><input disabled value="{{$d5->daily_diff}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekmin"></td>
-                                <td><input disabled value="{{$d5->actual}}" type="text" min="0"
+                                <td><input disabled value="{{$d5->ng_process}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekman"></td>
-                                <td><input value="{{$d5->percentage}}" type="text" min="0" 
-                                        class="form-control-plaintext" name="rekdlyp"></td>
-                                <td><input disabled value="{{$d5->ttlperc}}" type="text" min="0"
+                                <td><input disabled value="{{$d5->ng_material}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekngp"></td>
-                                <td><input disabled value="{{$d5->kaporg}}" type="text" min="0"
-                                        class="form-control-plaintext" name="rekngm"></td>
-                                <td><input disabled value="{{$d5->petugas}}" type="text" min="0"
+                                <td><input disabled value="{{$d5->ket}}" type="text" min="0"
                                         class="form-control-plaintext" name="rekngm"></td>
                                 <td align="left"><button class="btn btn-danger" type="submit" onclick="del5({{$d5->id}})"
                                         name="rem5"><i class="fa fa-minus-circle" aria-hidden="true"></i></button></button></td>
@@ -431,26 +457,19 @@ $(document).ready(function() {
                                 <td><input type="time" style="width:100px" class="form-control" name="rekstart0"></td>
                                 <td><input type="time" style="width:100px" class="form-control" name="rekstop0"></td>
                                 <td><input value="{{old('dur')}}" disabled style="width:100px" type="number" min="0" class="form-control" name="dur"></td>
-                                <td><input value="{{old('ttlprod')}}" type="number" min="0" class="form-control"
-                                        name="ttlprod"></td>
-                                <td><input value="{{old('prodorg')}}" type="number" min="0" class="form-control"
-                                        name="prodorg"></td>
-                                <td><input value="{{old('standart')}}" type="number" min="0" class="form-control"
-                                        name="standart">
-                                </td>
-                                <td><input value="{{old('actual')}}" style="width:100px" disabled type="number" min="0" class="form-control"
-                                        name="actual"></td>
-                                <td><input value="{{old('percentage')}}" style="width:80px" disabled type="number" min="0" class="form-control"
-                                        name="percentage"></td>
-                                <td><input value="{{old('ttlperc')}}" style="width:80px" disabled type="number" min="0" class="form-control"
-                                        name="ttlperc"></td>
-                                <td><input value="{{old('kaporg')}}" disabled type="number" min="0" class="form-control"
-                                        name="kaporg"></td>
-                                <td><input value="{{old('petugas')}}" style="width:150px" type="text" class="form-control"
-                                        name="petugas"></td>
+                                <td><input value="{{old('daily_plan')}}" style="width:100px" type="number" min="0" class="form-control"
+                                        name="daily_plan"></td>
+                                <td><input value="{{old('daily_actual')}}" style="width:100px" type="number" min="0" class="form-control"
+                                        name="daily_actual"></td>
+                                <td><input value="{{old('daily_diff')}}" disabled style="width:100px" type="number" min="0" class="form-control"
+                                        name="daily_diff"></td>
+                                <td><input value="{{old('ng_process')}}" style="width:100px" type="number" min="0" class="form-control"
+                                        name="ng_process"></td>
+                                <td><input value="{{old('ng_material')}}" style="width:100px" type="number" min="0" class="form-control"
+                                        name="ng_material"></td>
+                                <td><input value="-" type="text" class="form-control" name="ket"></td>
                                 <td align="left"><button class="btn btn-success" type="submit" onclick="data5()"
-                                        name="ram5"><i class="fa fa-plus-circle"
-                                            aria-hidden="true"></i></button></button></td>
+                                        name="ram5"><i class="fa fa-plus-circle" aria-hidden="true"></i></button></td>
                             </tr>
                         </table>
                         <br>
@@ -459,7 +478,7 @@ $(document).ready(function() {
                         @forelse ($data6 as $d6)
                         <table style="width:100%">
                             <tr>
-                                <td style="width:20%" align="center">Inti Masalah</td>
+                                <td style="width:20%" align="center">Hambatan</td>
                                 <td style="width:20%" align="center">Analisa Penyebab</td>
                                 <td style="width:20%" align="center">Tindakan Penanggulangan</td>
                                 <td style="width:10%" align="center">Hasil Produksi</td>
@@ -565,7 +584,7 @@ $(document).ready(function() {
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="input-group"><input value="{{old('reslt6')}}"
+                                    <div class="input-group"><input value="{{$phh}}"
                                             type="number" class="form-control" name="reslt6">
                                         <div class="input-group-append"><span class="input-group-text"
                                                 id="basic-addon2">Pcs/Jam</span>
@@ -576,7 +595,6 @@ $(document).ready(function() {
                             <tr>
                                 <td colspan="3"><br><br></td>
                                 <td>Total Loss Time</td>
-                                <td>Total Man Power</td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -594,14 +612,6 @@ $(document).ready(function() {
                                         </div>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="input-group"><input value="{{old('reslt5a')}}" type="number" class="form-control" name="reslt5a">
-                                        <div class="input-group-append"><span class="input-group-text"
-                                                id="basic-addon2">Person</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td></td>
                             </tr>
                         </table>
                         @endforelse

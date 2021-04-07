@@ -60,40 +60,14 @@ var chart2 = new Chart(ctx2, {
     data: {
         labels: array0,
         datasets: [{
+            label: 'Actual',
             data: array1,
-            backgroundColor: [
-                'rgba(54, 162, 235, 0.7)',
-                'rgba(255, 206, 86, 0.7)',
-                'rgba(75, 192, 192, 0.7)',
-                'rgba(153, 102, 255, 0.7)',
-                'rgba(255, 99, 132, 0.7)',
-                'rgba(255, 64, 64, 0.7)',
-                'rgba(159, 255, 64, 0.7)',
-                'rgba(255, 159, 164, 0.7)',
-                'rgba(64, 159, 64, 0.7)',
-                'rgba(255, 59, 164, 0.7)',
-            ],
-            borderColor: [
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 64, 64, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(159, 255, 64, 1)',
-                'rgba(255, 159, 164, 1)',
-                'rgba(64, 159, 64, 1)',
-                'rgba(255, 59, 164, 1)',
-            ]
+            backgroundColor: ["#8e5ea2", "#8e5ea2","#8e5ea2","#8e5ea2","#8e5ea2","#8e5ea2","#8e5ea2","#8e5ea2"],
         }, {
+            label: 'Plan',
             data: array2,
-            type: 'line',
-            borderColor: [
-                'rgba(75, 192, 192, 1)',
-            ],
-            backgroundColor: [
-                'rgba(54, 162, 235, 0)',
-            ]
+            type: 'bar',
+            backgroundColor: ["#3e95cd", "#3e95cd","#3e95cd","#3e95cd","#3e95cd","#3e95cd","#3e95cd","#3e95cd"],
         }]
     },
     options: {

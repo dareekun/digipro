@@ -65,6 +65,22 @@ $(document).ready(function() {
                                                 </select></td>
                                         </tr>
                                         <tr>
+                                            <td>
+                                                Bantuan Masuk Terdaftar
+                                            </td>
+                                            <td>
+                                            <input type="number" class="form-control" value="0" name="bantuanmasuk">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Bantuan Keluar Terdaftar
+                                            </td>
+                                            <td>
+                                            <input type="number" class="form-control" value="0" name="bantuankeluar">
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td>Pic</td>
                                             <td> <input type="text" required class="form-control" name="pic"></td>
                                         </tr>
@@ -91,7 +107,7 @@ $(document).ready(function() {
                                             <td> <input disabled type="number" style="width:100px" class="form-control"
                                                     name="waktukartap"></td>
                                             <td>Overtime </td>
-                                            <td> <input required type="number" style="width:100px" class="form-control"
+                                            <td> <input required type="number" style="width:100px" value="0" class="form-control"
                                                     name="otkartap"></td>
                                         </tr>
                                         <tr>
@@ -105,8 +121,24 @@ $(document).ready(function() {
                                             <td> <input disabled type="number" style="width:100px" class="form-control"
                                                     name="waktukwt"></td>
                                             <td>Overtime </td>
-                                            <td> <input required type="number" style="width:100px" class="form-control"
+                                            <td> <input required type="number" style="width:100px" value="0" class="form-control"
                                                     name="otkwt"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Waktu Kerja Bantuan Masuk
+                                            </td>
+                                            <td>
+                                            <input type="number" class="form-control" style="width:100px" value="0" name="waktumasuk">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Waktu Kerja Bantuan Keluar
+                                            </td>
+                                            <td>
+                                            <input type="number" class="form-control" style="width:100px" value="0" name="waktukeluar">
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>DT, PC, KP, CT </td>

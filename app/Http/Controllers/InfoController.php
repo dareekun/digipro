@@ -32,23 +32,40 @@ class InfoController extends Controller
     }
 
     public function graph($id) {
-        $lini = DB::table('produk')->where('bagian', $id)->select('tempat')->orderBy('tempat', 'desc')->distinct()->get();
-        $plan = array();
+        $lini   = DB::table('produk')->where('bagian', $id)->select('tempat')->orderBy('tempat', 'asc')->distinct()->get();
+        $plan   = array();
         $actual = array();
-        $nowm = date('m');
-        $nowy = date('Y');
-        if ($id == 'Compression' || $id == 'Injection') {
-            foreach ($lini as $li) {
-                $actual[]  = DB::table('rekapprod')->join('dataharian', 'dataharian.keyid', '=', 'rekapprod.keyid')->where('dataharian.bagian', $id)->where('dataharian.line', $li->tempat)->whereMonth('lotcard.lotno', '=', $nowm)->orderBy('dataharian.line', 'desc')->sum('rekapprod.fg');
-                $plan[]  = DB::table('planning')->where('bagian', $id)->where('tempat', $li->tempat)->whereMonth('bulan', '=', $nowm)->orderBy('tempat', 'desc')->sum('qty');
+        $nowm   = date('m');
+        $nowy   = date('Y');
+        $htts   = Http::get('http://158.118.35.24:8080/discreet')->status();
+        if ($htts == 200) {
+        $htta  = Http::get('http://158.118.35.24:8080/discreet')->getBody();
+        $data0 = json_decode($htta, true);
+        $count = count($data0);
+        $sum = array();
+        $total = 0;
+            foreach ($lini as $ln) {
+            $total = 0;
+            $tipe = DB::table('produk')->where('tempat', $ln->tempat)->select('tipe')->get();
+                foreach ($tipe as $tp) {
+                    for ($i = 0; $i < $count; $i++) {
+                        if ($data0[$i]['assembly_item_name'] == $tp->tipe){
+                            $total = $total + $data0[$i]['plan_qty'];
+                        break;
+                        }
+                    }
+                }
+            $plan[]    = $total;
             }
         }
         else {
-            foreach ($lini as $li) {
-                $actual[]  = DB::table('lotcard')->join('produk', 'lotcard.modelno', '=', 'produk.tipe')->where('produk.bagian', $id)->where('produk.tempat', $li->tempat)->whereYear('lotcard.lotno', $nowy)->whereMonth('lotcard.lotno', '=', $nowm)->orderBy('produk.line', 'desc')->sum('lotcard.input1');
-                $plan[]  = DB::table('planning')->where('bagian', $id)->where('tempat', $li->tempat)->whereMonth('bulan', '=', $nowm)->orderBy('tempat', 'desc')->sum('qty');
-            }
+            $plan[]    = 0;
         }
+            foreach ($lini as $li) {
+                $actual[]  = DB::table('rekapprod')->join('produk', 'rekapprod.tipe', '=', 'produk.tipe')
+                ->leftJoin('dataharian', 'dataharian.keyid', '=', 'rekapprod.keyid')
+                ->where('produk.bagian', $id)->where('produk.tempat', $li->tempat)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->orderBy('produk.line', 'asc')->sum('rekapprod.daily_actual');
+            }
         return view('graphline', ['tipe' => $id, 'lini' => $lini, 'planning' => $plan, 'actual' => $actual]);
     }
 
@@ -93,23 +110,7 @@ class InfoController extends Controller
     }
 
     public function welcome() {
-        $tahun = date('Y');
-        $bulan = date('m');
-        $a  = DB::table('dataharian')->whereYear('tanggal', $tahun)->whereMonth('tanggal', $bulan)->rightJoin('resultprod', 'dataharian.keyid', '=', 'resultprod.keyid')->select('resultprod.hasil')->where('dataharian.bagian', 'Assy WD')->sum('resultprod.hasil');
-        $b  = DB::table('datamasin')->whereYear('tanggal', $tahun)->whereMonth('tanggal', $bulan)->rightJoin('resultmesin', 'datamasin.keyid', '=', 'resultmesin.keyid')->select('resultmesin.hasil')->where('datamasin.bagian', 'Compression')->sum('resultmesin.hasil');
-        $c  = DB::table('datamasin')->whereYear('tanggal', $tahun)->whereMonth('tanggal', $bulan)->rightJoin('resultmesin', 'datamasin.keyid', '=', 'resultmesin.keyid')->select('resultmesin.hasil')->where('datamasin.bagian', 'Injection')->sum('resultmesin.hasil');
-        $d  = DB::table('dataharian')->whereYear('tanggal', $tahun)->whereMonth('tanggal', $bulan)->rightJoin('resultprod', 'dataharian.keyid', '=', 'resultprod.keyid')->select('resultprod.hasil')->where('dataharian.bagian', 'Metal Part')->sum('resultprod.hasil');
-        $e  = DB::table('dataharian')->whereYear('tanggal', $tahun)->whereMonth('tanggal', $bulan)->rightJoin('resultprod', 'dataharian.keyid', '=', 'resultprod.keyid')->select('resultprod.hasil')->where('dataharian.bagian', 'Export')->sum('resultprod.hasil');
-        $aa = DB::table('planning')->select('qty')->where('bagian', 'Assy WD')->sum('qty');
-        $ab = DB::table('planning')->select('qty')->where('bagian', 'Assy Part Compression')->sum('qty');
-        $ac = DB::table('planning')->select('qty')->where('bagian', 'Assy Part Injection')->sum('qty');
-        $ad = DB::table('planning')->select('qty')->where('bagian', 'Metal Part')->sum('qty');
-        $ae = DB::table('planning')->select('qty')->where('bagian', 'Export')->sum('qty');
-        $totalp = $aa + $ab + $ac + $ad + $ae;
-        $totala = $a + $b + $c + $d + $e;
-        return view('welcome', ['AssyP' => $aa, 'CompressionP' => $ab, 'InjectionP' => $ac, 'MetalP' => $ad, 'ExportP' => $ae, 
-        'AssyA' => $a, 'CompressionA' => $b, 'InjectionA' => $c, 'MetalA' => $d, 'ExportA' => $e,
-        'TotalA' => $totala, 'TotalP' => $totalp ]);
+       return redirect('/home');
     }
 
     public function lotcard0() {

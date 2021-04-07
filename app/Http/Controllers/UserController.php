@@ -26,50 +26,6 @@ class UserController extends Controller
         $data = DB::table('dataharian')->where('bagian', $id)->where('autosave', 'belum')->where('lastedit', $s1->username)->select('keyid')->distinct()->value('keyid');
         return view('user.data', ['bagian' => $id, 'line' => $line, 'waktu' => $waktu, 'status' => $stat, 'data' => $data]);
     }
-    public function mesin($id){
-        $s1 = Auth::user();
-        $line = DB::table('produk')->where('bagian', $id)->select('tempat')->distinct()->get();
-        $waktu = DB::table('waktu')->select('shift')->get();
-        $stat = DB::table('datamasin')->where('bagian', $id)->where('autosave', 'belum')->where('lastedit', $s1->username)->select('autosave')->distinct()->value('autosave');
-        $data = DB::table('datamasin')->where('bagian', $id)->where('autosave', 'belum')->where('lastedit', $s1->username)->select('keyid')->distinct()->value('keyid');
-        return view('user.mesin1', ['bagian' => $id, 'line' => $line, 'waktu' => $waktu, 'status' => $stat, 'data' => $data]);
-    }
-
-    public function mesin2(Request $request) {
-        $s0 = DB::table('waktu')->select('start')->where('shift', $request->shift)->value('start');
-        $s1 = DB::table('waktu')->select('finish')->where('shift', $request->shift)->value('finish');
-        $s2 = DB::table('waktu')->select('duration')->where('shift', $request->shift)->value('duration');
-        $s3 = Auth::user();
-        $line = explode(" ", $request->bagian);
-        $shift = explode(" ", $request->shift);
-        $date = date("Ymd", strtotime($request->tanggal));
-        $acl = "";
-        $acs = "";
-        foreach ($line as $w) {
-        $acl .= $w[0];
-        }
-        foreach ($shift as $q) {
-            $acs .= $q[0];
-            }
-        $keyid = $acl.'M'.$request->nomor.$acs.$date;
-        $id = DB::table('produk')->select('bagian')->distinct()->where('tempat', $request->line)->value('bagian');
-        DB::table('datamasin') ->insert([
-            'keyid' => $keyid,
-            'tanggal' => $request->tanggal,
-            'bagian' => $request->bagian,
-            'line'=> $request->nomor,
-            'shift' => $request->shift,
-            'pic' => $request->pic,
-            'part' => $request->tipe,
-            'start' => $s0,
-            'finish' => $s1,
-            'waktukerja' => $s2,
-            'lastedit' => $s3->username,
-            'autosave' => 'belum',
-        ]);
-        return redirect('/resumim/'.$keyid);
-    }
-
     public function next(Request $request) {
         $s0 = DB::table('waktu')->select('start')->where('shift', $request->shift)->value('start');
         $s1 = DB::table('waktu')->select('finish')->where('shift', $request->shift)->value('finish');
@@ -107,24 +63,23 @@ class UserController extends Controller
             'optplan' => $request->kartap + $request->kwt,
             'start' => $s0,
             'finish' => $s1,
-            'waktukerja' => $s2 + $s2 + $request->otkartap + $request->otkwt,
+            'waktukerja' => ($s2 * $request->kartap) + ($s2 * $request->kwt) + $request->otkartap + $request->otkwt + $request->waktumasuk - $request->waktukeluar,
+            'bantuan_masuk' => $request->bantuanmasuk,
+            'bantuan_keluar' => $request->bantuankeluar,
+            'bantuan_masuk_waktu' => $request->waktumasuk,
+            'bantuan_keluar_waktu' => $request->waktukeluar,
             'lastedit' => $s3->username,
             'autosave' => 'belum',
         ]);
         return redirect('/resume/'.$keyid);
-
     }
-
     public function refresh($id) {
         $s1 = DB::table('dataharian')->select('bagian')->where('keyid', $id)->value('bagian');
         DB::table('dataharian')->where('keyid', $id)->delete();
         DB::table('loss_data')->where('keyid', $id)->delete();
-        DB::table('loss_data')->where('keyid', $id)->delete();
-        DB::table('loss_data')->where('keyid', $id)->delete();
-        DB::table('loss_data')->where('keyid', $id)->delete();
+        DB::table('rekapprod')->where('keyid', $id)->delete();
         return redirect('/data/'.$s1);
     }
-
     public function resume($id) {
         $s1 = Auth::user();
         $s2 = DB::table('dataharian')->select('bagian')->where('keyid', $id)->distinct()->value('bagian');
@@ -148,18 +103,19 @@ class UserController extends Controller
         $data3 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Organization Loss')->where('keyid', $id)->get();
         $data4 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Defect Loss')->where('keyid', $id)->get();
         $data5 = DB::table('rekapprod')->where('keyid', $id)
-        ->select('id', 'tipe', 'start', 'stop', 'dur', 'ttlprod', 'prodorg', 'standart', 'actual', 'percentage', 'ttlperc', 'kaporg', 'petugas',)
+        ->select('id', 'tipe', 'start', 'stop', 'dur', 'daily_plan', 'daily_actual', 'daily_diff', 'ng_process', 'ng_material', 'ket')
         ->distinct()->get();
         $data6 = DB::table('resultprod')->where('keyid', $id)->get();
         
-        $sum   = DB::table('rekapprod')->where('keyid', $id)->select('ttlprod')->sum('ttlprod');
+        $sum   = DB::table('rekapprod')->where('keyid', $id)->select('daily_actual')->sum('daily_actual');
         $lossa = DB::table('loss_data')->where('keyid', $id)->select('dur')->sum('dur');
         $totalitas = $lossa;
-        $avail = (DB::table('dataharian')->where('keyid', $id)->select('kartap')->value('kartap') + DB::table('dataharian')->where('keyid', $id)->select('kwt')->value('kwt')) * DB::table('dataharian')->where('keyid', $id)->select('waktukartap')->value('waktukartap'); 
+        $avail = DB::table('dataharian')->where('keyid', $id)->select('waktukerja')->value('waktukerja'); 
 
+        $phh = $sum / $avail;
         $p1 = DB::table('rekapprod')->select('id')->where('keyid', $id)->where('status', 0)->where('lastedit', $s1->username)->value('id');
         return view('user.data2', ['bagian' => $s2, 'data' => $data, 'data1' => $data1, 'data2' => $data2, 'data3' => $data3, 'data4' => $data4, 'data5' => $data5,
-        'summ' => $sum, 'ttloss' => $totalitas, 'tagkey' => $p1, 'avail' => $avail,
+        'summ' => $sum, 'ttloss' => $totalitas, 'tagkey' => $p1, 'avail' => $avail, 'phh' => $phh,
         'data6' => $data6, 'lot' => $s6, 'bline' => $bline, 'produk' => $produk, 'lossa' => $dreg, 'waktu' => $waktu, 'lossb' => $dwork, 'lossc' => $dorg, 'lossd' => $ddef,]);
     }
 
@@ -191,7 +147,6 @@ class UserController extends Controller
                     'analisa2' => $request->reslt2a,
                     'tindakan2' => $request->reslt3a,
                     'ttlloss' => $request->reslt4a,
-                    'ttlman' => $request->reslt5a
                     ]);
                     DB::table('dataharian')->where('keyid', $request->subaru)->update([
                         'autosave' => 'selesai',
@@ -231,7 +186,11 @@ class UserController extends Controller
                             'optplan' => $request->optplan,
                             'start' => $request->start,
                             'finish' => $request->finish,
-                            'waktukerja' => $request->waktukerja,
+                            'waktukerja' => ($s2 * $request->kartap) + ($s2 * $request->kwt) + $request->otkartap + $request->otkwt + $request->waktumasuk - $request->waktukeluar,
+                            'bantuan_masuk' => $request->bantuanmasuk,
+                            'bantuan_keluar' => $request->bantuankeluar,
+                            'bantuan_masuk_waktu' => $request->waktumasuk,
+                            'bantuan_keluar_waktu' => $request->waktukeluar,
                             'lastedit' => $a1->username,
                         ]);
                         return redirect('/data/'.$s3);
@@ -369,7 +328,6 @@ class UserController extends Controller
             $end = strtotime($request->rekstop0);
             $mins = ($end - $start) / 60;
             $barcode = 'N'.$last.$acl.$acs.$date;
-            $lastperc = DB::table('rekapprod')->where('keyid', $request->subaru)->select('ttlperc')->sum('ttlperc');
             DB::table('rekapprod')->insert([
                 'id' => $barcode,
                 'keyid' => $request->subaru,
@@ -377,18 +335,15 @@ class UserController extends Controller
                 'start' => $request->rekstart0,
                 'stop' => $request->rekstop0,
                 'dur' => abs($mins),
-                'ttlprod' => $request->ttlprod,
-                'prodorg' => $request->prodorg,
-                'standart' => $request->standart,
-                'actual' => ($request->ttlprod /  abs($mins)) * 60,
-                'percentage' => (($request->ttlprod /  abs($mins)) * 60) / $request->standart * 100,
-                'ttlperc' => ((($request->ttlprod /  abs($mins)) * 60) / $request->standart * 100) + $lastperc,
-                'kaporg' => (($request->ttlprod /  abs($mins)) * 60) / $request->prodorg,
-                'petugas' => $request->petugas,
+                'daily_plan' => $request->daily_plan,
+                'daily_actual' => $request->daily_actual,
+                'daily_diff' => $request->daily_actual - $request->daily_plan ,
+                'ng_process' => $request->ng_process,
+                'ng_material' => $request->ng_material,
+                'ket' => $request->ket,
                 'lastedit' => $a1->username,
                 ]);
                 return redirect('/resume/'.$request->subaru);
-                    // return redirect('/lotsp/'.$barcode);
         }
     }
 

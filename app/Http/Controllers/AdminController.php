@@ -274,12 +274,13 @@ class AdminController extends Controller
     public function shiftditambah(Request $request) {
         $start = strtotime($request->start);
         $end = strtotime($request->finish);
-        $mins = ($end - $start) / 60;
+        $mins = (($end - $start) / 60) - $request->break;
         DB::table('waktu')->insert([
             'shift' => $request->nama,
             'value' => $request->posisi,
             'start' => $request->start,
             'finish' => $request->finish,
+            'break_time' => $request->break,
             'duration' => abs($mins)
         ]);
         return redirect('/pengaturan/shift');
@@ -288,12 +289,13 @@ class AdminController extends Controller
     public function shiftdiedit(Request $request){
         $start = strtotime($request->startedit);
         $end = strtotime($request->finishedit);
-        $mins = ($end - $start) / 60;
+        $mins = (($end - $start) / 60) - $request->breakedit;
         DB::table('waktu')->where('id', $request->idedit)->update([
             'shift' => $request->shiftedit,
             'value' => $request->posisiedit,
             'start' => $request->startedit,
             'finish' => $request->finishedit,
+            'break_time' => $request->breakedit,
             'duration' => abs($mins)
         ]);
         return redirect('/pengaturan/shift');
