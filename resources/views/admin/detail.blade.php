@@ -212,28 +212,25 @@
                             <td align="center">Start</td>
                             <td align="center">Stop</td>
                             <td align="center">Duration</td>
-                            <td align="center">Total Produksi</td>
-                            <td align="center">Produksi Org</td>
-                            <td align="center">Standard</td>
-                            <td align="center">Actual</td>
-                            <td align="center">%</td>
-                            <td align="center">Total %</td>
-                            <td align="center">Kap/ Org</td>
-                            <td align="center">Petugas</td>
+                            <td align="center">Daily Plan</td>
+                            <td align="center">Daily Actual</td>
+                            <td align="center">Daily (+/-)</td>
+                            <td align="center">NG Process</td>
+                            <td align="center">NG Material</td>
+                            <td align="center">Keterangan</td>
                         </tr>
                         @foreach ($data6 as $f) <tr>
                             <td>{{$f->tipe}}</td>
                             <td align="center">{{$f->start}}</td>
                             <td align="center">{{$f->stop}}</td>
                             <td align="center">{{$f->dur}}</td>
-                            <td align="center">{{$f->ttlprod}}</td>
-                            <td align="center">{{$f->prodorg}}</td>
-                            <td align="center">{{$f->standart}}</td>
-                            <td align="center">{{$f->actual}}</td>
-                            <td align="center">{{$f->percentage}}</td>
-                            <td align="center">{{$f->ttlperc}}</td>
-                            <td align="center">{{$f->kaporg}}</td>
-                            <td align="center">{{$f->petugas}}</td>
+                            <td align="center">{{$f->daily_plan}}</td>
+                            <td align="center">{{$f->daily_actual}}</td>
+                            <td align="center">{{$f->daily_diff}}</td>
+                            <td align="center">{{$f->ng_process}}</td>
+                            <td align="center">{{$f->ng_material}}</td>
+                            <td align="center">{{$f->ng_total}}</td>
+                            <td align="center">{{$f->ket}}</td>
                         </tr>
                         @endforeach
                     </table>

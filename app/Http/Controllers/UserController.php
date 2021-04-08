@@ -340,6 +340,7 @@ class UserController extends Controller
                 'daily_diff' => $request->daily_actual - $request->daily_plan ,
                 'ng_process' => $request->ng_process,
                 'ng_material' => $request->ng_material,
+                'ng_total' => $request->ng_material + $request->ng_process,
                 'ket' => $request->ket,
                 'lastedit' => $a1->username,
                 ]);
