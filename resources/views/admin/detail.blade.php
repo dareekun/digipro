@@ -252,21 +252,17 @@
                             <td>{{$g->tindakan1}}</td>
                             <td align="center">{{$g->hasil}} Pcs</td>
                             <td align="center">{{$g->avalaible}} Menit</td>
-                            <td align="center">{{$g->time}} Pcs/Jam </td>
+                            <td align="center">{{$g->phh}} Pcs/Jam </td>
                         </tr>
                         <tr>
                             <td colspan="3"><br><br></td>
                             <td>Total Loss Time</td>
-                            <td>Total Man Power</td>
-                            <td></td>
                         </tr>
                         <tr>
                             <td>{{$g->inti2}}</td>
                             <td>{{$g->analisa2}}</td>
                             <td>{{$g->tindakan2}}</td>
                             <td align="center">{{$g->ttlloss}} Menit</td>
-                            <td align="center">{{$g->ttlman}} Person</td>
-                            <td></td>
                         </tr>
                         @endforeach
                     </table>

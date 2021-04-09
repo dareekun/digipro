@@ -211,7 +211,8 @@ $(document).ready(function() {
                                 <td><input type="number" data-placement="top" data-trigger="manual"
                                         disabled value="{{old('regdur0')}}" style="width:100px"
                                         class="form-control" name="regdur0"></td>
-                                <td><select name="regprod0" class="custom-select">
+                                <td><select name="regprod0" class="form-control selectpicker"
+                                            data-live-search="true">
                                         @foreach($produk as $p)
                                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
@@ -272,7 +273,8 @@ $(document).ready(function() {
                                         class="form-control" name="wrkfinish0"></td>
                                 <td><input value="{{old('wrkdur0')}}" disabled type="number" style="width:100px"
                                         class="form-control" name="wrkdur0"></td>
-                                <td><select name="wrkprod0" class="custom-select">
+                                <td><select name="wrkprod0" class="form-control selectpicker"
+                                            data-live-search="true">
                                         @foreach($produk as $p)
                                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
@@ -332,7 +334,8 @@ $(document).ready(function() {
                                         class="form-control" name="orfinish0"></td>
                                 <td><input value="{{old('ordur0')}}" disabled type="number" style="width:100px"
                                         class="form-control" name="ordur0"></td>
-                                <td><select name="orprod0" class="custom-select">
+                                <td><select name="orprod0"class="form-control selectpicker"
+                                            data-live-search="true">
                                         @foreach($produk as $p)
                                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
@@ -368,7 +371,8 @@ $(document).ready(function() {
                                         class="form-control-plaintext" name="deffinish"></td>
                                 <td><input disabled value="{{$d4->dur}}" type="number" style="width:100px"
                                         class="form-control-plaintext" name="defdur"></td>
-                                <td><select disabled name="defprod" class="form-control-plaintext">
+                                <td><select disabled name="defprod" class="form-control selectpicker"
+                                            data-live-search="true">
                                         @foreach($produk as $p)
                                         <option @if($d4->tipe==$p->tipe) selected @else @endif
                                             value="{{$p->tipe}}">{{$p->tipe}}</option>
@@ -392,7 +396,8 @@ $(document).ready(function() {
                                         class="form-control" name="deffinish0"></td>
                                 <td><input value="{{old('defdur0')}}" disabled type="number" style="width:100px"
                                         class="form-control" name="defdur0"></td>
-                                <td><select name="defprod0" class="custom-select">
+                                <td><select name="defprod0" class="form-control selectpicker"
+                                            data-live-search="true">
                                         @foreach($produk as $p)
                                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
@@ -450,7 +455,8 @@ $(document).ready(function() {
                             @endforeach
                             <tr>
                                 <td></td>
-                                <td><select name="rekprod0" style="width:300px" class="custom-select">
+                                <td><select name="rekprod0" class="form-control selectpicker"
+                                            data-live-search="true">
                                         @foreach($produk as $p)
                                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                                         @endforeach</td>
@@ -553,7 +559,7 @@ $(document).ready(function() {
                         @empty
                         <table style="width:100%">
                             <tr>
-                                <td style="width:20%" align="center">Inti Masalah</td>
+                                <td style="width:20%" align="center">Hambatan</td>
                                 <td style="width:20%" align="center">Analisa Penyebab</td>
                                 <td style="width:20%" align="center">Tindakan Penanggulangan</td>
                                 <td style="width:10%" align="center">Hasil Produksi</td>
@@ -561,11 +567,11 @@ $(document).ready(function() {
                                 <td style="width:12%" align="center">Production Head</td>
                             </tr>
                             <tr>
-                                <td><input value="{{old('reslt1')}}" type="text" class="form-control" name="reslt1">
+                                <td><input value="-" type="text" class="form-control" name="reslt1">
                                 </td>
-                                <td><input value="{{old('reslt2')}}" type="text" class="form-control" name="reslt2">
+                                <td><input value="-" type="text" class="form-control" name="reslt2">
                                 </td>
-                                <td><input value="{{old('reslt3')}}" type="text" class="form-control" name="reslt3">
+                                <td><input value="-" type="text" class="form-control" name="reslt3">
                                 </td>
                                 <td>
                                     <div class="input-group"><input value="{{$summ}}"
@@ -598,11 +604,11 @@ $(document).ready(function() {
                                 <td></td>
                             </tr>
                             <tr>
-                                <td><input value="{{old('reslt1a')}}" type="text" class="form-control" name="reslt1a">
+                                <td><input value="-" type="text" class="form-control" name="reslt1a">
                                 </td>
-                                <td><input value="{{old('reslt2a')}}" type="text" class="form-control" name="reslt2a">
+                                <td><input value="-" type="text" class="form-control" name="reslt2a">
                                 </td>
-                                <td><input value="{{old('reslt3a')}}" type="text" class="form-control" name="reslt3a">
+                                <td><input value="-" type="text" class="form-control" name="reslt3a">
                                 </td>
                                 <td>
                                     <div class="input-group"><input value="{{$ttloss}}"

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Validator;
 
 use Illuminate\Support\Facades\Http;
-use Nahid\JsonQ\Jsonq;
 
 use App\User;
 Use Redirect;
@@ -142,7 +141,7 @@ class UserController extends Controller
                     'tindakan1' => $request->reslt3,
                     'hasil' => $request->reslt4,
                     'avalaible' => $request->reslt5,
-                    'time' => $request->reslt6,
+                    'phh' => $request->reslt6,
                     'inti2' => $request->reslt1a,
                     'analisa2' => $request->reslt2a,
                     'tindakan2' => $request->reslt3a,
@@ -160,7 +159,7 @@ class UserController extends Controller
                         'tindakan1' => $request->reslt3,
                         'hasil' => $request->reslt4,
                         'avalaible' => $request->reslt5,
-                        'time' => $request->reslt6,
+                        'phh' => $request->reslt6,
                         'inti2' => $request->reslt1a,
                         'analisa2' => $request->reslt2a,
                         'tindakan2' => $request->reslt3a,
