@@ -29,6 +29,7 @@ class UserController extends Controller
         $s0 = DB::table('waktu')->select('start')->where('shift', $request->shift)->value('start');
         $s1 = DB::table('waktu')->select('finish')->where('shift', $request->shift)->value('finish');
         $s2 = DB::table('waktu')->select('duration')->where('shift', $request->shift)->value('duration');
+        $s4 = DB::table('waktu')->select('value')->where('shift', $request->shift)->value('value');
         $s3 = Auth::user();
         $line = explode(" ", $request->line);
         $shift = explode(" ", $request->shift);

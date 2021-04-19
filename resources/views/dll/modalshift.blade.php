@@ -33,7 +33,7 @@
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Break Shift</div>
+        <div class="col-sm-3">Duration</div>
         <div class="col-sm-9"><input required type="number" name="break" id="break" value="" class="form-control"></div>
         </div>
       </div>
@@ -81,7 +81,7 @@
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Break Shift</div>
+        <div class="col-sm-3">Duration</div>
         <div class="col-sm-9"><input required type="number" name="breakedit" id="breakedit" value="" class="form-control"></div>
         </div>
       </div>

@@ -196,8 +196,9 @@ class AdminController extends Controller
 
     public function produk() {
         $produk = DB::table('produk')->get();
-        $line = $line = DB::table('produk')->select('bagian')->distinct()->get();
-        return view('admin.produk', ['data' => $produk, 'bagian' => $line]);
+        $bagian = DB::table('produk')->select('bagian')->distinct()->get();
+        $line = DB::table('produk')->select('tempat')->distinct()->get();
+        return view('admin.produk', ['data' => $produk, 'bagian' => $bagian, 'list' => $line]);
     }
 
     public function detailproduk($tipe) {
@@ -211,6 +212,18 @@ class AdminController extends Controller
         return redirect('/admin/produk/'.$modelno);
     }
 
+    public function produkdirubah(Request $request) {
+        DB::table('produk')->where('id', $request->edittag0)->update([
+            'tipe' => $request->edittag3,
+            'bagian' => $request->edittag1,
+            'tempat' => $request->edittag2,
+            'qtyinner' => $request->edittag4,
+            'qtyouter' => $request->edittag5,
+            'time' => $request->edittag6
+        ]);
+        return redirect('/admin/produk');
+    }
+
     public function produkditambah(Request $request) {
         DB::table('produk')->insert([
             'tipe' => $request->tag3,
@@ -218,7 +231,7 @@ class AdminController extends Controller
             'tempat' => $request->tag2,
             'qtyinner' => $request->tag4,
             'qtyouter' => $request->tag5,
-
+            'time' => $request->tag6
         ]);
         return redirect('/admin/produk');
     }
@@ -233,7 +246,7 @@ class AdminController extends Controller
 
     public function masalah() {
         $i = 1;
-        $uni0 = DB::table('loss_type')->get();
+        $uni0 = DB::table('loss_type')->orderBy('id', 'asc')->get();
         $uni1 = DB::table('loss_type')->select('type')->distinct()->get();
         return view('admin.masalah', ['i' => $i, 'data' => $uni0, 'problemtype' => $uni1]);
     }
@@ -272,31 +285,27 @@ class AdminController extends Controller
     }
 
     public function shiftditambah(Request $request) {
-        $start = strtotime($request->start);
-        $end = strtotime($request->finish);
-        $mins = (($end - $start) / 60) - $request->break;
+        $start = new \DateTime($request->start);
+        $end = new \DateTime($request->finish);
         DB::table('waktu')->insert([
             'shift' => $request->nama,
             'value' => $request->posisi,
             'start' => $request->start,
             'finish' => $request->finish,
-            'break_time' => $request->break,
-            'duration' => abs($mins)
+            'duration' => $request->breakedit,
         ]);
         return redirect('/pengaturan/shift');
     }
 
     public function shiftdiedit(Request $request){
-        $start = strtotime($request->startedit);
-        $end = strtotime($request->finishedit);
-        $mins = (($end - $start) / 60) - $request->breakedit;
+        $start = new \DateTime($request->startedit);
+        $end   = new \DateTime($request->finishedit);
         DB::table('waktu')->where('id', $request->idedit)->update([
             'shift' => $request->shiftedit,
             'value' => $request->posisiedit,
             'start' => $request->startedit,
             'finish' => $request->finishedit,
-            'break_time' => $request->breakedit,
-            'duration' => abs($mins)
+            'duration' => $request->breakedit,
         ]);
         return redirect('/pengaturan/shift');
     }

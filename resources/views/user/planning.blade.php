@@ -84,7 +84,7 @@
 <script>
     $(document).ready(function() {
     var table = $('#test').DataTable({
-        order: [[0, 'desc']],
+        order: [[0, 'asc']],
         scrollY: '50vh',
         paging: false,
         info: false,

@@ -11,7 +11,18 @@ use Illuminate\Support\Facades\Http;
 class noLoginController extends Controller
 {
     public function pwk(Request $request) {
-        return Excel::download(new PWKExports($request->tahuninput,$request->lineproduksi), $request->tahuninput.'PWK - '.$request->lineproduksi.'.xlsx');
+        if ($request->tahuninput == '') {
+            $month = date('m');
+            $year  = date('Y');
+            $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $tanggal = date('F Y');
+        } else {
+            $month = date('m', strtotime($request->tahuninput));
+            $year  = date('Y', strtotime($request->tahuninput));
+            $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $tanggal = date('F Y', strtotime($request->tahuninput));
+        }
+        return Excel::download(new PWKExports($request->tahuninput), 'PWK - '.$tanggal.'.xlsx');
     }
 
     public function grafik($id) {
@@ -52,6 +63,26 @@ class noLoginController extends Controller
         return view('grafik', ['tipe' => $id, 'lini' => $lini, 'planning' => $plan, 'actual' => $actual]);
     }
 
+
+    // Debugging Table 
+    public function pwk2(Request $request) {
+        if ($request->tahuninput == '') {
+            $month = date('m');
+            $year  = date('Y');
+            $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $tanggal = date('F Y');
+        } else {
+            $month = date('m', strtotime($request->tahuninput));
+            $year  = date('Y', strtotime($request->tahuninput));
+            $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $tanggal = date('F Y', strtotime($request->tahuninput));
+        }
+        $data = DB::table('rekapprod')->leftJoin('dataharian', 'rekapprod.keyid', '=', 'dataharian.keyid')->leftJoin('produk', 'rekapprod.tipe', '=', 'produk.tipe')
+        ->select('dataharian.tanggal as tanggal', 'dataharian.shift as shift', 'dataharian.line as Line_Produksi', 'rekapprod.tipe as ItemCode', 'rekapprod.daily_plan as Qty', 'rekapprod.ng_total as Defect', 'produk.time as Standar_Time')
+        ->whereMonth('dataharian.tanggal', $month)->whereYear('dataharian.tanggal', $year)->where('autosave', 'selesai')->get();
+
+        return $data;
+    }
 
     // Debugging Table before export
     public function returnpwk(Request $request) {

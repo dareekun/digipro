@@ -19,21 +19,16 @@
                                 <h3>Detail Item Produk</h3>
                             </div>
                         </div>
-                        <table style="width:50%" id="dynamic_field">
-                                            <tr>
-                                                <td align="left">Part Name</td>
-                                                <td align="center"> Opsi</td>
-                                            </tr>
-                                            @foreach ($data as $dt)
-                                            <tr>
-                                                <td><input type="text" disabled class="form-control" 
-                                                        value="{{$dt->partname}}"></td>
-                                                        <td align="center">
-                                                        <a type="button" name="remove" href="/admin/produk/parts/hapus/{{$dt->id}}" class="btn btn-danger btn_remove"><i class="fa fa-times-circle" aria-hidden="true"></i> Hapus</a>
-                                                        </td>
-                                            </tr>
-                                            @endforeach
-                                        </table>
+                        <div class="row my-3">
+                        <div class="col-sm-3">Part Name</div>
+                        <div class="col-sm-3">Opsi</div>
+                        </div>
+                        @foreach ($data as $dt)
+                        <div class="row my-1">
+                        <div class="col-sm-3">{{$dt->partname}}</div>
+                        <div class="col-sm-1"><a type="button" name="remove" title="Hapus" href="/admin/produk/parts/hapus/{{$dt->id}}" class="btn btn-sm btn-danger btn_remove"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

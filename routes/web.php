@@ -86,6 +86,7 @@ Route::post('/admin/oraclesave', [AdminController::class, 'oraclesave'])->middle
 Route::get('/admin/produk', [AdminController::class, 'produk'])->middleware('can:isAdmin');
 Route::post('/produk/dihapus', [AdminController::class, 'produkdihapus'])->middleware('can:isAdmin');
 Route::post('/produk/ditambah', [AdminController::class, 'produkditambah'])->middleware('can:isAdmin');
+Route::post('/produk/dirubah', [AdminController::class, 'produkdirubah'])->middleware('can:isAdmin');
 
 // Pengaturan Masalah
 Route::get('/pengaturan/masalah', [AdminController::class, 'masalah'])->middleware('can:isAdmin');

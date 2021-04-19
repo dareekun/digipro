@@ -4,23 +4,25 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Illuminate\Support\Facades\DB;
+use App\Exports\Sheets\InputResultSheet;
+use App\Exports\Sheets\InputTimeSheet;
 
-class PWKExports implements WithMultipleSheets
+class PWKExports implements  WithMultipleSheets
 {
+    use Exportable;
     /**
     * @return \Illuminate\Support\Collection
     */
 
-    public function __construct($date,$line)
+    public function __construct($date)
     {
         $this->date = $date;
-        $this->line = $line;
     }
 
     public function sheets(): array
     {
         $sheets = [];
+
         if ($this->date == '') {
             $month = date('m');
             $year  = date('Y');
@@ -32,14 +34,8 @@ class PWKExports implements WithMultipleSheets
             $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $tanggal = date('F Y', strtotime($this->date));
         }
-        $sheets[] = DB::table('rekapprod')->leftJoin('dataharian', 'rekapprod.keyid', '=', 'dataharian.keyid')->leftJoin('produk', 'rekapprod.tipe', '=', 'produk.tipe')
-        ->select('dataharian.tanggal as tanggal', 'dataharian.shift as shift', 'dataharian.line as Line_Produksi', 'rekapprod.tipe as ItemCode', 'rekapprod.daily_plan as Qty', 'rekapprod.ng_total as Defect', 'produk.time as Standar_Time')
-        ->where('autosave', 'selesai')->get();
-
-        $sheets[] = DB::table('rekapprod')->leftJoin('dataharian', 'rekapprod.keyid', '=', 'dataharian.keyid')->leftJoin('produk', 'rekapprod.tipe', '=', 'produk.tipe')
-        ->select('dataharian.tanggal as tanggal', 'dataharian.shift as shift', 'dataharian.line as Line_Produksi', 'rekapprod.tipe as ItemCode', 'rekapprod.daily_plan as Qty', 'rekapprod.ng_total as Defect', 'produk.time as Standar_Time')
-        ->where('autosave', 'selesai')->get();
-
+        $sheets[] = new InputResultSheet($year, $month);
+        $sheets[] = new InputTimeSheet($year, $month);
         return $sheets;
     }
 }
