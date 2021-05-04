@@ -207,9 +207,14 @@ class UserController extends Controller
                     return Redirect::back()->withErrors($errors);
             }
             else {
-                $start = strtotime($request->regstart0);
-                $end = strtotime($request->regfinish0);
-                $mins = ($end - $start) / 60;
+                $start = strtotime($request->start);
+                $end = strtotime($request->finish);
+                if (date("H:i:s", $start) > date("H:i:s", strtorime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtorime("06:00:00")))
+                {
+                    $mins = ((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00")) / 60);
+                }else {
+                    $mins = (($end - $start) / 60);
+                }
                 DB::table('loss_data') ->insert([
                     'keyid' => $request->subaru,
                     'problem' => $request->regprob0,
@@ -232,9 +237,14 @@ class UserController extends Controller
                     return Redirect::back()->withErrors($errors);
             }
             else {
-                $start = strtotime($request->wrkstart0);
-                $end = strtotime($request->wrkfinish0);
-                $mins = ($end - $start) / 60;
+                $start = strtotime($request->start);
+                $end = strtotime($request->finish);
+                if (date("H:i:s", $start) > date("H:i:s", strtorime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtorime("06:00:00")))
+                {
+                    $mins = ((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00")) / 60);
+                }else {
+                    $mins = (($end - $start) / 60);
+                }
                 DB::table('loss_data') ->insert([
                     'keyid' => $request->subaru,
                     'problem' => $request->wrkprob0,
@@ -257,9 +267,14 @@ class UserController extends Controller
                     return Redirect::back()->withErrors($errors);
             }
             else {
-                $start = strtotime($request->orstart0);
-                $end = strtotime($request->orfinish0);
-                $mins = ($end - $start) / 60;
+                $start = strtotime($request->start);
+                $end = strtotime($request->finish);
+                if (date("H:i:s", $start) > date("H:i:s", strtorime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtorime("06:00:00")))
+                {
+                    $mins = ((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00")) / 60);
+                }else {
+                    $mins = (($end - $start) / 60);
+                }
                 DB::table('loss_data') ->insert([
                     'keyid' => $request->subaru,
                     'problem' => $request->orprob0,
@@ -282,9 +297,14 @@ class UserController extends Controller
                     return Redirect::back()->withErrors($errors);
             }
             else {
-                $start = strtotime($request->defstart0);
-                $end = strtotime($request->deffinish0);
-                $mins = ($end - $start) / 60;
+                $start = strtotime($request->start);
+                $end = strtotime($request->finish);
+                if (date("H:i:s", $start) > date("H:i:s", strtorime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtorime("06:00:00")))
+                {
+                    $mins = ((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00")) / 60);
+                }else {
+                    $mins = (($end - $start) / 60);
+                }
                 DB::table('loss_data') ->insert([
                     'keyid' => $request->subaru,
                     'problem' => $request->defprob0,
@@ -324,9 +344,14 @@ class UserController extends Controller
             foreach ($shift as $q) {
                 $acs .= $q[0];
             }
-            $start = strtotime($request->rekstart0);
-            $end = strtotime($request->rekstop0);
-            $mins = ($end - $start) / 60;
+            $start = strtotime($request->start);
+            $end = strtotime($request->finish);
+            if (date("H:i:s", $start) > date("H:i:s", strtorime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtorime("06:00:00")))
+            {
+                $mins = ((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00")) / 60);
+            }else {
+                $mins = (($end - $start) / 60);
+            }
             $barcode = 'N'.$last.$acl.$acs.$date;
             DB::table('rekapprod')->insert([
                 'id' => $barcode,

@@ -409,11 +409,11 @@ $(document).ready(function() {
                             </tr>
                         </table>
                         <br>
-                        Rekap Produksi
+                        <b>Rekap Produksi</b>
                         <table>
                             <tr>
                                 <td></td>
-                                <td style="width:15%" align="center">Tipe Produk</td>
+                                <td style="width:20%" align="center">Tipe Produk</td>
                                 <td align="center">Start</td>
                                 <td align="center">Stop</td>
                                 <td align="center">Duration</td>
@@ -422,7 +422,7 @@ $(document).ready(function() {
                                 <td align="center">Daily (+/-)</td>
                                 <td align="center">NG Process</td>
                                 <td align="center">NG Material</td>
-                                <td align="center">Ket</td>
+                                <td style="width:20%" align="center">Ket</td>
                                 <td></td>
                             </tr>
                             @foreach($data5 as $d5)

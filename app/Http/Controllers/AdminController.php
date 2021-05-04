@@ -285,14 +285,22 @@ class AdminController extends Controller
     }
 
     public function shiftditambah(Request $request) {
-        $start = new \DateTime($request->start);
-        $end = new \DateTime($request->finish);
+        $start = strtotime($request->start);
+        $end = strtotime($request->finish);
+        if (date("H:i:s", $start) > date("H:i:s", strtorime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtorime("06:00:00")))
+        {
+            $mins = ((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00")) / 60) -$request->break ;
+        }else {
+            $mins = (($end - $start) / 60) - $request->break;
+        }
+        
         DB::table('waktu')->insert([
             'shift' => $request->nama,
             'value' => $request->posisi,
             'start' => $request->start,
             'finish' => $request->finish,
-            'duration' => $request->breakedit,
+            'break_time' => $request->break,
+            'duration' => abs($mins)
         ]);
         return redirect('/pengaturan/shift');
     }
@@ -300,12 +308,19 @@ class AdminController extends Controller
     public function shiftdiedit(Request $request){
         $start = new \DateTime($request->startedit);
         $end   = new \DateTime($request->finishedit);
+        if (date("H:i:s", $start) > date("H:i:s", strtorime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtorime("06:00:00")))
+        {
+            $mins = ((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00")) / 60) -$request->break ;
+        }else {
+            $mins = (($end - $start) / 60) - $request->break;
+        }
         DB::table('waktu')->where('id', $request->idedit)->update([
             'shift' => $request->shiftedit,
             'value' => $request->posisiedit,
             'start' => $request->startedit,
             'finish' => $request->finishedit,
-            'duration' => $request->breakedit,
+            'break_time' => $request->breakedit,
+            'duration' => abs($mins)
         ]);
         return redirect('/pengaturan/shift');
     }

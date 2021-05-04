@@ -87,12 +87,10 @@ $(document).ready(function() {
         info: false,
     });
 } );
-
 function hapus(x) {
     document.getElementById("idhapus").value = x;
     $('#hapus').modal('show')
 }
-
 function edit(a, b, c, d, e) {
     document.getElementById("idedit").value = a;
     document.getElementById("shiftedit").value = b;
@@ -101,6 +99,5 @@ function edit(a, b, c, d, e) {
     document.getElementById("finishedit").value = e;
     $('#edit').modal('show')
 }
-
 </script>
 @endpush
