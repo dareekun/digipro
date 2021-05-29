@@ -317,11 +317,11 @@ class InfoController extends Controller
         $month = date('m') - 1;
         if (isset($request->tempat)) {
             $line = DB::table('produk')->select('bagian')->distinct()->get();
-            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>=', $month)->where('produk.tempat', $request->tempat)->where('lotcard.lotno', $request->tanggal)->distinct('barcode')->get();
+            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>', $month)->where('produk.tempat', $request->tempat)->where('lotcard.lotno', $request->tanggal)->distinct('barcode')->get();
             return view('user.lotcard1', ['data' => $data, 'bagian' => $line]);
         }else {
             $line = DB::table('produk')->select('bagian')->distinct()->get();
-            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>=', $month)->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->distinct('barcode')->get();
+            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>', $month)->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->distinct('barcode')->get();
             return view('user.lotcard1', ['data' => $data, 'bagian' => $line]);
         }
 

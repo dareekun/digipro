@@ -21,6 +21,7 @@
     <script type="text/javascript" src="{{ asset('/js/bootstrap-select.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/Chart.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/axios.min.js') }}"></script>
+    @livewireStyles
     <!-- Styles -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/font-awesome.min.css') }}">
@@ -34,6 +35,7 @@
     body {
         background-image: url("{{ asset('/img/bg.png') }}");
         background-size: cover;
+        scroll-behavior: smooth;
     }
 
     * {
@@ -212,6 +214,7 @@
         </main>
     </div>
     @stack('scripts')
+    @livewireScripts
 </body>
 
 </html>
