@@ -34,7 +34,6 @@ $(document).ready(function() {
                     <br>
                     <form name="masuk" id="masuk" action="/next2" method="post">
                         {{ csrf_field() }}
-                        <input type="text" id="id_hapus" name="id_hapus" hidden>
                         <table>
                             <tr>
                                 <td>
@@ -152,6 +151,8 @@ $(document).ready(function() {
                                             <td>
                                             <input type="number" class="form-control" style="width:100px" value="{{$d->bantuan_keluar_waktu}}" name="waktukeluar">
                                             </td>
+                                            <td colspan="5"></td>
+                                            <td colspan="1"><button type="submit" class="btn btn-success w-100">Update</button></td>
                                         </tr>
                                     </table>
                                 </td>

@@ -88,8 +88,9 @@ class UserController extends Controller
     // ===================================================
     
     public function next2(Request $request) {
+        $s1 = Auth::user();
+        $s2 = DB::table('waktu')->where('shift', $request->shift)->select('duration')->value('duration');
         DB::table('dataharian')->where('keyid', $request->subaru)->update([
-            'bagian' => $id,
             'tanggal' => $request->tanggal,
             'line'=> $request->line,
             'pic' => $request->pic,
@@ -111,8 +112,9 @@ class UserController extends Controller
             'bantuan_keluar' => $request->bantuankeluar,
             'bantuan_masuk_waktu' => $request->waktumasuk,
             'bantuan_keluar_waktu' => $request->waktukeluar,
-            'lastedit' => $a1->username,
+            'lastedit' => $s1->username,
         ]);
+        return redirect('/resume/'.$request->subaru);
     }
 
     public function hapusdataproduk($id){
