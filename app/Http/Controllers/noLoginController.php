@@ -53,7 +53,9 @@ class noLoginController extends Controller
             }
         }
         else {
-            $plan    = [0,0,0,0,0,0,0,0,0];
+            foreach ($lini as $ln) {
+                $plan[]    = 0;
+                }
         }
             foreach ($lini as $li) {
                 $actual[]  = DB::table('rekapprod')->join('produk', 'rekapprod.tipe', '=', 'produk.tipe')

@@ -11,7 +11,6 @@
       <div class="modal-body">
         <form action="/shift/ditambah" method="post">
         {{ csrf_field() }}
-
         <div class="row">
         <div class="col-sm-3">Shift</div>
         <div class="col-sm-9"><input required type="text" name="nama" class="form-control"></div>
@@ -45,13 +44,12 @@
     </div>
   </div>
 </div>
-
 <!-- Rubah Modal -->
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Tambah Shift</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Rubah Shift</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -67,7 +65,11 @@
         <br>
         <div class="row">
         <div class="col-sm-3">Posisi Shift</div>
-        <div class="col-sm-9"><input required type="text" list="shiftlist" name="posisiedit" id="posisiedit" value="" class="form-control"></div>
+        <div class="col-sm-9"><select required type="text" list="shiftlist" name="posisiedit" id="posisiedit" value="" class="form-control">
+        <option value="Shift 1">Shift 1</option>
+        <option value="Shift 2">Shift 2</option>
+        <option value="Shift 3">Shift 3</option></select>
+        </div>
         </div>
         <br>
         <div class="row">
@@ -93,13 +95,12 @@
     </div>
   </div>
 </div>
-
 <!-- Hapus Modal -->
 <div class="modal fade" id="hapus" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Tambah Shift</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Hapus Shift</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

@@ -287,9 +287,9 @@ class AdminController extends Controller
     public function shiftditambah(Request $request) {
         $start = strtotime($request->start);
         $end = strtotime($request->finish);
-        if (date("H:i:s", $start) > date("H:i:s", strtorime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtorime("06:00:00")))
+        if (date("H:i:s", $start) > date("H:i:s", strtotime("15:00:00")) && date("H:i:s", $end) < date("H:i:s", strtotime("08:00:00")))
         {
-            $mins = ((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00")) / 60) -$request->break ;
+            $mins = (((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00"))) / 60) -$request->break ;
         }else {
             $mins = (($end - $start) / 60) - $request->break;
         }
@@ -306,11 +306,11 @@ class AdminController extends Controller
     }
 
     public function shiftdiedit(Request $request){
-        $start = new \DateTime($request->startedit);
-        $end   = new \DateTime($request->finishedit);
-        if (date("H:i:s", $start) > date("H:i:s", strtorime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtorime("06:00:00")))
+        $start = strtotime($request->startedit);
+        $end   = strtotime($request->finishedit);
+        if (date("H:i:s", $start) > date("H:i:s", strtotime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtotime("08:00:00")))
         {
-            $mins = ((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00")) / 60) -$request->break ;
+            $mins = (((strtotime("23:59:59") - $start) + 1 + ($end - strtotime("00:00:00"))) / 60) - $request->break ;
         }else {
             $mins = (($end - $start) / 60) - $request->break;
         }

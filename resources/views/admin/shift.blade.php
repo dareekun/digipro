@@ -53,7 +53,7 @@
                                 <td>{{$dt->finish}}</td>
                                 <td>{{$dt->duration}}</td>
                                 <td>
-                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="edit({{$dt->id}},'{{$dt->shift}}', '{{$dt->value}}', '{{$dt->start}}', '{{$dt->finish}}')"><i
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="edit({{$dt->id}},'{{$dt->shift}}', '{{$dt->value}}', '{{$dt->start}}', '{{$dt->finish}}', '{{$dt->break_time}}')"><i
                                             class="fa fa-pencil" aria-hidden="true"></i></button>
                                     <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapus({{$dt->id}})"><i
                                             class="fa fa-trash" aria-hidden="true"></i></button>
@@ -91,12 +91,13 @@ function hapus(x) {
     document.getElementById("idhapus").value = x;
     $('#hapus').modal('show')
 }
-function edit(a, b, c, d, e) {
+function edit(a, b, c, d, e, f) {
     document.getElementById("idedit").value = a;
     document.getElementById("shiftedit").value = b;
     document.getElementById("posisiedit").value = c;
     document.getElementById("startedit").value = d;
     document.getElementById("finishedit").value = e;
+    document.getElementById("breakedit").value = f;
     $('#edit').modal('show')
 }
 </script>
