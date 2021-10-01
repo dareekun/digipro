@@ -37,84 +37,6 @@
         background-size: cover;
         scroll-behavior: smooth;
     }
-
-    * {
-        box-sizing: border-box
-    }
-
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    /* Slideshow container */
-    .slideshow-container {
-        position: relative;
-        background: #f1f1f1f1;
-    }
-
-    /* Slides */
-    .mySlides {
-        display: none;
-        padding: 80px;
-        text-align: center;
-    }
-
-    /* Next & previous buttons */
-    .prev,
-    .nextt {
-        cursor: pointer;
-        position: absolute;
-        top: 50%;
-        width: auto;
-        margin-top: -30px;
-        padding: 16px;
-        color: #888;
-        font-weight: bold;
-        font-size: 20px;
-        border-radius: 0 3px 3px 0;
-        user-select: none;
-    }
-
-    /* Position the "next button" to the right */
-    .nextt {
-        position: absolute;
-        right: 0;
-        border-radius: 3px 0 0 3px;
-    }
-
-    /* On hover, add a black background color with a little bit see-through */
-    .prev:hover,
-    .nextt:hover {
-        background-color: rgba(0, 0, 0, 0.8);
-        color: white;
-    }
-
-    /* The dot/bullet/indicator container */
-    .dot-container {
-        text-align: center;
-        padding: 20px;
-        background: #ddd;
-    }
-
-    /* The dots/bullets/indicators */
-    .dot {
-        cursor: pointer;
-        height: 15px;
-        width: 15px;
-        margin: 0 2px;
-        background-color: #bbb;
-        border-radius: 50%;
-        display: inline-block;
-        transition: background-color 0.6s ease;
-    }
-
-    /* Add a background color to the active dot/circle */
-    .active,
-    .dot:hover {
-        background-color: #717171;
-    }
     </style>
 </head>
 <body>
@@ -129,38 +51,15 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <!-- Authentication Links -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Assy WD
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home" aria-haspopup="true" aria-expanded="false">
+                                Input
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/tabel/Assy WD">Tabel</a>
-                                <a class="dropdown-item" href="/graph/Assy WD">Graph</a>
-                                <a class="dropdown-item" href="/data/Assy WD">Input</a>
-                            </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Metal Part
+                        <li class="nav-item">
+                            <a class="nav-link " href="/home" aria-haspopup="true" aria-expanded="false">
+                                Tabel
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/tabel/Metal Part">Tabel</a>
-                                <a class="dropdown-item" href="/graph/Metal Part">Graph</a>
-                                <a class="dropdown-item" href="/data/Metal Part">Input</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Export
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/tabel/Export">Tabel</a>
-                                <a class="dropdown-item" href="/graph/Export">Graph</a>
-                                <a class="dropdown-item" href="/data/Export">Input</a>
-                            </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
@@ -173,7 +72,6 @@
                             </div>
                         </li>
                     </ul>
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown">
@@ -185,16 +83,10 @@
                                 @can('isUser')
                                 <a href="/home" class="dropdown-item">Dashboard</a>
                                 <a href="/profile/{{ Auth::user()->name }}" class="dropdown-item">Profil</a>
-                                <a href="/user/planning" class="dropdown-item">Planning</a>
-                                @endcan
-                                @can('isManager')
-                                <a href="/manager/Informasi" class="dropdown-item">Informasi</a>
                                 @endcan
                                 @can('isAdmin')
                                 <a href="/admin/pengaturan" class="dropdown-item">Pengaturan Pengguna</a>
                                 <a href="/pengaturan/masalah" class="dropdown-item">Pengaturan Produksi</a>
-                                <a href="/admin/akunoracle" class="dropdown-item">Akun Oracle</a>
-                                <a href="/admin/tambahakun" class="dropdown-item">Tambah Akun</a>
                                 @endcan
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

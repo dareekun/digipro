@@ -66,49 +66,6 @@ $(document).ready(function() {
                         </div>
                     </form>
                     </div>
-                    @if ($status == 200) 
-                    <!-- Tag Planning -->
-                    <div class="col-md-8">
-                    <table id="test" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th hidden scope="col">Bagian</th>
-                                <th scope="col">Line</th>
-                                <th scope="col">Tipe Produk</th>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">Planning</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($data as $dt)
-                        @if ($dt["bagian"] == "")
-
-                        @else 
-                        <tr>
-                                <td hidden>{{$dt["bagian"]}}</td>
-                                <td>{{$dt["line"]}}</td>
-                                <td> <a href="/laksan/{{$dt["job_number"]}}">{{$dt["assembly_item_name"]}}</a></td>
-                                <td>{{date('d M Y', strtotime($dt["job_start_date"]))}}</td>
-                                <td>{{$dt["plan_qty"]}}</td>
-                            </tr>
-                        @endif
-                        @endforeach
-                        </tbody>
-                    </table>
-                    </div>
-                    </div>
-                    @else 
-                    <div class="col-md-8">
-                    <div class="row">
-                    Error
-                    </div>
-                    <br>
-                    <div class="row">
-                    {{$data}}
-                    </div>
-                    </div>
-                    </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -134,7 +91,6 @@ $(document).ready(function() {
         </div>
     </div>
 </div>
-
 @stop
 
 @push('scripts')
@@ -167,7 +123,6 @@ $(document).ready(function() {
             } );
         }
     });
- 
 } );
 function reset() {
     document.getElementById('bagian').value = '';

@@ -18,7 +18,7 @@
                 </table></div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-4">
                             <table>
                                     <tr>
                                         <td><select name="tag1" class="form-control form-control-sm" id="bagian">
@@ -39,7 +39,7 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-md-4" align="right">
+                            <div class="col-md-8" align="right">
                             <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal"
                                 data-target="#tambah"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Tambah
                                 Produk</button>
@@ -149,6 +149,10 @@ function reset() {
 function hapus(x) {
     document.getElementById("idhapus").value = x;
     $('#hapus').modal('show');
+}
+
+function bagain() {
+    $('#bagain').modal('show');
 }
 
 function rubah(a, b, c, d, e, f, g) {

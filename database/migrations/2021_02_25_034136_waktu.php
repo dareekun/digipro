@@ -16,6 +16,7 @@ class Waktu extends Migration
         Schema::create('waktu', function (Blueprint $table) {
             $table->id();
             $table->string('shift');
+            $table->string('value');
             $table->string('start');
             $table->string('finish');
             $table->integer('duration');

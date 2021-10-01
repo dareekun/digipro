@@ -6,13 +6,10 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Lotcard</div>
+                    <div class="card-header">Lot Card Scanned</div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <h3>Lot Card Scanned</h3>
-                            </div>
-                            <div class="col-md-6" align="right">
+                            <div class="col-md-12" align="right">
                                 <table>
                                 <tr>
                                 <td>Berdasarkan Tanggal</td>

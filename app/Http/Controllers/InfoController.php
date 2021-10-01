@@ -117,32 +117,7 @@ class InfoController extends Controller
 
     public function lotcard0() {
         $line   = DB::table('produk')->select('bagian')->distinct()->get();
-
-        $htts   = Http::get('http://158.118.35.24:8080/discreet')->status();
-        if ($htts == 200) {
-            $htta   = Http::get('http://158.118.35.24:8080/discreet')->getBody();
-            $data0  = json_decode($htta, true);
-            $data1  = json_decode(DB::table('produk')->get(), true);
-            $total0 = count($data0);
-            $total1 = count($data1);
-            for ($i = 0; $i < $total0; $i++) {
-                for ($a = 0; $a < $total1; $a++) {
-                    if ($data0[$i]['assembly_item_name'] == $data1[$a]['tipe']){
-                            $data0[$i]['bagian'] = $data1[$a]['bagian'];
-                            $data0[$i]['line'] = $data1[$a]['tempat'];
-                    break;
-                    }
-                    else {
-                        $data0[$i]['bagian'] = "";
-                        $data0[$i]['line'] = "";
-                    }
-                }
-            }
-        } else {
-            $data0 = Http::get('http://158.118.35.24:8080/discreet')->getBody();
-        }
-        
-        return view('user.lotcard0', ['line' => $line, 'data' => $data0, 'status' => $htts]);
+        return view('user.lotcard0', ['line' => $line,]);
     }
 
     public function lotcardalpha(Request $request) {
@@ -152,9 +127,6 @@ class InfoController extends Controller
     }
 
     public function lotcardalpha2($param0){
-        $htta  = Http::get('http://158.118.35.24:8080/discreetdetail/'.$param0)->getBody();
-        $data0 = json_decode($htta, true);
-
         $parts = DB::table('parts')->where('modelno', $data0[0]['assembly_item_name'])->get();
         $shift = DB::table('waktu')->select('shift')->get();
         return view('user.lotcardalpha', ['data' => $parts, 'shift' => $shift, 'jobid' => $data0[0]['job_number'],
@@ -177,24 +149,15 @@ class InfoController extends Controller
     }
 
     public function plusalpha(Request $request) {
-        $line = explode(" ", DB::table('produk')->where('tipe', $request->tipe)->select('tempat')->value('tempat'));
-        $shift = explode(" ", $request->shift);
-        $date = date("Ymd", strtotime($request->tanggal));
-        $acl = "";
-        $acs = "";
-        foreach ($shift as $q) {
-            $acs .= $q[0];
-        }
-        $last  = DB::table('lotcard')->select('barcode')->where('lotno', $request->tanggal)->where('modelno', $request->tipe)->distinct()->count('barcode')+1;
-        $lotid = $acs.'N'.$last.trim($request->tipe,'-').$date;
+        $date  = base_convert(date("ymdhms", strtotime($request->tanggal)),10,32);
+        $lotid = strtoupper($date);
         $parts = $request->part;
         $lotparts = $request->lotpart;
         if (isset($request->part)) {
             for ($htng = 0; $htng < count($parts); $htng++) {
                 $data = array(
-                'id' => $lotid.$htng,
+                'id' => $lotid.str_pad($htng, 2, '0', STR_PAD_LEFT),
                 'barcode' => $lotid,
-                'keyid' => "Private",
                 'modelno' => $request->tipe,
                 'lotno' => $request->tanggal,
                 'shift'=> $request->shift,
@@ -218,47 +181,6 @@ class InfoController extends Controller
                  }
             }
             DB::table('lotcard')->insert($insert_data);
-            if ($request->jobid != "") {
-                $htta  = Http::get('http://158.118.35.24:8080/discreetdetail/'.$request->jobid)->getBody();
-                $data0 = json_decode($htta, true);
-                $sisa  = $data0[0]['plan_qty'] - $request->input1;
-                if ($sisa == 0) {
-                    $status = "Completed";
-                }
-                else {
-                    $status = "Released";
-                }
-                $job = $request->jobid;
-                $class = $data0[0]['class'];
-                $quantity = $data0[0]['plan_qty'];
-                $type = $data0[0]['type'];
-                $start = $data0[0]['job_start_date'];
-                $tanda = 0;
-            }
-            // Tanpa Planning
-            else {
-                $job = "1W2L50-D-".strtoupper(date('dMY'))."-".$request->tipe;
-                $type = "Standard";
-                $class = "Std. A/C";
-                $quantity = $request->input1;
-                $start = date('Y-m-d 00:00:00');
-                $sisa = 0;
-                $status = "Completed";
-                $tanda = 1;
-            }
-            DB::table('finish_job')->insert([
-                'id' => $lotid,
-                'Job' => $job,
-                'Type' => $type,
-                'Assembly' => $request->tipe,
-                'Class' => $class,
-                'Quantity' => $quantity,
-                'Status' => $status,
-                'Start Date' => $start,
-                'Quantity Remained' => $sisa,
-                'Overcompletion Quantity' => $request->input1,
-                'tanda' => $tanda
-            ]);
             return redirect('/cetaklot/'.$lotid);
         } else {
             return redirect('/lotcard0')->withErrors(['msg', 'The Message']);
@@ -266,11 +188,10 @@ class InfoController extends Controller
     }
 
     public function lotcard(Request $request) {
-        $id = '';
         $tipe  = DB::table('produk')->where('tempat', $request->tempat)->select('tipe')->get();
         $shift = DB::table('waktu')->select('shift')->get();
         $parts = DB::table('parts')->select('part')->where('model', $request->model)->get();
-        return view('user.lotcard', ['data' => $parts, 'tipe' => $tipe, 'shift' => $shift, 'keyid' => $id]);
+        return view('user.lotcard', ['data' => $parts, 'tipe' => $tipe, 'shift' => $shift]);
     }
     public function lotcard1(Request $request) {
         $line = explode(" ", DB::table('produk')->where('tipe', $request->tipe)->select('tempat')->value('tempat'));

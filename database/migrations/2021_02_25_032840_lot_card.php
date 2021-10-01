@@ -16,21 +16,20 @@ class LotCard extends Migration
         Schema::create('lotcard', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('barcode');
-            $table->string('keyid');
             $table->string('modelno');
             $table->string('lotno');
             $table->string('shift');
             $table->string('partname');
             $table->string('nolot');
-            $table->ineteger('input1')->nullable();
-            $table->ineteger('input2')->nullable();
-            $table->ineteger('ng1')->nullable();
-            $table->ineteger('ng2')->nullable();
-            $table->string('input1');
-            $table->string('input2');
-            $table->string('input1');
-            $table->string('input2');
-            $table->ineteger('status');
+            $table->integer('input1')->nullable();
+            $table->integer('input2')->nullable();
+            $table->integer('ng1')->nullable();
+            $table->integer('ng2')->nullable();
+            $table->string('date1');
+            $table->string('date2');
+            $table->string('name1');
+            $table->string('name2');
+            $table->integer('status');
         });
     }
 

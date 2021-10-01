@@ -34,7 +34,6 @@
                     <div class="center">
                         <form action="/lotcard1" enctype="multipart/form-data" method="post">
                             {{ csrf_field() }}
-                            <input name="keyid" type="text" hidden value="{{$keyid}}">
                             <table>
                                 <tr>
                                     <td colspan="3" align="center">Lot Card Production Assembly</td>

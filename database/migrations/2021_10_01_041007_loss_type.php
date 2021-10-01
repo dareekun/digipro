@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DefectLoss extends Migration
+class LossType extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class DefectLoss extends Migration
      */
     public function up()
     {
-        Schema::create('loss_defect', function (Blueprint $table) {
+        Schema::create('loss_type', function (Blueprint $table) {
             $table->id();
             $table->string('loss');
-            $table->string('sect');
+            $table->string('type');
+            $table->string('remark');
         });
     }
 

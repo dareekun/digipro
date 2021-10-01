@@ -13,11 +13,8 @@
         {{ csrf_field() }}
         <div class="row">
         <div class="col-sm-3">Bagian</div>
-        <div class="col-sm-9"><Select name="tag1" id="tag1" class="form-control">
-        <option value="Assy WD">Assy WD</option>
-        <option value="Metal Part">Metal Part</option>
-        <option value="Export">Export</option>
-        </Select></div>
+        <div class="col-sm-9">
+        <input required type="text" name="tag1" id="tag1" class="form-control"></div>
         </div>
         <br>
         <div class="row">
@@ -31,17 +28,17 @@
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Qty Inner Produk</div>
+        <div class="col-sm-3">Qty Inner</div>
         <div class="col-sm-9"><input required type="number" min="1" name="tag4" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Qty Outer Produk</div>
+        <div class="col-sm-3">Qty Outer</div>
         <div class="col-sm-9"><input required type="number" min="1" name="tag5" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Cycle Time Produk</div>
+        <div class="col-sm-3">Cycle Time</div>
         <div class="col-sm-9"><input required type="number" min="0.01" name="tag6" class="form-control"></div>
         </div>
       </div>
@@ -70,12 +67,8 @@
         <input hidden required type="text" name="edittag0" id="edittag0" value="" class="form-control">
         <div class="row">
         <div class="col-sm-3">Bagian</div>
-        <div class="col-sm-9"><Select name="edittag1" id="edittag1" class="form-control">
-        <option value="Assy WD">Assy WD</option>
-        <option value="Metal Part">Metal Part</option>
-        <option value="Export">Export</option>
-        
-        </Select></div>
+        <div class="col-sm-9">
+        <input required type="text" name="edittag1" id="edittag1" class="form-control"></div>
         </div>
         <br>
         <div class="row">
@@ -89,17 +82,17 @@
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Qty Inner Produk</div>
+        <div class="col-sm-3">Qty Inner</div>
         <div class="col-sm-9"><input required type="number" min="1" name="edittag4" id="edittag4" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Qty Outer Produk</div>
+        <div class="col-sm-3">Qty Outer</div>
         <div class="col-sm-9"><input required type="number" min="1" name="edittag5" id="edittag5" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Cycle Time Produk</div>
+        <div class="col-sm-3">Cycle Time</div>
         <div class="col-sm-9"><input required type="number" step=".01" name="edittag6" id="edittag6" class="form-control"></div>
         </div>
       </div>
