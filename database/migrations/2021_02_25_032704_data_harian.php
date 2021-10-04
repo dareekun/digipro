@@ -31,6 +31,10 @@ class DataHarian extends Migration
             $table->integer('otkwt');
             $table->integer('izin');
             $table->integer('optplan');
+            $table->integer('bantuan_masuk');
+            $table->integer('bantuan_keluar');
+            $table->integer('bantuan_masuk_waktu');
+            $table->integer('bantuan_keluar_waktu');
             $table->string('start');
             $table->string('finish');
             $table->integer('waktukerja');

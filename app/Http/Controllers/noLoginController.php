@@ -31,36 +31,13 @@ class noLoginController extends Controller
         $actual = array();
         $nowm   = date('m');
         $nowy   = date('Y');
-        $htts   = Http::get('http://158.118.35.24:8080/discreet')->status();
-        if ($htts == 200) {
-        $htta  = Http::get('http://158.118.35.24:8080/discreet')->getBody();
-        $data0 = json_decode($htta, true);
-        $count = count($data0);
-        $sum = array();
-        $total = 0;
-            foreach ($lini as $ln) {
-            $total = 0;
-            $tipe = DB::table('produk')->where('tempat', $ln->tempat)->select('tipe')->get();
-                foreach ($tipe as $tp) {
-                    for ($i = 0; $i < $count; $i++) {
-                        if ($data0[$i]['assembly_item_name'] == $tp->tipe){
-                            $total = $total + $data0[$i]['plan_qty'];
-                        break;
-                        }
-                    }
-                }
-            $plan[]    = $total;
-            }
-        }
-        else {
             foreach ($lini as $ln) {
                 $plan[]    = 0;
                 }
-        }
             foreach ($lini as $li) {
-                $actual[]  = DB::table('rekapprod')->join('produk', 'rekapprod.tipe', '=', 'produk.tipe')
-                ->leftJoin('dataharian', 'dataharian.keyid', '=', 'rekapprod.keyid')
-                ->where('produk.bagian', $id)->where('produk.tempat', $li->tempat)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->orderBy('produk.line', 'asc')->sum('rekapprod.daily_actual');
+                $actual[]  = DB::table('rekap_prod')->join('produk', 'rekap_prod.tipe', '=', 'produk.tipe')
+                ->leftJoin('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')
+                ->where('produk.bagian', $id)->where('produk.tempat', $li->tempat)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->orderBy('produk.line', 'asc')->sum('rekap_prod.daily_actual');
             }
         return view('grafik', ['tipe' => $id, 'lini' => $lini, 'planning' => $plan, 'actual' => $actual]);
     }
@@ -79,8 +56,8 @@ class noLoginController extends Controller
             $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $tanggal = date('F Y', strtotime($request->tahuninput));
         }
-        $data = DB::table('rekapprod')->leftJoin('dataharian', 'rekapprod.keyid', '=', 'dataharian.keyid')->leftJoin('produk', 'rekapprod.tipe', '=', 'produk.tipe')
-        ->select('dataharian.tanggal as tanggal', 'dataharian.shift as shift', 'dataharian.line as Line_Produksi', 'rekapprod.tipe as ItemCode', 'rekapprod.daily_plan as Qty', 'rekapprod.ng_total as Defect', 'produk.time as Standar_Time')
+        $data = DB::table('rekap_prod')->leftJoin('dataharian', 'rekap_prod.keyid', '=', 'dataharian.keyid')->leftJoin('produk', 'rekap_prod.tipe', '=', 'produk.tipe')
+        ->select('dataharian.tanggal as tanggal', 'dataharian.shift as shift', 'dataharian.line as Line_Produksi', 'rekap_prod.tipe as ItemCode', 'rekap_prod.daily_plan as Qty', 'rekap_prod.ng_total as Defect', 'produk.time as Standar_Time')
         ->whereMonth('dataharian.tanggal', $month)->whereYear('dataharian.tanggal', $year)->where('autosave', 'selesai')->get();
 
         return $data;
@@ -167,14 +144,14 @@ class noLoginController extends Controller
                                DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('kwt')->value('kwt');
                     $row7[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('absenkartap')->value('absenkartap') + 
                                DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('absenkwt')->value('absenkwt');
-                    $row8[]  = DB::table('resultprod')->leftJoin('dataharian', 'dataharian.keyid', '=', 'resultprod.keyid')
+                    $row8[]  = DB::table('hasil_prod')->leftJoin('dataharian', 'dataharian.keyid', '=', 'hasil_prod.keyid')
                                ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))
-                               ->where('dataharian.shift', 'Shift '.$n1)->select('resultprod.avalaible')->value('resultprod.avalaible');
+                               ->where('dataharian.shift', 'Shift '.$n1)->select('hasil_prod.avalaible')->value('hasil_prod.avalaible');
                     $row9[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkartap')->value('otkartap') + 
                                DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkwt')->value('otkwt');
-                    $row10[] = DB::table('resultprod')->leftJoin('dataharian', 'dataharian.keyid', '=', 'resultprod.keyid')
+                    $row10[] = DB::table('hasil_prod')->leftJoin('dataharian', 'dataharian.keyid', '=', 'hasil_prod.keyid')
                                ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)
-                               ->select('resultprod.avalaible')->value('resultprod.avalaible') + 
+                               ->select('hasil_prod.avalaible')->value('hasil_prod.avalaible') + 
                                DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkartap')->value('otkartap') + 
                                DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkwt')->value('otkwt');
 
@@ -182,10 +159,10 @@ class noLoginController extends Controller
                     // Repeated Job Calculated by For
                     $array11 = array();
                     foreach ($tipe as $tp) {
-                    $array11[] = DB::table('dataharian')->leftJoin('rekapprod', 'dataharian.keyid', '=', 'rekapprod.keyid')
+                    $array11[] = DB::table('dataharian')->leftJoin('rekap_prod', 'dataharian.keyid', '=', 'rekap_prod.keyid')
                     ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)
-                    ->where('rekapprod.tipe', $tp->tipe)
-                    ->select('rekapprod.daily_actual')->value('rekapprod.daily_actual');
+                    ->where('rekap_prod.tipe', $tp->tipe)
+                    ->select('rekap_prod.daily_actual')->value('rekap_prod.daily_actual');
                     }
                     $produk[] = $array11;
                     // Trouble Count 

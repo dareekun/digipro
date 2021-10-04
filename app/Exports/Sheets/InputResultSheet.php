@@ -26,10 +26,10 @@ class InputResultSheet implements FromCollection, WithHeadings, WithTitle, Shoul
      */
     public function collection()
     {
-        $data = DB::table('rekapprod')->join('dataharian', 'rekapprod.keyid', '=', 'dataharian.keyid')->join('waktu', 'dataharian.shift', '=', 'waktu.value')->join('produk', 'rekapprod.tipe', '=', 'produk.tipe')
-        ->select('dataharian.tanggal as tanggal', 'waktu.value as shift', 'dataharian.line as Line_Produksi', 'rekapprod.tipe as ItemCode', 'rekapprod.daily_actual as Qty', 'rekapprod.ng_total as Defect', 'produk.time as Standar_Time')->distinct()
+        $data = DB::table('rekap_prod')->join('dataharian', 'rekap_prod.keyid', '=', 'dataharian.keyid')->join('waktu', 'dataharian.shift', '=', 'waktu.value')->join('produk', 'rekap_prod.tipe', '=', 'produk.tipe')
+        ->select('dataharian.tanggal as tanggal', 'waktu.value as shift', 'dataharian.line as Line_Produksi', 'rekap_prod.tipe as ItemCode', 'rekap_prod.daily_actual as Qty', 'rekap_prod.ng_total as Defect', 'produk.time as Standar_Time')->distinct()
         ->whereMonth('dataharian.tanggal', $this->month)->whereYear('dataharian.tanggal', $this->year)->where('dataharian.autosave', 'selesai')
-        ->orderBy('dataharian.tanggal', 'asc')->orderBy('waktu.value', 'asc')->orderBy('rekapprod.tipe', 'asc')
+        ->orderBy('dataharian.tanggal', 'asc')->orderBy('waktu.value', 'asc')->orderBy('rekap_prod.tipe', 'asc')
         ->get();
         return $data;
     }

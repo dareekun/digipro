@@ -80,11 +80,6 @@ $(document).ready(function() {
                                     <a href="/dellot/{{$d->barcode}}" class="btn btn-sm btn-outline-danger"><i
                                             class="fa fa-trash-o" aria-hidden="true"></i></a>
                                     @endcan
-                                    @if($d->status==0)
-                                    <a href="/rubahlot/{{$d->barcode}}" target="_blank" class="btn btn-sm btn-outline-info"><i
-                                            class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                    @else
-                                    @endif
                                 </td>
                             </tr>
                             @endforeach

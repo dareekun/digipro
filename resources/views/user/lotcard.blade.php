@@ -28,7 +28,7 @@
     <br>
     <div class="container">
         <div class="card">
-            <div class="card-header">Lot Card Production Assembly</div>
+            <div class="card-header">Lot Card Production</div>
             <div class="card-body">
                 <div class="row">
                     <div class="center">
@@ -36,7 +36,7 @@
                             {{ csrf_field() }}
                             <table>
                                 <tr>
-                                    <td colspan="3" align="center">Lot Card Production Assembly</td>
+                                    <td colspan="3" align="center">Lot Card Production</td>
                                 </tr>
                                 <tr>
                                     <td>Model No </td>

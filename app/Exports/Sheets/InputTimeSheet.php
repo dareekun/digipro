@@ -37,6 +37,7 @@ class InputTimeSheet implements FromCollection, WithHeadings, WithTitle, ShouldA
         'dataharian.bantuan_masuk_waktu as bmw', 'dataharian.bantuan_keluar_waktu as bkw')
         ->whereMonth('tanggal', $this->month)->whereYear('tanggal', $this->year)->where('autosave', 'selesai')
         ->get();
+        $array3 = [];
         foreach ($basis as $bs) {
             $array1[] = $bs->date;
             $array1[] = $bs->shift;
@@ -75,8 +76,8 @@ class InputTimeSheet implements FromCollection, WithHeadings, WithTitle, ShouldA
             $array1[] = DB::table('resultprod')->where('keyid', $bs->keyid)->select('inti1')->value('inti1');
             $array3[] = $array1;
             $array1 = [];
-            $array2 = []; 
-        }
+            $array2 = [];
+        } 
         $collection = collect([$array3]);
         return $collection;
     }

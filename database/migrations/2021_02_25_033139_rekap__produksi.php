@@ -14,21 +14,20 @@ class RekapProduksi extends Migration
     public function up()
     {
         Schema::create('rekap_prod', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary();
             $table->string('keyid');
             $table->string('tipe');
             $table->string('start');
             $table->string('stop');
             $table->integer('dur');
-            $table->string('ttlprod');
-            $table->string('prodorg');
-            $table->string('standart');
-            $table->string('actual');
-            $table->string('percentage');
-            $table->string('ttlperc');
-            $table->string('kaporg');
-            $table->string('petugas');
-            $table->string('status');
+            $table->integer('daily_plan');
+            $table->integer('daily_actual');
+            $table->integer('daily_diff');
+            $table->integer('ng_process');
+            $table->integer('ng_material');
+            $table->integer('ng_total');
+            $table->string('ket');
+            $table->boolean('status')->default(0);
             $table->string('lastedit');
         });
     }

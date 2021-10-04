@@ -9,7 +9,7 @@
                     <div class="card-header">Lot Card Scanned</div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12" align="right">
+                            <div class="col-md-12 mb-3" align="right">
                                 <table>
                                 <tr>
                                 <td>Berdasarkan Tanggal</td>

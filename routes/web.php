@@ -37,31 +37,25 @@ Route::get('lotcard0', [InfoController::class, 'lotcard0']);
 Route::any('lotstatus', [InfoController::class, 'lotstatus']);
 Route::any('/lotscaned', [InfoController::class, 'lotscaned']);
 Route::get('/dellot/{id}', [InfoController::class, 'dellot']);
-Route::get('/rubahlot/{id}', [InfoController::class, 'rubahlot']);
-Route::post('/rubahlots', [InfoController::class, 'rubahlots']);
 Route::any('/graphbulan/{id}', [InfoController::class, 'graphbulan']);
 Route::post('/lotcard', [InfoController::class, 'lotcard']);
 Route::post('/lotcard1', [InfoController::class, 'lotcard1']);
 Route::post('/lotcardalpha', [InfoController::class, 'lotcardalpha']);
 Route::post('/plusalpha', [InfoController::class, 'plusalpha']);
-Route::post('/plusalpha', [InfoController::class, 'plusalpha']);
 Route::get('/lotsp/{param0}', [InfoController::class, 'lotsp']);
 Route::get('/laksan/{param0}', [InfoController::class, 'lotcardalpha2']);
-Route::get('/lotsphps/{id}', [InfoController::class, 'lotsphps']);
-
 
 Auth::routes();
 
 //user level
 Route::get('/home', [HomeController::class, 'index'])->middleware('can:isUser')->name('home');
 Route::get('/profile/{id}', [HomeController::class, 'profile'])->middleware('can:isUser');
-Route::get('/data/{id}', [UserController::class, 'data'])->middleware('can:isUser');
+Route::get('/input/{id}', [UserController::class, 'input0'])->middleware('can:isUser');
 Route::post('/next', [UserController::class, 'next'])->middleware('can:isUser');
 Route::post('/next2', [UserController::class, 'next2'])->middleware('can:isUser');
 Route::get('/detail/{id}', [AdminController::class, 'detail'])->middleware('can:isUser');
 Route::get('/resume/{id}', [UserController::class, 'resume'])->middleware('can:isUser');
 Route::get('/refresh/{id}', [UserController::class, 'refresh'])->middleware('can:isUser');
-Route::any('/user/planning', [UserController::class, 'planning'])->middleware('can:isUser');
 Route::get('/lotdetail/{id}', [InfoController::class, 'lotdetail'])->middleware('can:isUser');
 Route::get('/cetaklot/{id}', [InfoController::class, 'cetaklot'])->middleware('can:isUser');
 
@@ -73,14 +67,11 @@ Route::get('/admin/pengaturan', [AdminController::class, 'urus'])->middleware('c
 
 Route::post('/admin/delaku', [AdminController::class, 'delaku'])->middleware('can:isAdmin');
 Route::post('/admin/changep', [AdminController::class, 'changep'])->middleware('can:isAdmin');
-Route::get('/admin/planning', [AdminController::class, 'planning'])->middleware('can:isAdmin');
 Route::get('/admin/produk', [AdminController::class, 'produk'])->middleware('can:isAdmin');
 Route::get('/admin/produk/{tipe}', [AdminController::class, 'detailproduk'])->middleware('can:isAdmin');
 Route::get('/admin/produk/parts/hapus/{id}', [AdminController::class, 'hapusparts'])->middleware('can:isAdmin');
 Route::get('/admin/tambahproduk', [AdminController::class, 'tambahproduk'])->middleware('can:isAdmin');
 Route::post('/admin/tambahplan', [AdminController::class, 'tambahplan'])->middleware('can:isAdmin');
-Route::get('/admin/akunoracle', [AdminController::class, 'akunoracle'])->middleware('can:isAdmin');
-Route::post('/admin/oraclesave', [AdminController::class, 'oraclesave'])->middleware('can:isAdmin');
 
 // Pengaturan Produk
 Route::get('/admin/produk', [AdminController::class, 'produk'])->middleware('can:isAdmin');
@@ -102,10 +93,6 @@ Route::post('/shift/ditambah', [AdminController::class, 'shiftditambah'])->middl
 
 Route::get('/hapus/{id}', [UserController::class, 'hapusdataproduk'])->middleware('can:isAdmin');
 
-//manager level
-Route::get('/manager/Informasi', [ManagerController::class, 'informasi'])->middleware('can:isManager');
-Route::post('/manager/Informasi/update', [ManagerController::class, 'informasiupdate'])->middleware('can:isManager');
-
 // JSON 
 Route::post('data1-json', [HomeController::class, 'select1'])->name('data1-json.data1');
 Route::post('data2-json', [HomeController::class, 'select2'])->name('data2-json.data2');
@@ -113,8 +100,7 @@ Route::post('data2-json', [HomeController::class, 'select2'])->name('data2-json.
 Route::post('lot1-json', [HomeController::class, 'lot1'])->name('lot1-json.lot1');
 Route::post('lot2-json', [HomeController::class, 'lot2'])->name('lot2-json.lot2');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Route No Login Needed
 Route::post('/downloadpwk', [noLoginController::class, 'pwk']);

@@ -11,7 +11,7 @@
     html,
     body {
         background-size: cover;
-        margin: 0px;
+        margin: 5px;
     }
 
     .center {
@@ -29,13 +29,12 @@
 
     <!-- Fonts -->
 </head>
-
 <body>
     @foreach ($data as $dt)
-    <table style="border:1px solid black">
+        <table>
         <tr>
             <td colspan="3" align="center">
-                <h5>Lot Card Production Assembly</h5>
+                <h4>Lot Card Production</h4>
             </td>
         </tr>
         <tr>
@@ -111,9 +110,7 @@
         <tr>
         <td style="width:40%">
         <center>
-            <br>
             {!!DNS2D::getBarcodeHTML($dt->barcode, 'QRCODE',5,5)!!}
-            <br>
         </center>
         </td>
         <td colspan="2">
@@ -129,5 +126,4 @@
     </table>
     @endforeach
 </body>
-
 </html>

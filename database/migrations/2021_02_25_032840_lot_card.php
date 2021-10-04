@@ -29,7 +29,10 @@ class LotCard extends Migration
             $table->string('date2');
             $table->string('name1');
             $table->string('name2');
-            $table->integer('status');
+            $table->boolean('status')->default(0);
+            $table->boolean('opt1')->default(0);
+            $table->boolean('opt2')->default(0);
+            $table->boolean('opt3')->default(0);
         });
     }
 

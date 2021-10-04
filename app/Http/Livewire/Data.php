@@ -34,7 +34,7 @@ class Data extends Component
     }
 
     public function delprob($id){
-        DB::table('loss_data')->where('idp', $id)->delete();
+        DB::table('loss_data')->where('id', $id)->delete();
     }
 
     public function plus01(){
@@ -69,9 +69,7 @@ class Data extends Component
             'tipe' => $this->problem01['produk'],
             'ket' => $this->problem01['ket'],
             ]);
-            $this->problem01['ket'] = '-';
-            $this->problem01['ket'] = '-';
-            $this->problem01['ket'] = '-';
+            $this->reset('problem01');
             $this->problem01['ket'] = '-';
     }
 
@@ -107,6 +105,7 @@ class Data extends Component
             'tipe' => $this->problem02['produk'],
             'ket' => $this->problem02['ket'],
             ]);
+            $this->reset('problem02');
             $this->problem02['ket'] = '-';
     }
 
@@ -142,6 +141,7 @@ class Data extends Component
             'tipe' => $this->problem03['produk'],
             'ket' => $this->problem03['ket'],
             ]);
+            $this->reset('problem03');
             $this->problem03['ket'] = '-';
     }
 
@@ -177,6 +177,7 @@ class Data extends Component
             'tipe' => $this->problem04['produk'],
             'ket' => $this->problem04['ket'],
             ]);
+            $this->reset('problem04');
             $this->problem04['ket'] = '-';
     }
 
@@ -202,7 +203,7 @@ class Data extends Component
                 'rekap.ket.required' => 'Mohon Form Keterangan Diisi',
             ]);
         $a1    = Auth::user();
-        $count = DB::table('rekapprod')->where('keyid', $this->pass)->count();
+        $count = DB::table('rekap_prod')->where('keyid', $this->pass)->count();
         $start = strtotime($this->rekap['start']);
         $end = strtotime($this->rekap['stop']);
         if (date("H:i:s", $start) > date("H:i:s", strtotime("20:00:00")) && date("H:i:s", $end) < date("H:i:s", strtorime("06:00:00")))
@@ -212,7 +213,7 @@ class Data extends Component
             $mins = (($end - $start) / 60);
         }
         $barcode = strtoupper(base_convert($a1->id.date('YmdHis').$count,10,32));
-        DB::table('rekapprod')->insert([
+        DB::table('rekap_prod')->insert([
             'id' => $barcode,
             'keyid' => $this->pass,
             'tipe' => $this->rekap['produk'],
@@ -228,10 +229,12 @@ class Data extends Component
             'ket' => $this->rekap['ket'],
             'lastedit' => $a1->username,
             ]);
+            $this->reset('rekap');
+            $this->rekap['ket'] = '-';
     }
 
     public function delproduct($id){
-        DB::table('rekapprod')->where('id', $id)->delete();
+        DB::table('rekap_prod')->where('id', $id)->delete();
     }
 
     public function process(){
@@ -293,12 +296,12 @@ class Data extends Component
         $data3 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Organization Loss')->where('keyid', $this->pass)->get();
         $data4 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Defect Loss')->where('keyid', $this->pass)->get();
         $produk= DB::table('produk')->where('tempat', $s4)->select('tipe')->get();
-        $data5 = DB::table('rekapprod')->where('keyid', $this->pass)
+        $data5 = DB::table('rekap_prod')->where('keyid', $this->pass)
         ->select('id', 'tipe', 'start', 'stop', 'dur', 'daily_plan', 'daily_actual', 'daily_diff', 'ng_process', 'ng_material', 'ket')
         ->distinct()->get();
         
         $this->result['ttloss'] = DB::table('loss_data')->where('keyid', $this->pass)->select('dur')->sum('dur');
-        $this->result['sum']    = DB::table('rekapprod')->where('keyid', $this->pass)->select('daily_actual')->sum('daily_actual');
+        $this->result['sum']    = DB::table('rekap_prod')->where('keyid', $this->pass)->select('daily_actual')->sum('daily_actual');
         $this->result['avail']  = DB::table('dataharian')->where('keyid', $this->pass)->select('waktukerja')->value('waktukerja'); 
         $this->result['phh']    = $this->result['sum'] / $this->result['avail'];
         return view('livewire.data', ['data1' => $data1, 'data2' => $data2, 'data3' => $data3, 'data4' => $data4, 'data5' => $data5,

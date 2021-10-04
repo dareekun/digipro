@@ -1,3 +1,4 @@
+<?php   use \App\Http\Controllers\UserController; ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -46,20 +47,42 @@
                 <a class="navbar-brand" href="/">
                     Manage
                 </a>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <!-- Authentication Links -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="/home" aria-haspopup="true" aria-expanded="false">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Input
                             </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                @foreach (UserController::menu() as $bagian)
+                                <a class="dropdown-item" href="/input/{{$bagian}}">{{$bagian}}</a>
+                                @endforeach
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="/home" aria-haspopup="true" aria-expanded="false">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Tabel
                             </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                @foreach (UserController::menu() as $bagian)
+                                <a class="dropdown-item" href="/tabel/{{$bagian}}">{{$bagian}}</a>
+                                @endforeach
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Graph
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                @foreach (UserController::menu() as $bagian)
+                                <a class="dropdown-item" href="/graph/{{$bagian}}">{{$bagian}}</a>
+                                @endforeach
+                            </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
