@@ -129,4 +129,15 @@ class UserController extends Controller
         DB::table('rekap_prod')->where('keyid', $id)->delete();
         return redirect('/tabel/'.$alamat);
     }
+    
+    public function detail($id) {
+        $a = DB::table('dataharian')->where('keyid', $id)->get();
+        $b = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Regulated Loss')->where('keyid', $id)->get();
+        $c = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Work Loss')->where('keyid', $id)->get();
+        $d = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Organization Loss')->where('keyid', $id)->get();
+        $e = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Defect Loss')->where('keyid', $id)->get();
+        $f = DB::table('rekap_prod')->where('keyid', $id)->get();
+        $g = DB::table('hasil_prod')->where('keyid', $id)->get();
+        return view('admin.detail', ['data1' => $a, 'data2' => $b, 'data3' => $c, 'data4' => $d, 'data5' => $e, 'data6' => $f, 'data7' => $g, 'id' => $id]);
+}
 }

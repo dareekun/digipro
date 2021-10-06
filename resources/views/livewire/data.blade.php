@@ -13,9 +13,9 @@
         <tr>
             <td>
                 <div id="for-live-search5" wire:ignore>
-                    <select wire:model.defer="rekap.produk" data-container="#for-live-search5"
+                    <select id="dataPicker" wire:model.defer="rekap.produk" data-container="#for-live-search5"
                         class="form-control selectpicker" data-live-search="true">
-                        <option selected value=""></option>
+                        <option value="" selected></option>
                         @foreach($produk as $p)
                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                         @endforeach
@@ -106,8 +106,9 @@
             <td><input type="number" data-placement="top" data-trigger="manual" disabled style="width:100px"
                     class="form-control" name="regdur0"></td>
             <td>
-                <div id="for-live-search1" wire:ignore><select wire:model.defer="problem01.produk"
+                <div id="for-live-search1" wire:ignore><select id="dataPicker1" wire:model.defer="problem01.produk"
                         data-container="#for-live-search1" class="form-control selectpicker" data-live-search="true">
+                        <option selected value=""></option>
                         @foreach($produk as $p)
                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                         @endforeach</div>
@@ -160,8 +161,9 @@
             </td>
             <td><input disabled type="number" style="width:100px" class="form-control"></td>
             <td>
-                <div id="for-live-search" wire:ignore><select wire:model.defer="problem02.produk"
+                <div id="for-live-search2" wire:ignore><select id="dataPicker2" wire:model.defer="problem02.produk"
                         data-container="#for-live-search2" class="form-control selectpicker" data-live-search="true">
+                        <option selected value=""></option>
                         @foreach($produk as $p)
                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                         @endforeach</div>
@@ -212,8 +214,9 @@
             </td>
             <td><input disabled type="number" style="width:100px" class="form-control"></td>
             <td>
-                <div id="for-live-search3" wire:ignore><select wire:model.defer="problem03.produk"
+                <div id="for-live-search3" wire:ignore><select id="dataPicker3" wire:model.defer="problem03.produk"
                         data-container="#for-live-search3" class="form-control selectpicker" data-live-search="true">
+                        <option selected value=""></option>
                         @foreach($produk as $p)
                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                         @endforeach</div>
@@ -263,8 +266,9 @@
             </td>
             <td><input disabled type="number" style="width:100px" class="form-control"></td>
             <td>
-                <div id="for-live-search4" wire:ignore><select wire:model.defer="problem04.produk"
+                <div id="for-live-search4" wire:ignore><select id="dataPicker4" wire:model.defer="problem04.produk"
                         data-container="#for-live-search4" class="form-control selectpicker" data-live-search="true">
+                        <option selected value=""></option>
                         @foreach($produk as $p)
                         <option value="{{$p->tipe}}">{{$p->tipe}}</option>
                         @endforeach</div>
@@ -305,9 +309,8 @@
             <td style="width:20%" align="center">Hambatan</td>
             <td style="width:20%" align="center">Analisa Penyebab</td>
             <td style="width:20%" align="center">Tindakan Penanggulangan</td>
-            <td style="width:10%" align="center">Hasil Produksi</td>
-            <td style="width:12%" align="center">Available Working Time</td>
-            <td style="width:10%" align="center">Production Head</td>
+            <td style="width:20%" align="center">Hasil Produksi</td>
+            <td style="width:20%" align="center">Available Working Time</td>
         </tr>
         <tr>
             <td><input wire:model.defer="result.hambatan01" type="text" class="form-control"></td>
@@ -326,18 +329,11 @@
                     </div>
                 </div>
             </td>
-            <td>
-                <div class="input-group"><input wire:model.defer="result.phh" type="number" class="form-control"
-                        name="reslt6">
-                    <div class="input-group-append"><span class="input-group-text" id="basic-addon2">Pcs/Jam</span>
-                    </div>
-                </div>
-            </td>
         </tr>
         <tr>
             <td colspan="3"><br><br></td>
             <td>Total Loss Time</td>
-            <td></td>
+            <td>Production Head</td>
         </tr>
         <tr>
             <td><input wire:model.defer="result.hambatan02" type="text" class="form-control"></td>
@@ -347,6 +343,13 @@
                 <div class="input-group"><input wire:model.defer="result.ttloss" type="number" min="0"
                         class="form-control" name="reslt4a">
                     <div class="input-group-append"><span class="input-group-text" id="basic-addon2">Menit</span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="input-group"><input wire:model.defer="result.phh" type="number" class="form-control"
+                        name="reslt6">
+                    <div class="input-group-append"><span class="input-group-text" id="basic-addon2">Pcs/Jam</span>
                     </div>
                 </div>
             </td>

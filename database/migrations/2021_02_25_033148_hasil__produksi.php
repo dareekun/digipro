@@ -21,12 +21,11 @@ class HasilProduksi extends Migration
             $table->string('tindakan1');
             $table->integer('hasil');
             $table->integer('avalaible');
-            $table->integer('time');
+            $table->decimal('phh', $precision = 8, $scale = 2);
             $table->string('inti2');
             $table->string('analisa2');
             $table->string('tindakan2');
             $table->integer('ttlloss');
-            $table->integer('ttlman');
         });
     }
 

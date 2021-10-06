@@ -59,7 +59,6 @@ class noLoginController extends Controller
         $data = DB::table('rekap_prod')->leftJoin('dataharian', 'rekap_prod.keyid', '=', 'dataharian.keyid')->leftJoin('produk', 'rekap_prod.tipe', '=', 'produk.tipe')
         ->select('dataharian.tanggal as tanggal', 'dataharian.shift as shift', 'dataharian.line as Line_Produksi', 'rekap_prod.tipe as ItemCode', 'rekap_prod.daily_plan as Qty', 'rekap_prod.ng_total as Defect', 'produk.time as Standar_Time')
         ->whereMonth('dataharian.tanggal', $month)->whereYear('dataharian.tanggal', $year)->where('autosave', 'selesai')->get();
-
         return $data;
     }
 
@@ -154,7 +153,6 @@ class noLoginController extends Controller
                                ->select('hasil_prod.avalaible')->value('hasil_prod.avalaible') + 
                                DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkartap')->value('otkartap') + 
                                DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkwt')->value('otkwt');
-
                     // Data Hasil Produksi
                     // Repeated Job Calculated by For
                     $array11 = array();
@@ -165,6 +163,7 @@ class noLoginController extends Controller
                     ->select('rekap_prod.daily_actual')->value('rekap_prod.daily_actual');
                     }
                     $produk[] = $array11;
+                    $goodproductdaily = 
                     // Trouble Count 
                     // Repeated Job calculated by foreach
                     $array1 = array();
@@ -187,7 +186,6 @@ class noLoginController extends Controller
                         $array4[] = DB::table('dataharian')->rightJoin('loss_data', 'dataharian.keyid', '=', 'loss_data.keyid')->where('problem', $type4->loss)
                         ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)->select('dur')->value('dur');
                     }
-                    
                     $lossa[] = $array1;
                     $lossb[] = $array2;
                     $lossc[] = $array3;

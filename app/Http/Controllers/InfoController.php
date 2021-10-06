@@ -33,19 +33,15 @@ class InfoController extends Controller
 
     public function graph($id) {
         $lini   = DB::table('produk')->where('bagian', $id)->select('tempat')->orderBy('tempat', 'asc')->distinct()->get();
-        $plan   = array();
         $actual = array();
         $nowm   = date('m');
         $nowy   = date('Y');
-            foreach ($lini as $ln) {
-                $plan[]    = 0;
-                }
             foreach ($lini as $li) {
                 $actual[]  = DB::table('rekap_prod')->join('produk', 'rekap_prod.tipe', '=', 'produk.tipe')
                 ->leftJoin('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')
                 ->where('produk.bagian', $id)->where('produk.tempat', $li->tempat)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->orderBy('produk.line', 'asc')->sum('rekap_prod.daily_actual');
             }
-        return view('graphline', ['tipe' => $id, 'lini' => $lini, 'planning' => $plan, 'actual' => $actual]);
+        return view('graphline', ['tipe' => $id, 'lini' => $lini, 'actual' => $actual]);
     }
 
     public function graphbulan(Request $reqest, $id) {
@@ -72,18 +68,6 @@ class InfoController extends Controller
     public function jsonwelcome() {
         $result = DB::table('dataharian')->where('stockName','=','Infosys')->orderBy('stockYear', 'ASC')->get();
         return response()->json($result);
-    }
-
-    public function plan() {
-        return view('plansetup');
-    }
-
-    public function plan2() {
-        return view('plansetup2');
-    }
-
-    public function welcome2() {
-        return view('welcome');
     }
 
     public function welcome() {

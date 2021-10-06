@@ -146,7 +146,7 @@ table, th, td {
     <tr>
         <td colspan="5">C. TOTAL WORKING TIME</td>
         @for ($i = 0; $i < count($baris10); $i++)             
-            <td align="center">{{$baris10[$i]}}</td> <!-- Shift 1 -->
+        <td align="center">{{$baris10[$i]}}</td> 
         @endfor
         <td align="right">{{array_sum($baris10)}}</td>
     </tr>
@@ -290,10 +290,11 @@ table, th, td {
     <!-- NET WORTH TIME TOTAL -->
     <tr>
     <td colspan="5">I. NET WORKING TIME</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < $date * 3; $i++) 
+        @php
+        $LTT = array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]) + array_sum($orgloss[$i+1]) + array_sum($defloss[$i+1]);
+        @endphp
+        <td align="center">{{$baris10[$i] - $LTT}}</td> <!-- Shift 1 -->
     @endfor
     <td align="right">0</td>
     </tr>

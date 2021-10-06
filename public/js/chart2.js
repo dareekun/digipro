@@ -1,63 +1,76 @@
-var ctx1 = document.getElementById('chart1').getContext('2d');
+var ctx1 = document.getElementById('Chart1').getContext('2d');
+Chart.register(ChartDataLabels);
 // chart 1
+
+function getRandomColor() {
+    var letters = '23456789ABC';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 11)];
+    }
+    return color;
+  }
+  
 
 // Array
 var y = document.getElementById('data').rows[0].cells.length - 1;
 var array0 = Array();
 var array1 = Array();
-var array2 = Array();
-var bagi = Array();
+var bgColor  = Array();
+var brColor  = Array();
 
 for (x = 0; x < y; x++) {
     array0[x] = document.getElementsByClassName("namalini")[x].innerHTML;
 }
-
 for (x = 0; x < y; x++) {
     array1[x] = document.getElementsByClassName("dataactual")[x].innerHTML;
 }
-
 for (x = 0; x < y; x++) {
-    array2[x] = document.getElementsByClassName("dataplan")[x].innerHTML;
+    color = getRandomColor();
+    bgColor[x] = color + '99';
+    brColor[x] = color; 
+    console.log(bgColor);
+    console.log(brColor);
 }
-
 function myFunc(total, num) {
     return total + num;
 }
-
-$(document).ready(function() {
-    refreshAt(07, 00, 05);
-    refreshAt(16, 15, 05);
-    refreshAt(00, 25, 05);
-})
-// chart 2
-var chart1 = new Chart(ctx1, {
+// chart 
+var Chart = new Chart(ctx1, {
     type: 'bar',
     data: {
         labels: array0,
         datasets: [{
             label: 'Actual',
             data: array1,
-            backgroundColor: ["#8e5ea2", "#8e5ea2","#8e5ea2","#8e5ea2","#8e5ea2","#8e5ea2","#8e5ea2","#8e5ea2"],
-        }, {
-            label: 'Plan',
-            data: array2,
-            type: 'bar',
-            backgroundColor: ["#3e95cd", "#3e95cd","#3e95cd","#3e95cd","#3e95cd","#3e95cd","#3e95cd","#3e95cd"],
+            backgroundColor: bgColor,
+            borderColor: brColor,
+            borderWidth : 3,
+            borderRadius : 5
+            
         }]
     },
     options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        legend : {
-            display: false,
+    plugins: {
+        datalabels: {
+            anchor: 'end',
+            align: 'end',
+            backgroundColor: '#373843',
+            borderRadius: 1,
+            color: 'white',
+            font: {
+              weight: 'bold',
+              size : 14
             },
-            scales: {
-                xAxes: [{
-                    stacked: true,
-                }],
-                yAxes: [{
-                    stacked: true
-                }]}
+            formatter: Math.round,
+            padding: 6
+          }
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    legend: {
+        display: false,
+      }
     }
 });
 

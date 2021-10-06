@@ -34,7 +34,6 @@
                     <table id="test" class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th scope="col">No</th>
                                 <th scope="col">Shift</th>
                                 <th scope="col">Posisi Shift</th>
                                 <th scope="col">Start</th>
@@ -46,14 +45,13 @@
                         <tbody>
                             @foreach ($data as $dt)
                             <tr>
-                                <td>{{$i++}}</td>
                                 <td>{{$dt->shift}}</td>
                                 <td>{{$dt->value}}</td>
                                 <td>{{$dt->start}}</td>
                                 <td>{{$dt->finish}}</td>
                                 <td>{{$dt->duration}}</td>
                                 <td>
-                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="edit({{$dt->id}},'{{$dt->shift}}', '{{$dt->value}}', '{{$dt->start}}', '{{$dt->finish}}', '{{$dt->break_time}}')"><i
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="edit({{$dt->id}},'{{$dt->shift}}', '{{$dt->value}}', '{{$dt->start}}', '{{$dt->finish}}', '{{$dt->duration}}')"><i
                                             class="fa fa-pencil" aria-hidden="true"></i></button>
                                     <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapus({{$dt->id}})"><i
                                             class="fa fa-trash" aria-hidden="true"></i></button>
@@ -81,9 +79,7 @@
 <script>
 $(document).ready(function() {
     var table = $('#test').DataTable({
-        order: [[0, 'asc']],
-        scrollY: '50vh',
-        paging: false,
+        order: [[1, 'asc']],
         info: false,
     });
 } );

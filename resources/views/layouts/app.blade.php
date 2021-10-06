@@ -1,6 +1,7 @@
 <?php   use \App\Http\Controllers\UserController; ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,6 +22,7 @@
     <script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/bootstrap-select.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/Chart.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/chartjs-plugin-datalabels.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/axios.min.js') }}"></script>
     @livewireStyles
     <!-- Styles -->
@@ -38,8 +40,16 @@
         background-size: cover;
         scroll-behavior: smooth;
     }
+
+    @media print {
+        .no-print,
+        .no-print * {
+            display: none !important;
+        }
+    }
     </style>
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
@@ -104,7 +114,6 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 @can('isUser')
-                                <a href="/home" class="dropdown-item">Dashboard</a>
                                 <a href="/profile/{{ Auth::user()->name }}" class="dropdown-item">Profil</a>
                                 @endcan
                                 @can('isAdmin')
@@ -115,7 +124,8 @@
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
                                     @csrf
                                 </form>
                             </div>

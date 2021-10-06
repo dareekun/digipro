@@ -146,5 +146,14 @@ function data6() {
     else {
         document.getElementById("masuk").submit();
     }
-    
+}
+
+window.onload = function() {
+    Livewire.on('refresh', () => {
+       $("#dataPicker").val('default').selectpicker("refresh");
+       $("#dataPicker1").val('default').selectpicker("refresh");
+       $("#dataPicker2").val('default').selectpicker("refresh");
+       $("#dataPicker3").val('default').selectpicker("refresh");
+       $("#dataPicker4").val('default').selectpicker("refresh");
+    })
 }

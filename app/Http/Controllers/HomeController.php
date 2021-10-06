@@ -33,8 +33,24 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
-        return view('home');
+    {       
+            $tipe    = DB::table('produk')->orderBy('tempat', 'asc')->distinct()->get();
+            $tempat  = DB::table('produk')->select('tempat')->orderBy('tempat', 'asc')->distinct()->get();
+            $array   = array();
+            $summary = array();
+            $nowm    = date('m');
+            $nowy    = date('Y');
+            foreach ($tipe as $tp) {
+                $array[]  = $tp->tempat;
+                $array[]  = $tp->tipe;
+                $array[]  = DB::table('rekap_prod')->join('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')
+                ->where('rekap_prod.tipe', $tp->tipe)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->sum('rekap_prod.daily_plan');
+                $array[]  = DB::table('rekap_prod')->join('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')
+                ->where('rekap_prod.tipe', $tp->tipe)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->sum('rekap_prod.daily_actual');
+                $summary[] = $array;
+                $array   = array();
+            }
+        return view('home', ['summary' => $summary, 'lini' => $tempat]);
     }
 
     public function profile($id){

@@ -73,7 +73,7 @@ class InputTimeSheet implements FromCollection, WithHeadings, WithTitle, ShouldA
                 $array2[] = $value;
             }
             $array1[] = array_sum($array2);
-            $array1[] = DB::table('resultprod')->where('keyid', $bs->keyid)->select('inti1')->value('inti1');
+            $array1[] = DB::table('hasil_prod')->where('keyid', $bs->keyid)->select('inti1')->value('inti1');
             $array3[] = $array1;
             $array1 = [];
             $array2 = [];

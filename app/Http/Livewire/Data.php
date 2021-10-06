@@ -71,6 +71,7 @@ class Data extends Component
             ]);
             $this->reset('problem01');
             $this->problem01['ket'] = '-';
+            $this->emit('refresh');
     }
 
     public function plus02(){
@@ -107,6 +108,7 @@ class Data extends Component
             ]);
             $this->reset('problem02');
             $this->problem02['ket'] = '-';
+            $this->emit('refresh');
     }
 
     public function plus03(){
@@ -143,6 +145,7 @@ class Data extends Component
             ]);
             $this->reset('problem03');
             $this->problem03['ket'] = '-';
+            $this->emit('refresh');
     }
 
     public function plus04(){
@@ -179,6 +182,7 @@ class Data extends Component
             ]);
             $this->reset('problem04');
             $this->problem04['ket'] = '-';
+            $this->emit('refresh');
     }
 
     public function addproduct(){
@@ -231,6 +235,7 @@ class Data extends Component
             ]);
             $this->reset('rekap');
             $this->rekap['ket'] = '-';
+            $this->emit('refresh');
     }
 
     public function delproduct($id){
@@ -263,8 +268,8 @@ class Data extends Component
                 'result.phh.required' => 'Mohon Form Production Head Diisi',
                 'result.ttloss.required' => 'Mohon Form Total Loss Time Diisi',
             ]);
-        DB::table('resultprod')->insert([
-            'keyid' => $this->pass,
+        DB::table('hasil_prod')->updateOrInsert([
+            'keyid' => $this->pass],[
             'inti1' => $this->result['hambatan01'],
             'analisa1' => $this->result['analisa01'],
             'tindakan1' => $this->result['tindakan01'],
@@ -279,7 +284,7 @@ class Data extends Component
         DB::table('dataharian')->where('keyid', $this->pass)->update([
             'autosave' => 'selesai'
         ]);
-            return redirect('/data/'.$this->option);
+            return redirect('/tabel/'.$this->option);
     }
 
     public function render()
@@ -291,10 +296,10 @@ class Data extends Component
         $dwork = DB::table('loss_type')->where('type', 'Work Loss')->select('loss')->get();
         $dorg  = DB::table('loss_type')->where('type', 'Organization Loss')->select('loss')->get();
         $ddef  = DB::table('loss_type')->where('type', 'Defect Loss')->select('loss')->get();
-        $data1 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Regulated Loss')->where('keyid', $this->pass)->get();
-        $data2 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Work Loss')->where('keyid', $this->pass)->get();
-        $data3 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Organization Loss')->where('keyid', $this->pass)->get();
-        $data4 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Defect Loss')->where('keyid', $this->pass)->get();
+        $data1 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Regulated Loss')->select('loss_data.id as id', 'loss_data.problem as problem', 'loss_data.start as start', 'loss_data.stop as stop', 'loss_data.dur as dur', 'loss_data.tipe as tipe', 'loss_data.ket as ket')->where('keyid', $this->pass)->get();
+        $data2 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Work Loss')->select('loss_data.id as id', 'loss_data.problem as problem', 'loss_data.start as start', 'loss_data.stop as stop', 'loss_data.dur as dur', 'loss_data.tipe as tipe', 'loss_data.ket as ket')->where('keyid', $this->pass)->get();
+        $data3 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Organization Loss')->select('loss_data.id as id', 'loss_data.problem as problem', 'loss_data.start as start', 'loss_data.stop as stop', 'loss_data.dur as dur', 'loss_data.tipe as tipe', 'loss_data.ket as ket')->where('keyid', $this->pass)->get();
+        $data4 = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('loss_type.type', 'Defect Loss')->select('loss_data.id as id', 'loss_data.problem as problem', 'loss_data.start as start', 'loss_data.stop as stop', 'loss_data.dur as dur', 'loss_data.tipe as tipe', 'loss_data.ket as ket')->where('keyid', $this->pass)->get();
         $produk= DB::table('produk')->where('tempat', $s4)->select('tipe')->get();
         $data5 = DB::table('rekap_prod')->where('keyid', $this->pass)
         ->select('id', 'tipe', 'start', 'stop', 'dur', 'daily_plan', 'daily_actual', 'daily_diff', 'ng_process', 'ng_material', 'ket')
@@ -303,7 +308,7 @@ class Data extends Component
         $this->result['ttloss'] = DB::table('loss_data')->where('keyid', $this->pass)->select('dur')->sum('dur');
         $this->result['sum']    = DB::table('rekap_prod')->where('keyid', $this->pass)->select('daily_actual')->sum('daily_actual');
         $this->result['avail']  = DB::table('dataharian')->where('keyid', $this->pass)->select('waktukerja')->value('waktukerja'); 
-        $this->result['phh']    = $this->result['sum'] / $this->result['avail'];
+        $this->result['phh']    = number_format((float)$this->result['sum'] / $this->result['avail'], 3, '.', '');
         return view('livewire.data', ['data1' => $data1, 'data2' => $data2, 'data3' => $data3, 'data4' => $data4, 'data5' => $data5,
         'produk' => $produk, 'lossa' => $dreg, 'lossb' => $dwork, 'lossc' => $dorg, 'lossd' => $ddef,]);
     }

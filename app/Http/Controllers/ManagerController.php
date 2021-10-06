@@ -51,9 +51,4 @@ class ManagerController extends Controller
         // alihkan halaman ke halaman pegawai
         return redirect('/manager/Informasi');
     }
-
-    public function test() {
-        $htta   = Http::get('http://158.118.35.24:8080/discreet')->getBody();
-        return $htta;
-    }
 }

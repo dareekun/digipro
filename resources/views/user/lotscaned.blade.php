@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('content')
-
 <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
@@ -53,7 +51,6 @@
         </div>
     </div>
     @stop
-
 @push('scripts')
 <script>
 $(document).ready(function() {
@@ -93,7 +90,6 @@ var table = $('#excel').DataTable({
             } );
         }
     });
- 
 } );
 function reset() {
     document.getElementById('tanggal').value = '';

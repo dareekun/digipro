@@ -5,19 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Dashboard</div>
+                    <div class="card-header">{{$tipe}}</div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h3>{{$tipe}}</h3>
-                            </div>
-                            <div class="col-md-9" align="right">
-                                <a href="/tabel/{{$tipe}}" class="btn-sm btn-secondary" role="button"
-                                    aria-pressed="true"><i class="fa fa-table" aria-hidden="true"></i> Tabel</a>
-                                <a href="/graph/{{$tipe}}" class="btn-sm btn-success" role="button"
-                                    aria-pressed="true"><i class="fa fa-pie-chart" aria-hidden="true"></i> Graph</a>
-                            </div>
-                        </div>
                         <form action="/downloadpwk" method="post">
                         {{ csrf_field() }}
                         <div class="row mb-2">
@@ -25,7 +14,7 @@
                         <input type="month" class="form-control form-control-sm" name="tahuninput" id="tahuninput">
                         </div>
                         <div class="col-md-2">
-                        <select name="lineproduksi" class="form-control form-control-sm" id="lineproduksi">
+                        <select name="lineproduksi" required class="form-control form-control-sm" id="lineproduksi">
                         <option value=""></option>
                         @foreach ($line as $ln)
                         <option value="{{$ln->tempat}}">{{$ln->tempat}}</option>
@@ -69,12 +58,13 @@
             </div>
         </div>
     </div>
+@stop
+
+@push('scripts')
 <script>
 $(document).ready(function() {
 var table = $('#test').DataTable({
         order: [[0, 'desc']],
-        scrollY: '50vh',
-        paging: false,
         info: false,
         initComplete: function () {
             // Apply the search
@@ -105,4 +95,4 @@ function reset() {
     $('#test').DataTable().columns().search('').draw();
 }
 </script>
-@endsection
+@endpush
