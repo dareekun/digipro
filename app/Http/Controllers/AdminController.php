@@ -207,9 +207,8 @@ class AdminController extends Controller
             'tipe' => $request->edittag3,
             'bagian' => $request->edittag1,
             'tempat' => $request->edittag2,
-            'qtyinner' => $request->edittag4,
-            'qtyouter' => $request->edittag5,
-            'time' => $request->edittag6
+            'time' => $request->edittag4,
+            'std_mp' => $request->edittag5
         ]);
         return redirect('/admin/produk');
     }
@@ -219,9 +218,8 @@ class AdminController extends Controller
             'tipe' => $request->tag3,
             'bagian' => $request->tag1,
             'tempat' => $request->tag2,
-            'qtyinner' => $request->tag4,
-            'qtyouter' => $request->tag5,
-            'time' => $request->tag6
+            'time' => $request->tag4,
+            'std_mp' => $request->tag5
         ]);
         return redirect('/admin/produk');
     }
@@ -246,6 +244,7 @@ class AdminController extends Controller
             DB::table('loss_type')->insert([
                 'loss' => $request->masalah,
                 'type' => $request->type,
+                'remark' => $request->remark,
             ]);
         return redirect('/pengaturan/masalah');
     }
@@ -254,6 +253,7 @@ class AdminController extends Controller
             DB::table('loss_type')->where('id', $request->paramedit0)->update([
                 'type' => $request->paramedit1,
                 'loss' => $request->paramedit2,
+                'remark' => $request->paramedit3,
             ]);
         return redirect('/pengaturan/masalah');
     }

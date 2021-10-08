@@ -21,6 +21,11 @@
         <div class="col-sm-3">Masalah</div>
         <div class="col-sm-9"><input required type="text" name="masalah" class="form-control"></div>
         </div>
+        <br>
+        <div class="row">
+        <div class="col-sm-3">Remark</div>
+        <div class="col-sm-9"><input required type="text" name="remark" class="form-control"></div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-success">Simpan Masalah</button>
@@ -48,13 +53,17 @@
         <div class="row">
         <div class="col-sm-3">Jenis Masalah</div>
         <div class="col-sm-9">
-        <input type="text" class="form-control" name="paramedit1" id="edit01" list="problemtype">
-        </div>
+        <input type="text" class="form-control" name="paramedit1" id="edit01" list="problemtype"></div>
         </div>
         <br>
         <div class="row">
         <div class="col-sm-3">Masalah</div>
         <div class="col-sm-9"><input required type="text" name="paramedit2" id="edit02" class="form-control"></div>
+        </div>
+        <br>
+        <div class="row">
+        <div class="col-sm-3">Remark</div>
+        <div class="col-sm-9"><input required type="text" name="paramedit3" id="edit03" class="form-control"></div>
         </div>
       </div>
       <div class="modal-footer">

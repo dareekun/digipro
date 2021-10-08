@@ -52,9 +52,8 @@
                         <th scope="col">Bagian</th>
                         <th scope="col">Line</th>
                         <th scope="col">Produk</th>
-                        <th scope="col">Qty Inner</th>
-                        <th scope="col">Qty Outer</th>
                         <th scope="col">Cycle Time</th>
+                        <th scope="col">Std Man Power</th>
                         <th></th>
                         </tr>
                         </thead>
@@ -64,11 +63,10 @@
                         <td>{{$dt->bagian}}</td>
                         <td>{{$dt->tempat}}</td>
                         <td><a href="/admin/produk/{{$dt->tipe}}">{{$dt->tipe}}</a></td>
-                        <td>{{$dt->qtyinner}}</td>
-                        <td>{{$dt->qtyouter}}</td>
                         <td>{{$dt->time}}</td>
+                        <td>{{$dt->std_mp}}</td>
                         <td>
-                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="rubah({{$dt->id}}, '{{$dt->bagian}}', '{{$dt->tempat}}', '{{$dt->tipe}}', {{$dt->qtyinner}}, {{$dt->qtyouter}}, {{$dt->time}})"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="rubah({{$dt->id}}, '{{$dt->bagian}}', '{{$dt->tempat}}', '{{$dt->tipe}}', {{$dt->time}}, {{$dt->std_mp}})"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                         <button type="button" class="btn btn-sm btn-outline-danger" onclick="hapus({{$dt->id}})"><i class="fa fa-trash" aria-hidden="true"></i></button>
                         </td>
                         </tr>
@@ -94,8 +92,6 @@
 $(document).ready(function() {
     var table = $('#test').DataTable({
         order: [[0, 'asc'], [1, 'asc'], [2, 'asc'] ],
-        scrollY: '50vh',
-        paging: false,
         info: false,
         dom: 'Bfrtip',
         buttons: [
@@ -155,14 +151,13 @@ function bagain() {
     $('#bagain').modal('show');
 }
 
-function rubah(a, b, c, d, e, f, g) {
+function rubah(a, b, c, d, e, f) {
     document.getElementById("edittag0").value = a;
     document.getElementById("edittag1").value = b;
     document.getElementById("edittag2").value = c;
     document.getElementById("edittag3").value = d;
     document.getElementById("edittag4").value = e;
     document.getElementById("edittag5").value = f;
-    document.getElementById("edittag6").value = g;
     $('#rubah').modal('show');
 }
 </script>

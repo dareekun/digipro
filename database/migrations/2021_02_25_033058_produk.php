@@ -18,9 +18,8 @@ class Produk extends Migration
             $table->string('tipe');
             $table->string('tempat');
             $table->string('bagian');
-            $table->integer('qtyinner');
-            $table->integer('qtyouter');
             $table->decimal('time', $precision = 8, $scale = 2);
+            $table->integer('std_mp');
         });
     }
 

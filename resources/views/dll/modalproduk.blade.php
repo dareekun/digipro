@@ -12,34 +12,29 @@
         <form action="/produk/ditambah" method="post">
         {{ csrf_field() }}
         <div class="row">
-        <div class="col-sm-3">Bagian</div>
-        <div class="col-sm-9">
+        <div class="col-sm-4">Bagian</div>
+        <div class="col-sm-8">
         <input required type="text" name="tag1" id="tag1" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Line</div>
-        <div class="col-sm-9"><input required type="text" name="tag2" class="form-control"></div>
+        <div class="col-sm-4">Line</div>
+        <div class="col-sm-8"><input required type="text" name="tag2" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Tipe Produk</div>
-        <div class="col-sm-9"><input required type="text" name="tag3" class="form-control"></div>
+        <div class="col-sm-4">Tipe Produk</div>
+        <div class="col-sm-8"><input required type="text" name="tag3" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Qty Inner</div>
-        <div class="col-sm-9"><input required type="number" min="1" name="tag4" class="form-control"></div>
+        <div class="col-sm-4">Cycle Time</div>
+        <div class="col-sm-8"><input required type="number" min="0.01" name="tag4" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Qty Outer</div>
-        <div class="col-sm-9"><input required type="number" min="1" name="tag5" class="form-control"></div>
-        </div>
-        <br>
-        <div class="row">
-        <div class="col-sm-3">Cycle Time</div>
-        <div class="col-sm-9"><input required type="number" min="0.01" name="tag6" class="form-control"></div>
+        <div class="col-sm-4">Std Man Power</div>
+        <div class="col-sm-8"><input required type="number" min="1" name="tag5" class="form-control"></div>
         </div>
       </div>
       <div class="modal-footer">
@@ -66,34 +61,29 @@
         {{ csrf_field() }}
         <input hidden required type="text" name="edittag0" id="edittag0" value="" class="form-control">
         <div class="row">
-        <div class="col-sm-3">Bagian</div>
-        <div class="col-sm-9">
+        <div class="col-sm-4">Bagian</div>
+        <div class="col-sm-8">
         <input required type="text" name="edittag1" id="edittag1" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Line</div>
-        <div class="col-sm-9"><input required type="text" name="edittag2" id="edittag2" class="form-control"></div>
+        <div class="col-sm-4">Line</div>
+        <div class="col-sm-8"><input required type="text" name="edittag2" id="edittag2" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Tipe Produk</div>
-        <div class="col-sm-9"><input required type="text" name="edittag3" id="edittag3" class="form-control"></div>
+        <div class="col-sm-4">Tipe Produk</div>
+        <div class="col-sm-8"><input required type="text" name="edittag3" id="edittag3" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Qty Inner</div>
-        <div class="col-sm-9"><input required type="number" min="1" name="edittag4" id="edittag4" class="form-control"></div>
+        <div class="col-sm-4">Cycle Time</div>
+        <div class="col-sm-8"><input required type="number" step=".01" name="edittag4" id="edittag4" class="form-control"></div>
         </div>
         <br>
         <div class="row">
-        <div class="col-sm-3">Qty Outer</div>
-        <div class="col-sm-9"><input required type="number" min="1" name="edittag5" id="edittag5" class="form-control"></div>
-        </div>
-        <br>
-        <div class="row">
-        <div class="col-sm-3">Cycle Time</div>
-        <div class="col-sm-9"><input required type="number" step=".01" name="edittag6" id="edittag6" class="form-control"></div>
+        <div class="col-sm-4">Std Man Power</div>
+        <div class="col-sm-8"><input required type="number" min="1" name="edittag5" id="edittag5" class="form-control"></div>
         </div>
       </div>
       <div class="modal-footer">

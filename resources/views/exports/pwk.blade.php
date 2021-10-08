@@ -144,11 +144,11 @@ table, th, td {
     </tr>
     <!-- TOTAL WORKING TIME -->
     <tr>
-        <td colspan="5">C. TOTAL WORKING TIME</td>
-        @for ($i = 0; $i < count($baris10); $i++)             
-        <td align="center">{{$baris10[$i]}}</td> 
-        @endfor
-        <td align="right">{{array_sum($baris10)}}</td>
+    <td colspan="5">C. TOTAL WORKING TIME</td>
+    @for ($i = 0; $i < count($baris10); $i++)             
+    <td align="center">{{$baris10[$i]}}</td> 
+    @endfor
+    <td align="right">{{array_sum($baris10)}}</td>
     </tr>
     <!-- space -->
     <tr>
@@ -176,7 +176,7 @@ table, th, td {
     <!-- Regulated LOSS TOTAL -->
     <tr>
     <td></td>
-        <td colspan="4">D. REGULATED LOSS TOTAL</td>
+        <td colspan="4">D. FIXED LOSS TOTAL</td>
         @for ($n = 1, $ttl1 = 0; $n < count($regloss); $n++) 
         @php
         $ttl1 = $ttl1 + array_sum($regloss[$n]);
@@ -278,7 +278,7 @@ table, th, td {
         @php
         $ttlall = $ttlall + $sum;
         @endphp
-        @endfor
+    @endfor
     <!-- /////////////////////////// -->
     <!-- TOTAL LOST TIME GROUP END -->
     <td align="right">{{$ttlall}}</td>
@@ -290,168 +290,190 @@ table, th, td {
     <!-- NET WORTH TIME TOTAL -->
     <tr>
     <td colspan="5">I. NET WORKING TIME</td>
-    @for ($i = 0; $i < $date * 3; $i++) 
+    @for ($i = 0, $ttli = 0; $i < $date * 3; $i++) 
         @php
         $LTT = array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]) + array_sum($orgloss[$i+1]) + array_sum($defloss[$i+1]);
+        $ttli = $ttli + $LTT
         @endphp
         <td align="center">{{$baris10[$i] - $LTT}}</td> <!-- Shift 1 -->
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{$ttli}}</td>
     </tr>
     <!-- GOOD PRODUCTIVITY QTY -->
     <tr>
     <td colspan="5">J. GOOD PRODUCTIVITY QTY</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < count($baris11); $i++)             
+            <td align="center">{{$baris11[$i]}}</td> <!-- Shift 1 -->
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{array_sum($baris11)}}</td>
     </tr>
     <!-- DEFICIENCY QTY -->
     <tr>
     <td colspan="5">K. DEFICIENCY QTY</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < count($baris12); $i++)             
+            <td align="center">{{$baris12[$i]}}</td> <!-- Shift 1 -->
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{array_sum($baris12)}}</td>
     </tr>
     <!-- DEF.RATIO=(K)/(K+J)x100% -->
     <tr>
     <td colspan="5">DEF.RATIO=(K)/(K+J)x100%</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < count($baris12); $i++)  
+        @if ($baris12[$i] == 0) 
+        <td align="center">0</td>  
+        @else 
+        <td align="center">{{number_format((float)(($baris12[$i] / ($baris12[$i] + $baris11[$i])) * 100), 2, '.', '')}} %</td> <!-- Shift 1 -->
+        @endif
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{number_format((float)(array_sum($baris12) / (array_sum($baris12) + array_sum($baris11)) * 100), 2, '.', '')}} %</td>
     </tr>
     <!-- L. STD PROCESS TIME=ST TIMEx(J+K) -->
     <tr>
     <td colspan="5">L. STD PROCESS TIME=ST TIMEx(J+K)</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < count($baris13); $i++) 
+        <td align="center">{{$baris13[$i]}}</td>
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{array_sum($baris13)}}</td>
     </tr>
     <!-- OPR. RATIO=((C-H)/(C-D1)x100% -->
     <tr>
     <td colspan="5">OPR. RATIO=((C-H)/(C-D1)x100%</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
-    @endfor
-    <td align="right">0</td>
+    @for ($i = 0, $hltt = 0; $i < count($baris10); $i++)     
+        @if ($baris10[$i] == 0)
+        <td align="center">0</td>
+        @else  
+        @php
+        $hltt = array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]) + array_sum($orgloss[$i+1]) + array_sum($defloss[$i+1]);
+        $opratio = (($baris10[$i] - $hltt) / ($baris10[$i] - $subloss1a[$i+1]) ) * 100;
+        @endphp      
+        <td align="center">{{number_format((float)$opratio, 2, '.', '')}}%</td> 
+        @endif
+        @endfor
+        <td align="right">{{array_sum($baris10)}}</td>
     </tr>
     <!-- T/LOSS RATIO=(H)/(C)x100% -->
     <tr>
-    <td colspan="5">T/LOSS RATIO=(H)/(C)x100%</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    <td colspan="5">T.LOSS RATIO=(H)/(C)x100%</td>
+    @for ($i = 0, $ttlsr = 0; $i < count($baris10); $i++)
+    @if ($baris10 == 0 || $sum == 0)
+    <td align="center">0</td>
+    @else 
+        @php
+        $hsllsr = $sum / $baris10[$i] * 100;
+        $ttlsr  = $ttlsr + $hsllsr;
+        @endphp
+        <td align="center">{{number_format((float)$hsllsr, 2, '.', '')}}%</td> <!-- Shift 1 -->
+    @endif
     @endfor
-    <td align="right">0</td>
-    </tr>
-    <!-- EFFICIENCY=(L)/(I)x100% -->
-    <tr>
-    <td colspan="5">EFFICIENCY=(L)/(I)x100%</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
-    @endfor
-    <td align="right">0</td>
+    <td align="right">{{number_format((float)($ttlsr / array_sum($baris10) * 100), 2, '.', '')}}%</td>
     </tr>
     <!-- TTL PRODUCTIVITY=(L)/(C)x100% -->
     <tr>
     <td colspan="5">TTL PRODUCTIVITY=(L)/(C)x100%</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < count($baris13); $i++) 
+    @if ($baris13[$i] == 0 || $baris10[$i] == 0) 
+        <td align="center">0</td>
+    @else 
+    @php
+    $ttlp = $baris13[$i] / $baris10[$i] * 100;
+    @endphp
+        <td align="center">{{number_format((float)$ttlp, 2, '.', '')}}%</td>+
+    @endif
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{number_format((float)(array_sum($baris13) / array_sum($baris10) * 100), 2, '.', '')}}%</td>
     </tr>
     <!-- PRODUCTIVITY/HEAD/HOUR=((J+K)/ (C-D1))*60 -->
     <tr>
     <td colspan="5">PRODUCTIVITY/HEAD/HOUR=((J+K)/ (C-D1))*60</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < count($baris14); $i++) 
+        <td align="center">{{$baris14[$i]}}</td>
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{number_format((float)(((array_sum($baris11)+array_sum($baris12))/array_sum($baris10))*60), 2, '.', '')}}</td>
     </tr>
     <!-- space -->
     <tr>
         <td colspan="99"></td>
     </tr>
-
     <!-- ATTENDANCE=(A-B)/(A)x100% -->
     <tr>
     <td colspan="5">ATTENDANCE=(A-B)/(A)x100%</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < count($baris4); $i++)  
+    @if ($baris4[$i] == 0)
+    <td align="center">0</td> <!-- Shift 1 -->
+    @else            
+    <td align="center">{{(($baris4[$i]-$baris7[$i])/$baris4[$i])*100}}%</td> <!-- Shift 1 -->
+    @endif
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{number_format((float)(((array_sum($baris4)-array_sum($baris7))/array_sum($baris4))*100), 2, '.', '')}}%</td>
     </tr>
     <!-- (M)NET OPERATION TIME=(C)-(D+E) -->
     <tr>
-    <td colspan="5">(M)NET OPERATION TIME=(C)-(D+E)</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    <td colspan="5">M.NET OPERATION TIME=(C)-(D+E)</td>
+    @for ($i = 0; $i < count($baris10); $i++)   
+    <td align="center">{{$baris10[$i] - (array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]))}}</td>    
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{(array_sum($baris10)-($ttl1+$ttl2))}}</td>
     </tr>
     <!-- LINE BALANCE RATIO=(M-F)/(M)x100% -->
     <tr>
     <td colspan="5">LINE BALANCE RATIO=(M-F)/(M)x100%</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < count($baris10); $i++)  
+    @if (($baris10[$i] - (array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]))) == 0)
+    <td align="center">0</td>  
+    @else
+    @php
+    $m = (($baris10[$i] - (array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]))) - array_sum($orgloss[$i+1])) / ($baris10[$i] - (array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]))) * 100;
+    @endphp
+    <td align="center">{{number_format((float)$m, 2, '.', '')}}%</td>   
+    @endif  
     @endfor
-    <td align="right">0</td>
+    @php
+    $endm = ((array_sum($baris10) - ($ttl1 + $ttl2) - $ttl3) / array_sum($baris10) - ($ttl1 + $ttl2)) * 100;
+    @endphp
+    <td align="right">{{number_format((float)$endm, 2, '.', '')}}%</td>
     </tr>
     <!-- (N)EFFICIENT TIME=C-(D+E+F) -->
     <tr>
-    <td colspan="5">(N)EFFICIENT TIME=C-(D+E+F)</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    <td colspan="5">N.EFFICIENT TIME=C-(D+E+F)</td>
+    @for ($i = 0; $i < count($baris10); $i++)   
+    <td align="center">{{$baris10[$i] - (array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]) + array_sum($orgloss[$i+1]))}}</td>    
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{(array_sum($baris10)-($ttl1+$ttl2+$ttl3))}}</td>
     </tr>
     <!-- VALUE TIME RATIO=(N-G)/(N)x100% -->
     <tr>
     <td colspan="5">VALUE TIME RATIO=(N-G)/(N)x100%</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < count($baris10); $i++)  
+    @if (($baris10[$i] - (array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]) + array_sum($orgloss[$i+1]))) == 0)
+    <td align="center">0</td>
+    @else
+    @php 
+    $valuetime = ( ( ($baris10[$i] - (array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]) + array_sum($orgloss[$i+1]))) - (array_sum($defloss[$i+1]))) / ($baris10[$i] - (array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]) + array_sum($orgloss[$i+1]))) ) * 100;
+    @endphp
+    <td align="center">{{number_format((float)$valuetime, 2, '.', '')}}%</td>   
+    @endif 
     @endfor
-    <td align="right">0</td>
+    @php 
+    $sumvalueratio = ( ( (array_sum($baris10)-($ttl1+$ttl2+$ttl3)) - $ttl4 ) / (array_sum($baris10)-($ttl1+$ttl2+$ttl3)) ) * 100;
+    @endphp
+    <td align="right">{{number_format((float)$sumvalueratio, 2, '.', '')}}%</td>
     </tr>
     <!-- EFFICIENCY=(L)/(I)x100% -->
     <tr>
     <td colspan="5">EFFICIENCY=(L)/(I)x100%</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
+    @for ($i = 0; $i < count($baris13); $i++) 
+    @if ($baris13[$i] == 0 || $baris10[$i] == 0)
+        <td align="center">0</td>
+    @else 
+        @php
+        $LTT    = array_sum($regloss[$i+1]) + array_sum($workloss[$i+1]) + array_sum($orgloss[$i+1]) + array_sum($defloss[$i+1]);
+        $varEFF = $baris10[$i] - $LTT;
+        $eff    = $baris13[$i] / $varEFF * 100;
+        @endphp
+        <td align="center">{{number_format((float)$eff, 2, '.', '')}}%</td>
+    @endif
     @endfor
-    <td align="right">0</td>
+    <td align="right">{{number_format((float)(array_sum($baris13) / $ttli * 100), 2, '.', '')}} %</td>
     </tr>
     <!-- space -->
     <tr>
@@ -491,39 +513,6 @@ table, th, td {
     <td align="right">{{$hslttl}}</td>
     </tr>
     @endfor
-    <!-- Plan Waktu Kerja -->
-    <tr>
-    <td colspan="5" rowspan="2">PLAN WAKTU KERJA</td>
-    @for ($i = 0; $i < $date; $i++)  
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
-    @endfor
-    <td align="right">0</td>
-    </tr>
-    <!-- Plan Waktu Kerja FOOTER -->
-    <tr>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
-    @endfor
-    <td align="right">0</td>
-    </tr>
-    <!-- space -->
-    <tr>
-        <td colspan="99"></td>
-    </tr>
-    <!-- Efficiency Line -->
-    <tr>
-    <td colspan="5">Efficiency Line</td>
-    @for ($i = 0; $i < $date; $i++) 
-        <td align="center">data</td> <!-- Shift 1 -->
-        <td align="center">data</td> <!-- Shift 2 -->
-        <td align="center">data</td> <!-- Shift 3 -->
-    @endfor
-    <td align="right">0</td>
-    </tr>
 </table>
 
 </html>

@@ -27,19 +27,15 @@ class noLoginController extends Controller
 
     public function grafik($id) {
         $lini   = DB::table('produk')->where('bagian', $id)->select('tempat')->orderBy('tempat', 'asc')->distinct()->get();
-        $plan   = array();
         $actual = array();
         $nowm   = date('m');
         $nowy   = date('Y');
-            foreach ($lini as $ln) {
-                $plan[]    = 0;
-                }
             foreach ($lini as $li) {
-                $actual[]  = DB::table('rekap_prod')->join('produk', 'rekap_prod.tipe', '=', 'produk.tipe')
+                $actual[]  = DB::table('rekap_prod')
                 ->leftJoin('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')
-                ->where('produk.bagian', $id)->where('produk.tempat', $li->tempat)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->orderBy('produk.line', 'asc')->sum('rekap_prod.daily_actual');
+                ->where('dataharian.bagian', $id)->where('dataharian.line', $li->tempat)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->orderBy('produk.line', 'asc')->sum('rekap_prod.daily_actual');
             }
-        return view('grafik', ['tipe' => $id, 'lini' => $lini, 'planning' => $plan, 'actual' => $actual]);
+        return view('grafik', ['tipe' => $id, 'lini' => $lini, 'actual' => $actual]);
     }
 
 
@@ -88,6 +84,10 @@ class noLoginController extends Controller
             $row8   = array();
             $row9   = array();
             $row10  = array();
+            $row11  = array();
+            $row12  = array();
+            $row13  = array(); //Std Time
+            $row14  = array();
             $lossa  = array();
             $lossb  = array();
             $lossc  = array();
@@ -100,7 +100,9 @@ class noLoginController extends Controller
             $array_time = array();
             $produk = array();
 
-            $loss1 = DB::table('loss_type')->where('type', 'Regulated Loss')->select('loss')->get();
+            $sub1a   = array(); //Regulated Loss
+
+            $loss1 = DB::table('loss_type')->where('type', 'Fixed Loss')->select('loss')->get();
             $loss2 = DB::table('loss_type')->where('type', 'Work Loss')->select('loss')->get();
             $loss3 = DB::table('loss_type')->where('type', 'Organization Loss')->select('loss')->get();
             $loss4 = DB::table('loss_type')->where('type', 'Defect Loss')->select('loss')->get();
@@ -133,26 +135,35 @@ class noLoginController extends Controller
                 $i1 = $i+1;
                 for($n = 0; $n<3; $n++) {
                     $n1 = $n+1;
-                    $row1[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('waktukartap')->value('waktukartap');
-                    $row2[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkartap')->value('otkartap');
-                    $row3[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('waktukartap')->value('waktukartap') + 
-                               DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkartap')->value('otkartap');;
-                    $row5[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('kartap')->value('kartap');
-                    $row6[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('kwt')->value('kwt');
-                    $row4[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('kartap')->value('kartap') + 
-                               DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('kwt')->value('kwt');
-                    $row7[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('absenkartap')->value('absenkartap') + 
-                               DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('absenkwt')->value('absenkwt');
+                    $row1[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('waktukartap')->sum('waktukartap');
+                    $row2[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkartap')->sum('otkartap');
+                    $row3[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('waktukartap')->sum('waktukartap') + 
+                               DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkartap')->sum('otkartap');;
+                    $row5[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('kartap')->sum('kartap');
+                    $row6[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('kwt')->sum('kwt');
+                    $row4[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('kartap')->sum('kartap') + 
+                               DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('kwt')->sum('kwt');
+                    $row7[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('absenkartap')->sum('absenkartap') + 
+                               DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('absenkwt')->sum('absenkwt');
                     $row8[]  = DB::table('hasil_prod')->leftJoin('dataharian', 'dataharian.keyid', '=', 'hasil_prod.keyid')
                                ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))
-                               ->where('dataharian.shift', 'Shift '.$n1)->select('hasil_prod.avalaible')->value('hasil_prod.avalaible');
+                               ->where('dataharian.shift', 'Shift '.$n1)->select('hasil_prod.avalaible')->sum('hasil_prod.avalaible');
                     $row9[]  = DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkartap')->value('otkartap') + 
                                DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkwt')->value('otkwt');
                     $row10[] = DB::table('hasil_prod')->leftJoin('dataharian', 'dataharian.keyid', '=', 'hasil_prod.keyid')
                                ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)
-                               ->select('hasil_prod.avalaible')->value('hasil_prod.avalaible') + 
+                               ->select('hasil_prod.avalaible')->sum('hasil_prod.avalaible') + 
                                DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkartap')->value('otkartap') + 
                                DB::table('dataharian')->where('tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('shift', 'Shift '.$n1)->select('otkwt')->value('otkwt');
+                    $row11[] = DB::table('dataharian')->join('hasil_prod', 'dataharian.keyid', '=', 'hasil_prod.keyid')
+                               ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)
+                               ->select('hasil_prod.hasil')->sum('hasil_prod.hasil');
+                    $row12[] = DB::table('dataharian')->join('rekap_prod', 'dataharian.keyid', '=', 'rekap_prod.keyid')
+                               ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)
+                               ->select('rekap_prod.ng_total')->sum('rekap_prod.ng_total');
+                    $row14[] = DB::table('dataharian')->join('hasil_prod', 'dataharian.keyid', '=', 'hasil_prod.keyid')
+                               ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)
+                               ->select('hasil_prod.phh')->sum('hasil_prod.phh');
                     // Data Hasil Produksi
                     // Repeated Job Calculated by For
                     $array11 = array();
@@ -160,43 +171,57 @@ class noLoginController extends Controller
                     $array11[] = DB::table('dataharian')->leftJoin('rekap_prod', 'dataharian.keyid', '=', 'rekap_prod.keyid')
                     ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)
                     ->where('rekap_prod.tipe', $tp->tipe)
-                    ->select('rekap_prod.daily_actual')->value('rekap_prod.daily_actual');
+                    ->select('rekap_prod.daily_actual')->sum('rekap_prod.daily_actual');
                     }
                     $produk[] = $array11;
-                    $goodproductdaily = 
                     // Trouble Count 
                     // Repeated Job calculated by foreach
-                    $array1 = array();
-                    $array2 = array();
-                    $array3 = array();
-                    $array4 = array();
+                    $array1  = array();
+                    $array2  = array();
+                    $array3  = array();
+                    $array4  = array();
                     foreach ($loss1 as $type1) {
                         $array1[] = DB::table('dataharian')->rightJoin('loss_data', 'dataharian.keyid', '=', 'loss_data.keyid')->where('problem', $type1->loss)
-                        ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)->select('dur')->value('dur');
+                        ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)->select('dur')->sum('dur');
                     }
                     foreach ($loss2 as $type2) {
                         $array2[] = DB::table('dataharian')->rightJoin('loss_data', 'dataharian.keyid', '=', 'loss_data.keyid')->where('problem', $type2->loss)
-                        ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)->select('dur')->value('dur');
+                        ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)->select('dur')->sum('dur');
                     }
                     foreach ($loss3 as $type3) {
                         $array3[] = DB::table('dataharian')->rightJoin('loss_data', 'dataharian.keyid', '=', 'loss_data.keyid')->where('problem', $type3->loss)
-                        ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)->select('dur')->value('dur');
+                        ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)->select('dur')->sum('dur');
                     }
                     foreach ($loss4 as $type4) {
                         $array4[] = DB::table('dataharian')->rightJoin('loss_data', 'dataharian.keyid', '=', 'loss_data.keyid')->where('problem', $type4->loss)
-                        ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)->select('dur')->value('dur');
+                        ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)->select('dur')->sum('dur');
                     }
                     $lossa[] = $array1;
                     $lossb[] = $array2;
                     $lossc[] = $array3;
                     $lossd[] = $array4;
+                    $sub1a[] = DB::table('dataharian')->rightJoin('loss_data', 'dataharian.keyid', '=', 'loss_data.keyid')->join('loss_type', 'loss_data.problem', 'loss_type.loss')->where('loss_type.remark', 'Regulated Loss')
+                    ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)->select('dur')->sum('dur');
+
+                    // STD PROCESS TIME 
+                    // Repeated Job calculated by foreach
+                    $array5  = array();
+                    $varow13 = DB::table('rekap_prod')->join('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')->join('produk', 'rekap_prod.tipe', 'produk.tipe')
+                               ->where('dataharian.tanggal', date('Y-m-d', strtotime($year.'-'.$month.'-'.$i1)))->where('dataharian.shift', 'Shift '.$n1)
+                               ->select('rekap_prod.daily_actual as qty', 'produk.time as ct', 'produk.std_mp as mp')->get();
+                    foreach ($varow13 as $var13) {
+                        $array5[] = $var13->qty * ( $var13->ct / 60 ) * $var13->mp;
+                    }
+                    $row13[] = array_sum($array5);
+
                 }
             }
-            // return $lossa;
+            // return $sub1a;
             return view('exports.pwk', ['date' => $hari, 'bulan' => $tanggal, 'type' => $produk, 'lini' => $request->lineproduksi,
             'baris1' => $row1, 'baris2' => $row2, 'baris3' => $row3, 'baris4' => $row4, 'baris5' => $row5, 'baris6' => $row6, 'baris7' => $row7,
-            'baris8' => $row8, 'baris9' => $row9, 'baris10' => $row10, 
-            'regloss' => $lossa, 'workloss' => $lossb, 'orgloss' => $lossc, 'defloss' => $lossd,
+            'baris8' => $row8, 'baris9' => $row9, 'baris10' => $row10, 'baris11' => $row11, 'baris12' => $row12, 'baris13' => $row13, 
+            'baris14' => $row14,
+            'subloss1a' => $sub1a, 'regloss' => $lossa, 'workloss' => $lossb, 'orgloss' => $lossc, 'defloss' => $lossd,
             ]);
         }
     }

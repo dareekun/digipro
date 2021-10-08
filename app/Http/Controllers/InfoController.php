@@ -36,11 +36,11 @@ class InfoController extends Controller
         $actual = array();
         $nowm   = date('m');
         $nowy   = date('Y');
-            foreach ($lini as $li) {
-                $actual[]  = DB::table('rekap_prod')->join('produk', 'rekap_prod.tipe', '=', 'produk.tipe')
-                ->leftJoin('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')
-                ->where('produk.bagian', $id)->where('produk.tempat', $li->tempat)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->orderBy('produk.line', 'asc')->sum('rekap_prod.daily_actual');
-            }
+        foreach ($lini as $li) {
+            $actual[]  = DB::table('rekap_prod')
+            ->leftJoin('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')
+            ->where('dataharian.bagian', $id)->where('dataharian.line', $li->tempat)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->orderBy('produk.line', 'asc')->sum('rekap_prod.daily_actual');
+        }
         return view('graphline', ['tipe' => $id, 'lini' => $lini, 'actual' => $actual]);
     }
 
