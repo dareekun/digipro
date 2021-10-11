@@ -32,10 +32,8 @@ Route::any('/lotscaned', [InfoController::class, 'lotscaned']);
 Route::get('/dellot/{id}', [InfoController::class, 'dellot']);
 Route::any('/graphbulan/{id}', [InfoController::class, 'graphbulan']);
 Route::post('/lotcard', [InfoController::class, 'lotcard']);
-Route::post('/lotcard1', [InfoController::class, 'lotcard1']);
 Route::post('/lotcardalpha', [InfoController::class, 'lotcardalpha']);
 Route::post('/plusalpha', [InfoController::class, 'plusalpha']);
-Route::get('/lotsp/{param0}', [InfoController::class, 'lotsp']);
 Route::get('/laksan/{param0}', [InfoController::class, 'lotcardalpha2']);
 
 Auth::routes();
@@ -96,7 +94,8 @@ Route::post('lot2-json', [HomeController::class, 'lot2'])->name('lot2-json.lot2'
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Route No Login Needed
-Route::post('/downloadpwk', [noLoginController::class, 'returnpwk']);
+Route::post('/downloadpwk', [noLoginController::class, 'downloadpwk']);
 Route::get('/grafik/{id}', [noLoginController::class, 'grafik']);
 Route::post('/returnpwk', [noLoginController::class, 'returnpwk']);
+Route::get('/monitor', [noLoginController::class, 'monitor']);
 

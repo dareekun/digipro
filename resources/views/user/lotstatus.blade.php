@@ -18,18 +18,6 @@ $(document).ready(function() {
                         <div class="col-md-10" align="left">
                                 <table>
                                     <tr>
-                                        <td><select name="bagian" class="form-control form-control-sm" id="bagian">
-                                                <option value=""></option>
-                                                @foreach($bagian as $l)
-                                                <option value="{{$l->bagian}}">{{$l->bagian}}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select required class="form-control form-control-sm" style="width:150px" name="tempat" id="tempat">
-                                                <option value=""></option>
-                                            </select>
-                                        </td>
                                         <td>
                                             <input type="date" class="form-control form-control-sm" name="tanggal" id="tanggal">
                                         </td>
@@ -48,7 +36,6 @@ $(document).ready(function() {
                     <table id="test" class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Main</th>
                                 <th scope="col">Model No</th>
                                 <th hidden scope="col">Lot No</th>
                                 <th scope="col">Lot No</th>
@@ -60,7 +47,6 @@ $(document).ready(function() {
                         <tbody>
                             @foreach ($data as $d)
                             <tr>
-                                <td>{{ $d->tempat }}</td>
                                 <td><a style="color: #000" target="_blank" href="/cetaklot/{{$d->barcode}}">
                                         {{ $d->modelno }}</a></td>
                                 <td hidden>{{ $d->lotno }}</td>
@@ -151,24 +137,7 @@ var table = $('#test').DataTable({
     });
  
 } );
-$(function() {
-    $('#bagian').on('change', function() {
-        axios.post('{{ route('data1-json.data1') }}', {
-                    bag: $(this).val()
-                })
-            .then(function(response) {
-                $('#tempat').empty();
-                $('#tipe').empty();
-                $('#tempat').append(new Option("", ""));
-                $.each(response.data, function(tempat, tempat) {
-                    $('#tempat').append(new Option(tempat, tempat))
-                })
-            });
-    });
-});
 function reset() {
-    document.getElementById('bagian').value = '';
-    document.getElementById('tempat').value = '';
     document.getElementById('tanggal').value = '';
     $('#test').DataTable().columns().search('').draw();
 }

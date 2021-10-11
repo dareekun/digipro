@@ -17,8 +17,8 @@ class LotCard extends Migration
             $table->string('id')->primary();
             $table->string('barcode');
             $table->string('modelno');
-            $table->string('lotno');
-            $table->string('shift');
+            $table->string('lotno'); 
+            $table->string('tempat'); 
             $table->string('partname');
             $table->string('nolot');
             $table->integer('input1')->nullable();

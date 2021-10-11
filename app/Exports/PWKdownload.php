@@ -1,88 +1,35 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Exports;
 
-use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Support\Facades\DB;
-use App\Exports\PWKdownload;
-use App\Exports\PWKExports;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Http;
 
-class noLoginController extends Controller
+class PWKdownload implements FromView
 {
-    public function pwk(Request $request) {
-        if ($request->tahuninput == '') {
+    public $a;
+    public $b;
+
+    public function __construct($a, $b )
+    {
+        $this->tahuninput   = $a;
+        $this->lineproduksi = $b;
+    }
+
+    public function view(): View
+    {
+        if ($this->tahuninput == '') {
             $month = date('m');
             $year  = date('Y');
             $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $tanggal = date('F Y');
         } else {
-            $month = date('m', strtotime($request->tahuninput));
-            $year  = date('Y', strtotime($request->tahuninput));
+            $month = date('m', strtotime($this->tahuninput));
+            $year  = date('Y', strtotime($this->tahuninput));
             $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-            $tanggal = date('F Y', strtotime($request->tahuninput));
+            $tanggal = date('F Y', strtotime($this->tahuninput));
         }
-        return Excel::download(new PWKExports($request->tahuninput), 'PWK - '.$tanggal.'.xlsx');
-    }
-
-    public function downloadpwk(Request $request){
-        return Excel::download(new PWKdownload($request->tahuninput, $request->lineproduksi), 'PWK.xlsx');
-    }
-
-    public function monitor() {
-        $bagian   = DB::table('produk')->select('bagian')->orderBy('bagian', 'asc')->distinct()->get();
-        return view('monitor', ['bagian' => $bagian]);
-    }
-
-    public function grafik($id) {
-        $lini   = DB::table('produk')->where('bagian', $id)->select('tempat')->orderBy('tempat', 'asc')->distinct()->get();
-        $actual = array();
-        $nowm   = date('m');
-        $nowy   = date('Y');
-            foreach ($lini as $li) {
-                $actual[]  = DB::table('rekap_prod')
-                ->leftJoin('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')
-                ->where('dataharian.bagian', $id)->where('dataharian.line', $li->tempat)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->orderBy('produk.line', 'asc')->sum('rekap_prod.daily_actual');
-            }
-        return view('grafik', ['tipe' => $id, 'lini' => $lini, 'actual' => $actual]);
-    }
-
-    // Debugging Table 
-    public function pwk2(Request $request) {
-        if ($request->tahuninput == '') {
-            $month = date('m');
-            $year  = date('Y');
-            $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-            $tanggal = date('F Y');
-        } else {
-            $month = date('m', strtotime($request->tahuninput));
-            $year  = date('Y', strtotime($request->tahuninput));
-            $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-            $tanggal = date('F Y', strtotime($request->tahuninput));
-        }
-        $data = DB::table('rekap_prod')->leftJoin('dataharian', 'rekap_prod.keyid', '=', 'dataharian.keyid')->leftJoin('produk', 'rekap_prod.tipe', '=', 'produk.tipe')
-        ->select('dataharian.tanggal as tanggal', 'dataharian.shift as shift', 'dataharian.line as Line_Produksi', 'rekap_prod.tipe as ItemCode', 'rekap_prod.daily_plan as Qty', 'rekap_prod.ng_total as Defect', 'produk.time as Standar_Time')
-        ->whereMonth('dataharian.tanggal', $month)->whereYear('dataharian.tanggal', $year)->where('autosave', 'selesai')->get();
-        return $data;
-    }
-
-    // Debugging Table before export
-    public function returnpwk(Request $request) {
-        if ($request->tahuninput == '') {
-            $month = date('m');
-            $year  = date('Y');
-            $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-            $tanggal = date('F Y');
-        } else {
-            $month = date('m', strtotime($request->tahuninput));
-            $year  = date('Y', strtotime($request->tahuninput));
-            $hari  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-            $tanggal = date('F Y', strtotime($request->tahuninput));
-        }
-        if ($request->lineproduksi == '') {
-            // Do Nothing
-        } else {
             $row1   = array();
             $row2   = array();
             $row3   = array();
@@ -115,7 +62,7 @@ class noLoginController extends Controller
             $loss2 = DB::table('loss_type')->where('type', 'Work Loss')->select('loss')->get();
             $loss3 = DB::table('loss_type')->where('type', 'Organization Loss')->select('loss')->get();
             $loss4 = DB::table('loss_type')->where('type', 'Defect Loss')->select('loss')->get();
-            $tipe  = DB::table('produk')->select('tipe', 'time')->where('tempat', $request->lineproduksi)->get();
+            $tipe  = DB::table('produk')->select('tipe', 'time')->where('tempat', $this->lineproduksi)->get();
 
             foreach ($tipe as $tp) {
                 $array_tipe[] = $tp->tipe;
@@ -226,12 +173,11 @@ class noLoginController extends Controller
                 }
             }
             // return $sub1a;
-            return view('exports.pwk', ['date' => $hari, 'bulan' => $tanggal, 'type' => $produk, 'lini' => $request->lineproduksi,
+            return view('exports.pwk', ['date' => $hari, 'bulan' => $tanggal, 'type' => $produk, 'lini' => $this->lineproduksi,
             'baris1' => $row1, 'baris2' => $row2, 'baris3' => $row3, 'baris4' => $row4, 'baris5' => $row5, 'baris6' => $row6, 'baris7' => $row7,
             'baris8' => $row8, 'baris9' => $row9, 'baris10' => $row10, 'baris11' => $row11, 'baris12' => $row12, 'baris13' => $row13, 
             'baris14' => $row14,
             'subloss1a' => $sub1a, 'regloss' => $lossa, 'workloss' => $lossb, 'orgloss' => $lossc, 'defloss' => $lossd,
             ]);
-        }
     }
 }

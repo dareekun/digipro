@@ -47,7 +47,6 @@ var Chart = new Chart(ctx1, {
             borderColor: brColor,
             borderWidth : 3,
             borderRadius : 5
-            
         }]
     },
     options: {
@@ -69,8 +68,11 @@ var Chart = new Chart(ctx1, {
     responsive: true,
     maintainAspectRatio: false,
     legend: {
-        display: false,
-      }
+       display: false
+    },
+    tooltips: {
+       enabled: false
+    }
     }
 });
 

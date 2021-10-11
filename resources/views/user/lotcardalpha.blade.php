@@ -128,9 +128,8 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="3"></td>
-                                                <td align="right" colspan="2"><button type="button" class="btn btn-danger"
-                                                        data-dismiss="modal" data-toggle="modal"
-                                                        data-target="kembali">Hapus</button>
+                                                <td align="right" colspan="2"><a type="button" class="btn btn-danger"
+                                                        href="/lotcard0">Hapus</a>
 
                                                     <button type="submit" name="masuk"
                                                         class="btn btn-success">Submit</button>

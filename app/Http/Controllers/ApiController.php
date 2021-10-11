@@ -11,9 +11,7 @@ class ApiController extends Controller
     public function show($id)
     {
         $data = DB::table('lotcard')->where('barcode', $id)
-        ->leftJoin('finish_job', 'lotcard.barcode', '=', 'finish_job.id')
-        ->select('lotcard.barcode', 'lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.name2', 'lotcard.input1', 'lotcard.input2', 
-        'finish_job.Job as job', 'finish_job.Quantity as plan', 'finish_job.Quantity Remained as qty', 'lotcard.status' )
+        ->select('lotcard.barcode', 'lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.name2', 'lotcard.input1', 'lotcard.input2', 'lotcard.status' )
         ->distinct()->first();
         return response()->json($data);
     }
@@ -22,21 +20,14 @@ class ApiController extends Controller
     {
         DB::table('lotcard')->where('barcode', $id)->update(['status'=> 0]);
         return response()->json([
-            'status' => 'ok',
+            'status' => 'Ok',
             'message' => 'Data was Reverse'
         ], 200);
-    }
-
-    public function oracle($id){
-        $data = DB::table('oracle')->where('id', 'utama')->select($id)->value($id);
-        return $data;
     }
 
     public function update($id, $jumlah)
     {
         $check = DB::table('lotcard')->where('barcode', $id)->select('status')->distinct()->value('status');
-        $plan  = DB::table('finish_job')->where('id', $id)->select('Quantity')->distinct()->value('Quantity');
-        $tanda = DB::table('finish_job')->where('id', $id)->select('tanda')->distinct()->value('tanda');
         if ($check == 1) {
             return response()->json([
                 'status' => 'Replace',
@@ -45,38 +36,15 @@ class ApiController extends Controller
         }
         else {
             $date = date('Y-m-d');
-            if ($tanda == 0) {
-                $tanggal = date('Y-m-d G:I:s');
-                $planqty = $plan;
-                $sisa = $planqty - $jumlah;
-                if ($sisa = 0) {
-                    $status = 'Completed';
-                } else {
-                    $status = 'Released';
-                }
-            } else {
-                $tanggal = date('Y-m-d G:I:s');
-                $sisa = 0;
-                $status = 'Completed';
-                $planqty = $jumlah;
-            }
-            DB::table('finish_job')->where('id', $id)->update([
-                'Completion Date' => $tanggal,
-                'Transaction Date' => $tanggal,
-                'Quantity' => $planqty,
-                'Status' => $status, 
-                'Overcompletion Quantity' => $jumlah, 
-                'Quantity Remained' => $sisa
-            ]);
             DB::table('lotcard')->where('barcode', $id)->update([
                 'status' => 1,
                 'input1' => $jumlah,
+                'input2' => $jumlah,
             ]);
             return response()->json([
-                'status' => 'ok',
+                'status' => 'Ok',
                 'message' => 'Data was updated'
             ], 200);
         }
-        
     }
 }

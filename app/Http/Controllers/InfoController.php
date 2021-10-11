@@ -96,7 +96,7 @@ class InfoController extends Controller
             $tanggal = date('d M Y');
             $data = DB::table('lotcard')
             ->leftJoin('produk', 'lotcard.modelno', '=', 'produk.tipe')
-            ->select('lotcard.modelno as type', 'lotcard.lotno as nolot' , 'produk.qtyouter as qtyouter', 'lotcard.input2 as totalbox', 'lotcard.input1 as totalqty', 'lotcard.ng1 as ng')
+            ->select('lotcard.modelno as type', 'lotcard.lotno as nolot' , 'lotcard.input2 as totalbox', 'lotcard.input1 as totalqty', 'lotcard.ng1 as ng')
             ->where('lotcard.status', 1)->distinct()->get();
         return view('user.lotscaned', ['data' => $data]);
     }
@@ -152,61 +152,17 @@ class InfoController extends Controller
         $parts = DB::table('parts')->select('part')->where('model', $request->model)->get();
         return view('user.lotcard', ['data' => $parts, 'tipe' => $tipe, 'shift' => $shift]);
     }
-    public function lotcard1(Request $request) {
-        $line = explode(" ", DB::table('produk')->where('tipe', $request->tipe)->select('tempat')->value('tempat'));
-        $shift = explode(" ", $request->shift);
-        $date = date("Ymd", strtotime($request->tanggal));
-        $acl = "";
-        $acs = "";
-        foreach ($shift as $q) {
-            $acs .= $q[0];
-        }
-        $last  = DB::table('lotcard')->select('barcode')->where('keyid', $request->keyid)->distinct('id')->count('id')+1;
-        $nlm   = DB::table('rekapprod')->select('keyid')->where('keyid', $request->keyid)->distinct('id')->count('id');
-        $lotid = $acs.'N'.$last.trim($request->tipe,'-').$date;
-        $parts = $request->part;
-        $lotparts = $request->lotpart;
-        for ($htng = 0; $htng < count($parts); $htng++) {
-            $data = array(
-            'id' => $lotid.$htng,
-            'barcode' => $lotid,
-            'keyid' => 'N'.$nlm.$request->keyid,
-            'modelno' => $request->tipe,
-            'lotno' => $request->tanggal,
-            'shift'=> $request->shift,
-            'partname' => $parts[$htng],
-            'nolot' => $lotparts[$htng],
-            'input1' => $request->input1,
-            'input2' => $request->input2,
-            'ng1' => $request->ng1,
-            'ng2' => $request->ng2,
-            'date1' => $request->date1,
-            'date2' => $request->date2,
-            'name1' => $request->name1,
-            'name2' => $request->name2,
-            );
-            $insert_data[] = $data; 
-        }
-        DB::table('lotcard')->insert($insert_data);
-        DB::table('rekapprod')->where('keyid', $request->keyid)->update([
-            'status' => 1,
-        ]);
-        return redirect('/resume/'.$request->keyid);
-    }
 
     public function lotstatus(Request $request) {
         $year = date('Y');
         $month = date('m') - 1;
-        if (isset($request->tempat)) {
-            $line = DB::table('produk')->select('bagian')->distinct()->get();
-            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>', $month)->where('produk.tempat', $request->tempat)->where('lotcard.lotno', $request->tanggal)->distinct('barcode')->get();
-            return view('user.lotstatus', ['data' => $data, 'bagian' => $line]);
+        if (isset($request->tanggal)) {
+            $data = DB::table('lotcard')->Leftjoin('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>', $month)->where('lotcard.lotno', $request->tanggal)->distinct('barcode')->get();
+            return view('user.lotstatus', ['data' => $data]);
         }else {
-            $line = DB::table('produk')->select('bagian')->distinct()->get();
-            $data = DB::table('lotcard')->join('produk', 'produk.tipe', '=', 'lotcard.modelno')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>', $month)->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status', 'produk.tempat')->distinct('barcode')->get();
-            return view('user.lotstatus', ['data' => $data, 'bagian' => $line]);
+            $data = DB::table('lotcard')->Leftjoin('produk', 'produk.tipe', '=', 'lotcard.modelno')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>', $month)->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status')->distinct('barcode')->get();
+            return view('user.lotstatus', ['data' => $data]);
         }
-
     }
     public function lotdetail($id) {
         $data0 = DB::table('lotcard')->where('barcode', $id)->get();
@@ -223,22 +179,5 @@ class InfoController extends Controller
         $pdf   = PDF::loadview('dll.lotdetail', ['data' => $data1, 'data1' => $data0]);
         $pdf->setPaper($customPaper);
 	    return $pdf->stream();
-    }
-
-    public function lotsp($param0){
-        $tipe = DB::table('rekapprod')->where('id', $param0)->select('tipe')->value('tipe');
-        $keyid = DB::table('rekapprod')->where('id', $param0)->select('keyid')->value('keyid');
-        $shift = DB::table('dataharian')->where('keyid', $keyid)->select('shift')->value('shift');
-
-        $outer = DB::table('produk')->where('tipe', $tipe)->select('qtyouter')->value('qtyouter');
-        $input1 = DB::table('rekapprod')->where('id', $param0)->select('ttlprod')->value('ttlprod');
-        $input2 = DB::table('rekapprod')->where('id', $param0)->select('ttlprod')->value('ttlprod') / $outer;
-        $ng1 = 0;
-        $pic = DB::table('dataharian')->where('keyid', $keyid)->select('pic')->value('pic');
-
-        return view('user.lotcard', [
-            'tipe' => $tipe, 'shift' => $shift, 'keyid' => $keyid, 
-            'name' => $pic, 'ng' => $ng1, 'qty' => $input1, 'qty2' => $input2,
-        ]);
     }
 }
