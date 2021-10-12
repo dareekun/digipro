@@ -35,6 +35,7 @@ Route::post('/lotcard', [InfoController::class, 'lotcard']);
 Route::post('/lotcardalpha', [InfoController::class, 'lotcardalpha']);
 Route::post('/plusalpha', [InfoController::class, 'plusalpha']);
 Route::get('/laksan/{param0}', [InfoController::class, 'lotcardalpha2']);
+Route::get('/delparts/{id}', [InfoController::class, 'delparts']);
 
 Auth::routes();
 

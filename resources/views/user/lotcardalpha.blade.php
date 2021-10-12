@@ -11,7 +11,8 @@
     <script type="text/javascript" src="{{ asset('/js/popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/bootstrap-select.min.js') }}"></script>
-    <title>Manage</title>
+    <script type="text/javascript" src="{{ asset('/js/axios.min.js') }}"></script>
+    <title>Produksi</title>
     <style>
     html,
     body {
@@ -34,7 +35,7 @@
                     <div class="center">
                         <form action="/plusalpha" enctype="multipart/form-data" method="post">
                             {{ csrf_field() }}
-                            <input type="text" hidden value="{{$jobid}}" name="jobid">
+                            <input type="text" hidden value="{{$tempat}}" name="tempat">
                             <table>
                                 <tr>
                                     <td>Model No </td>
@@ -76,6 +77,7 @@
                                             </tr>
                                             @foreach ($data as $dt)
                                             <tr id="rowa{{$i}}">
+                                                <td hidden><div id="ida{{$i}}">{{$dt->id}}</div></td>
                                                 <td><input type="text" required class="form-control" name="part[]"
                                                         value="{{$dt->partname}}"></td>
                                                 <td><input type="date" required class="form-control" name="lotpart[]"
@@ -157,6 +159,8 @@
         });
         $(document).on('click', '.btn_remove', function() {
             var button_id = $(this).attr("id");
+            var url = '/delparts/' + $( '#id' + button_id + '' ).text()
+            axios.get(url);
             $('#row' + button_id + '').remove();
         });
     });

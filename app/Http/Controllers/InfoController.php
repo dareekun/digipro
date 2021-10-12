@@ -65,6 +65,10 @@ class InfoController extends Controller
         return view('graphbulan', ['index' => $ttl, 'planning' => $plan, 'actual' => $act, 'judul' => $id]);
     }
 
+    public function delparts($id){
+        DB::table('parts')->where('id', $id)->delete();
+    }
+
     public function jsonwelcome() {
         $result = DB::table('dataharian')->where('stockName','=','Infosys')->orderBy('stockYear', 'ASC')->get();
         return response()->json($result);
@@ -81,8 +85,9 @@ class InfoController extends Controller
 
     public function lotcardalpha(Request $request) {
         $parts = DB::table('parts')->where('modelno', $request->tipe)->get();
+        $location = $request->tempat;
         $shift = DB::table('waktu')->select('shift')->get();
-        return view('user.lotcardalpha', ['data' => $parts, 'shift' => $shift, 'option' => $request->tipe, 'i' => 1, 'jobid' => '']);
+        return view('user.lotcardalpha', ['data' => $parts, 'shift' => $shift, 'option' => $request->tipe, 'i' => 1, 'tempat' => $location]);
     }
 
     public function lotcardalpha2($param0){
@@ -118,6 +123,7 @@ class InfoController extends Controller
                 'id' => $lotid.str_pad($htng, 2, '0', STR_PAD_LEFT),
                 'barcode' => $lotid,
                 'modelno' => $request->tipe,
+                'tempat' => $request->tempat,
                 'lotno' => $request->tanggal,
                 'shift'=> $request->shift,
                 'partname' => $parts[$htng],

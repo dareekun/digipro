@@ -10,7 +10,6 @@ function getRandomColor() {
     }
     return color;
   }
-  
 
 // Array
 var y = document.getElementById('data').rows[0].cells.length - 1;
