@@ -108,7 +108,6 @@ class InfoController extends Controller
 
     public function dellot($id) {
         DB::table('lotcard')->where('barcode', $id)->delete();
-        DB::table('finish_job')->where('id', $id)->delete();
         return redirect('/lotstatus');
     }
 
