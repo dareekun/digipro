@@ -15,8 +15,10 @@ class LotCard extends Migration
     {
         Schema::create('lotcard', function (Blueprint $table) {
             $table->string('id')->primary();
+            $table->string('printcode')->default(0);
             $table->string('barcode');
             $table->string('modelno');
+            $table->string('shift');
             $table->string('lotno'); 
             $table->string('tempat'); 
             $table->string('partname');
@@ -29,6 +31,8 @@ class LotCard extends Migration
             $table->string('date2');
             $table->string('name1');
             $table->string('name2');
+            $table->string('datescanned')->nullable();
+            $table->boolean('scanned')->default(0);
             $table->boolean('status')->default(0);
             $table->boolean('opt1')->default(0);
             $table->boolean('opt2')->default(0);
