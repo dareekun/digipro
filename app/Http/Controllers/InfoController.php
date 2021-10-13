@@ -112,7 +112,7 @@ class InfoController extends Controller
     }
 
     public function plusalpha(Request $request) {
-        $date  = base_convert(date("ymdhms", strtotime($request->tanggal)),10,32);
+        $date  = base_convert(date("ymdHms"),10,32);
         $lotid = strtoupper($date);
         $parts = $request->part;
         $lotparts = $request->lotpart;
@@ -162,10 +162,10 @@ class InfoController extends Controller
         $year = date('Y');
         $month = date('m') - 1;
         if (isset($request->tanggal)) {
-            $data = DB::table('lotcard')->Leftjoin('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>', $month)->where('lotcard.lotno', $request->tanggal)->distinct('barcode')->get();
+            $data = DB::table('lotcard')->Leftjoin('produk', 'produk.tipe', '=', 'lotcard.modelno')->select('lotcard.tempat','lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>', $month)->where('lotcard.lotno', $request->tanggal)->distinct('barcode')->get();
             return view('user.lotstatus', ['data' => $data]);
         }else {
-            $data = DB::table('lotcard')->Leftjoin('produk', 'produk.tipe', '=', 'lotcard.modelno')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>', $month)->select('lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status')->distinct('barcode')->get();
+            $data = DB::table('lotcard')->Leftjoin('produk', 'produk.tipe', '=', 'lotcard.modelno')->whereYear('lotcard.lotno', $year)->whereMonth('lotcard.lotno', '>', $month)->select('lotcard.tempat','lotcard.barcode','lotcard.modelno', 'lotcard.lotno', 'lotcard.shift', 'lotcard.input1', 'lotcard.ng1', 'lotcard.name2', 'lotcard.status')->distinct('barcode')->get();
             return view('user.lotstatus', ['data' => $data]);
         }
     }

@@ -36,6 +36,7 @@ $(document).ready(function() {
                     <table id="test" class="table table-striped table-bordered">
                         <thead>
                             <tr>
+                                <th scope="col">Lokasi</th>
                                 <th scope="col">Model No</th>
                                 <th hidden scope="col">Lot No</th>
                                 <th scope="col">Lot No</th>
@@ -47,6 +48,7 @@ $(document).ready(function() {
                         <tbody>
                             @foreach ($data as $d)
                             <tr>
+                                <td>{{ $d->tempat }}</td>
                                 <td><a style="color: #000" target="_blank" href="/cetaklot/{{$d->barcode}}">
                                         {{ $d->modelno }}</a></td>
                                 <td hidden>{{ $d->lotno }}</td>
