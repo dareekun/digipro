@@ -14,23 +14,17 @@
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
     <script type="text/javascript" src="{{ asset('/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/bootstrap.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/dataTables.buttons.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/jszip.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/buttons.html5.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/popper.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/bootstrap-select.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/Chart.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/chartjs-plugin-datalabels.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/axios.min.js') }}"></script>
     @livewireStyles
     <!-- Styles -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/font-awesome.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap-select.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.dataTables.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/buttons.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/dataTables.bootstrap4.min.css') }}">
 
     <!-- Silde Show -->
     <style>
@@ -42,6 +36,7 @@
     }
 
     @media print {
+
         .no-print,
         .no-print * {
             display: none !important;
@@ -55,55 +50,65 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="/">
-                    Manage
+                    DigiPro
                 </a>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        @if ( Auth::user()->department == 999)
                         <!-- Authentication Links -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Input
+                                Production
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                @foreach (UserController::menu() as $bagian)
-                                <a class="dropdown-item" href="/input/{{$bagian}}">{{$bagian}}</a>
-                                @endforeach
+                                <a class="dropdown-item" href="{{route('lotcard_status')}}">Lotcard Status</a>
+                                <a class="dropdown-item" href="{{route('production_data')}}">Production Data</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Tabel
+                                Quality Control
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                @foreach (UserController::menu() as $bagian)
-                                <a class="dropdown-item" href="/tabel/{{$bagian}}">{{$bagian}}</a>
-                                @endforeach
+                                <a class="dropdown-item" href="{{route('in_production')}}">In Production</a>
+                                <a class="dropdown-item" href="{{route('finish_data')}}">Finish Data</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Graph
+                                Warehouse
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                @foreach (UserController::menu() as $bagian)
-                                <a class="dropdown-item" href="/graph/{{$bagian}}">{{$bagian}}</a>
-                                @endforeach
+                                <a class="dropdown-item" href="{{route('transaction_data')}}">Transaction Data</a>
+                                <a class="dropdown-item" href="{{route('transfers_records')}}">Transfers Records</a>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Lotcard
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/lotstatus">Status Lotcard</a>
-                                <a class="dropdown-item" href="/lotscaned">Lotcard Scanned</a>
-                            </div>
+                        @elseif (Auth::user()->department == 1)
+                        <li class="nav-item active">
+                                <a class="nav-link" href="{{route('lotcard_status')}}">Lotcard Status</a>
                         </li>
+                        <li class="nav-item active">
+                                <a class="nav-link" href="{{route('production_data')}}">Production Data</a>
+                        </li>
+                        @elseif (Auth::user()->department == 2)
+                        <li class="nav-item active">
+                                <a class="nav-link" href="{{route('in_production')}}">In Production</a>
+                        </li>
+                        <li class="nav-item active">
+                                <a class="nav-link" href="{{route('finish_data')}}">Finish Data</a>
+                        </li>
+                        @elseif (Auth::user()->department == 3)
+                        <li class="nav-item active">
+                                <a class="nav-link" href="{{route('transaction_data')}}">Transaction Data</a>
+                        </li>
+                        <li class="nav-item active">
+                                <a class="nav-link" href="{{route('transfers_records')}}">Transfers Records</a>
+                        </li>
+                        @endif
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -113,12 +118,14 @@
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                @can('isUser')
-                                <a href="/profile/{{ Auth::user()->name }}" class="dropdown-item">Profil</a>
+                                <a href="{{route('change_password')}}" class="dropdown-item">Change Password</a>
+                                @can('isDeveloper')
+                                <a href="{{route('route_list')}}" class="dropdown-item">Route List</a>
                                 @endcan
                                 @can('isAdmin')
-                                <a href="/admin/pengaturan" class="dropdown-item">Pengaturan Pengguna</a>
-                                <a href="/pengaturan/masalah" class="dropdown-item">Pengaturan Produksi</a>
+                                <a href="{{route('users_control')}}" class="dropdown-item">Users Control</a>
+                                <a href="{{route('product_control')}}" class="dropdown-item">Product Control</a>
+                                <a href="{{route('department_control')}}" class="dropdown-item">Department Control</a>
                                 @endcan
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

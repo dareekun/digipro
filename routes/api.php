@@ -23,3 +23,6 @@ Route::get('/show/{id}',  [ApiController::class, 'show']);
 Route::get('/index',  [ApiController::class, 'index']);
 Route::get('/update/{id}/{jumlah}',  [ApiController::class, 'update']);
 Route::get('/reverse/{id}',  [ApiController::class, 'reverse']);
+
+
+Route::post('/data/product',  [ApiController::class, 'data_product'])->name('data_product');

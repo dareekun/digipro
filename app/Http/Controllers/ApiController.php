@@ -47,4 +47,20 @@ class ApiController extends Controller
             ], 200);
         }
     }
+
+    public function data_product(Request $request) {
+        $data = DB::table('product')->where('id', $request->id)->get();
+        return $data;
+    }
+
+    public function json_data1(Request $request)
+    {
+        $data1 = DB::table('produk')->where('section', $request->get('bag'))->orderBy('line', 'asc')->distinct()->pluck('line');
+        return response()->json($data1);
+    }
+    public function json_data2(Request $request)
+    {
+        $data2 = DB::table('produk')->where('line', $request->get('temt'))->pluck('model_no');
+        return response()->json($data2);
+    }
 }

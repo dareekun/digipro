@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
             }
         });
         Gate::define('isAdmin', function($user) {
-            if ($user->role == 'admin' || $user->role == 'manager' || $user->role == 'developer') {
+            if ($user->role == 'admin' || $user->role == 'developer') {
                 return true;
             }
          });

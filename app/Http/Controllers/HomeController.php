@@ -31,73 +31,75 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {       
-        $tipe    = DB::table('produk')->orderBy('tempat', 'asc')->distinct()->get();
-        $tempat  = DB::table('produk')->select('tempat')->orderBy('tempat', 'asc')->distinct()->get();
-        $array   = array();
-        $summary = array();
-        $nowm    = date('m');
-        $nowy    = date('Y');
-        foreach ($tipe as $tp) {
-            $array[]  = $tp->tempat;
-            $array[]  = $tp->tipe;
-            $array[]  = DB::table('rekap_prod')->join('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')
-            ->where('rekap_prod.tipe', $tp->tipe)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->sum('rekap_prod.daily_plan');
-            $array[]  = DB::table('rekap_prod')->join('dataharian', 'dataharian.keyid', '=', 'rekap_prod.keyid')
-            ->where('rekap_prod.tipe', $tp->tipe)->whereYear('dataharian.tanggal', $nowy)->whereMonth('dataharian.tanggal', '=', $nowm)->sum('rekap_prod.daily_actual');
-            $summary[] = $array;
-            $array   = array();
-        }
-        return view('home', ['summary' => $summary, 'lini' => $tempat]);
+
+     public function index() {
+        return redirect(route('dashboard'));
+     }
+
+    public function dashboard()
+    {   
+        $record = DB::table('production')->orderBy('lotno', 'desc')->get();
+        return view('dashboard', ['data' => $record, 'i' => 1]);
     }
-    public function profile($id){
-        $user = Auth::user();
-        if ($id != $user->username) {
-            return redirect('/profile/'.$user->username);
-        }
-        else {
-            $data = DB::table('users')->where('username', $id)->get();
-            $user = DB::table('users')->select('username')->where('username', $id)->value('username');
-            return view('user.profile', ['data' => $data, 'user' => $user]);
-        }
+
+    public function change_password() {
+        return view('admin.change_password');
     }
-    public function profileupdate(Request $request) {
-        $s1 = Auth::user();
-        $user = Auth::user()->where('username', '=', $s1->username)->first();
-        $rules = [
-            'password' => ['required', 'string', 'confirmed'],
-        ];
-        $message = ['password.confirmed' => 'Password Tidak Sama',];
-        $this->validate($request, $rules, $message);
-        if (Hash::check($request->oldpass, $user->password)) {
-            DB::table('users')->where('username', $user->username)->update(
-                [
-                    'password' => bcrypt($request->password),
-                ]
-            );
-            $errors = ['oldpass' => ['Password Berhasil Dirubah']]; 
-            return Redirect::back()->withErrors($errors);
-        }
-        else {
-            $errors = ['oldpass' => ['Password Salah']]; 
-            return Redirect::back()->withErrors($errors);
-        }
-        if(strcmp($request->oldpass, $user->password) == 0){
-            $errors = ['username' => ['Password tidak boleh sama dengan password saat ini']]; 
-            return Redirect::back()->withErrors($errors);
-                }
-        else {
-        }
+
+    public function lotcard_status() 
+    {    
+        $line = DB::table('product')->select('line')->distinct()->get();
+        $section = DB::table('product')->select('section')->distinct()->get();
+        $record = DB::table('production')->where('status', '<', 2)->leftJoin('product', 'production.model_no', '=', 'product.id')
+        ->select('production.barcode as id', 'production.lotno as lotno', 'production shift as shift',  'product.model_no as model_no', 
+        'production.fg_1 as finish_goods', 'production.ng_1 as no_goods', 'production.name_1 as pic', 'production.status as status')
+        ->get();
+        return view('lotcard_status', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
     }
-    public function select1(Request $request)
+    public function production_data() 
     {
-        $data1 = DB::table('produk')->where('bagian', $request->get('bag'))->orderBy('tempat', 'asc')->distinct()->pluck('tempat');
-        return response()->json($data1);
+        $line = DB::table('product')->select('line')->distinct()->get();
+        $section = DB::table('product')->select('section')->distinct()->get();
+        $record = DB::table('production')->where('status', '>', 0 )->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
+        ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift', 'production.model_no as model_no', 'production.fg_1 as finish_goods',
+        'production.name_1 as pic', 'quality.judgement as judgement', 'production.status as status', 'users.name as checker')->get();
+        return view('production_data', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
+        
     }
-    public function select2(Request $request)
+    public function in_production() 
     {
-        $data2 = DB::table('produk')->where('tempat', $request->get('temt'))->pluck('tipe');
-        return response()->json($data2);
+        $line = DB::table('product')->select('line')->distinct()->get();
+        $section = DB::table('product')->select('section')->distinct()->get();
+        $record = DB::table('production')->where('status', 1)->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
+        ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift', 'production.model_no as model_no', 'production.fg_1 as finish_goods',
+        'production.name_1 as pic', 'production.status as status', 'users.name as checker')->get();
+        return view('in_production', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
     }
+    public function finish_data() 
+    {
+        $line = DB::table('product')->select('line')->distinct()->get();
+        $section = DB::table('product')->select('section')->distinct()->get();
+        $record = DB::table('production')->where('status', 1)->leftJoin('quality', 'production.id', '=', 'quality.productionId')
+        ->leftJoin('users', 'quality.userId', '=', 'users.id')->leftJoin('product', 'production.model_no', '=', 'producti.id')
+        ->select('production.barcode as id', 'product.section as section', 'product.line as line', 'product.model_no as model_no',
+        'production.lotno as lotno', 'production.shift as shift', 'production.fg_1 as finish_goods',
+        'quality.judgement as judgement', 'users.name as checker')->get();
+        return view('finish_data', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
+    }
+    public function transaction_data() 
+    {
+        $line = DB::table('product')->select('line')->distinct()->get();
+        $section = DB::table('product')->select('section')->distinct()->get();
+        $record = DB::table('production')->where('status', 3 )->get();
+        return view('transaction_data', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
+    }
+    public function transfers_records() 
+    {
+        $line = DB::table('product')->select('line')->distinct()->get();
+        $section = DB::table('product')->select('section')->distinct()->get();
+        $record = DB::table('production')->where('status', '>', 3 )->orderBy('lotno', 'desc')->get();
+        return view('transfers_records', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
+    }
+
+
 }

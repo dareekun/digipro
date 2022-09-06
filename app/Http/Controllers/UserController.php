@@ -140,4 +140,12 @@ class UserController extends Controller
         $g = DB::table('hasil_prod')->where('keyid', $id)->get();
         return view('admin.detail', ['data1' => $a, 'data2' => $b, 'data3' => $c, 'data4' => $d, 'data5' => $e, 'data6' => $f, 'data7' => $g, 'id' => $id]);
 }
+
+public function change_password() {
+
+}
+
+public function add_lotcard() {
+
+}
 }
