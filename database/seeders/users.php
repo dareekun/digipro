@@ -33,7 +33,7 @@ class users extends Seeder
             'username' => 'manager',
             'password' => bcrypt('manager123'),
             'department' => 1,
-            'role' => 'user',
+            'role' => 'manager',
         ]);
         DB::table('users')->insert([
             'name' => 'Operator',

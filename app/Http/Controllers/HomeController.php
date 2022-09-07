@@ -43,18 +43,17 @@ class HomeController extends Controller
     }
 
     public function change_password() {
-        return view('admin.change_password');
+        return view('control.change_password');
     }
 
     public function lotcard_status() 
     {    
-        $line = DB::table('product')->select('line')->distinct()->get();
-        $section = DB::table('product')->select('section')->distinct()->get();
+        $product = DB::table('product')->select('id', 'model_no')->get();
         $record = DB::table('production')->where('status', '<', 2)->leftJoin('product', 'production.model_no', '=', 'product.id')
-        ->select('production.barcode as id', 'production.lotno as lotno', 'production shift as shift',  'product.model_no as model_no', 
+        ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift',  'product.model_no as model_no', 
         'production.fg_1 as finish_goods', 'production.ng_1 as no_goods', 'production.name_1 as pic', 'production.status as status')
         ->get();
-        return view('lotcard_status', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
+        return view('lotcard_status', ['data' => $record, 'products' => $product, 'i' => 1]);
     }
     public function production_data() 
     {
@@ -80,7 +79,7 @@ class HomeController extends Controller
         $line = DB::table('product')->select('line')->distinct()->get();
         $section = DB::table('product')->select('section')->distinct()->get();
         $record = DB::table('production')->where('status', 1)->leftJoin('quality', 'production.id', '=', 'quality.productionId')
-        ->leftJoin('users', 'quality.userId', '=', 'users.id')->leftJoin('product', 'production.model_no', '=', 'producti.id')
+        ->leftJoin('users', 'quality.userId', '=', 'users.id')->leftJoin('product', 'production.model_no', '=', 'production.id')
         ->select('production.barcode as id', 'product.section as section', 'product.line as line', 'product.model_no as model_no',
         'production.lotno as lotno', 'production.shift as shift', 'production.fg_1 as finish_goods',
         'quality.judgement as judgement', 'users.name as checker')->get();
@@ -100,6 +99,4 @@ class HomeController extends Controller
         $record = DB::table('production')->where('status', '>', 3 )->orderBy('lotno', 'desc')->get();
         return view('transfers_records', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
     }
-
-
 }

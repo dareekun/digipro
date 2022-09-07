@@ -48,8 +48,27 @@ class ApiController extends Controller
         }
     }
 
+    public function all_products() {
+        $data = DB::table('product')->get();
+        return $data;
+    }
+
     public function data_product(Request $request) {
         $data = DB::table('product')->where('id', $request->id)->get();
+        return $data;
+    }
+
+    public function data_parts(Request $request) {
+        $data = DB::table('materials')->where('id', $request->id)->get();
+        return $data;
+    }
+
+    public function delete_parts(Request $request){
+        DB::table('materials')->where('id', $request->id)->delete();
+    }
+
+    public function data_user(Request $request) {
+        $data = DB::table('users')->where('id', $request->id)->get();
         return $data;
     }
 

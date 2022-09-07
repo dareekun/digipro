@@ -20,10 +20,10 @@ class Production extends Migration
             $table->date('lotno');
             $table->integer('shift');
             $table->json('parts_data');
-            $table->integer('fg_1');
-            $table->integer('fg_2');
-            $table->integer('ng_1');
-            $table->integer('ng_2');
+            $table->integer('fg_1')->nullable();
+            $table->integer('fg_2')->nullable();
+            $table->integer('ng_1')->nullable();
+            $table->integer('ng_2')->nullable();
             $table->date('date_1');
             $table->date('date_2');
             $table->string('name_1');

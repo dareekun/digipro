@@ -12,11 +12,67 @@ use Illuminate\Support\Facades\Http;
 use App\User;
 Use Redirect;
 use Auth;
+use PDF;
 
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    public function new_lotcard(Request $request) {
+        $model = DB::table('product')->where('id', $request->tipe)->select('model_no', 'id')->get();
+        $parts = DB::table('materials')->where('model_no', $request->tipe)->get();
+        return view('dll.new_lotcard', ['parts' => $parts, 'option' => $model, 'i' => 1]);
+    }
+
+    public function add_lotcard(Request $request) {
+        $lotid = strtoupper(base_convert(date("ymdHms"),10,32));
+        $parts = $request->parts;
+        $lotparts = $request->lot_parts;
+        if (isset($request->parts)) {
+            for ($i = 0; $i < count($parts); $i++) {
+                $data = array(
+                'parts' => $parts[$i],
+                'lot_parts' => $lotparts[$i],
+                );
+                $insert_data[] = $data; 
+                    DB::table('materials')->updateOrInsert([
+                        'part_name' => strtoupper($parts[$i]),
+                        'model_no' => strtoupper($request->tipe),
+                    ]);
+            }
+            DB::table('production')->insert([
+                'barcode' => $lotid,
+                'model_no' => $request->tipe,
+                'lotno' => $request->tanggal,
+                'shift'=> $request->shift,
+                'parts_data' => json_encode($insert_data),
+                'fg_1' => $request->input1,
+                'fg_2' => $request->input2,
+                'ng_1' => $request->ng1,
+                'ng_2' => $request->ng2,
+                'date_1' => $request->date1,
+                'date_2' => $request->date2,
+                'Name_1' => $request->name1,
+                'name_2' => $request->name2,
+            ]);
+            return redirect(route('show_lotcard', $lotid));
+        } else {
+            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error Input Data, please check your data']);
+        }
+    }
+
+    public function show_lotcard($id) {
+        $customPaper = array(0,0,245,500);
+        $record = DB::table('production')->where('barcode', $id)->leftJoin('product', 'production.model_no', '=', 'product.id')
+        ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
+        'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.ng_1 as ng_1', 'production.ng_2 as ng_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status',
+        'production.name_1 as name_1', 'production.name_2 as name_2')
+        ->get();
+        // return $record;
+	    return PDF::loadview('dll.lotdetail', ['data' => $record])->setPaper($customPaper)->stream();
+    }
+
     public static function menu(){
         $menu = DB::table('produk')->select('bagian')->distinct()->orderBy('bagian')->pluck('bagian');
         return $menu;
@@ -139,13 +195,5 @@ class UserController extends Controller
         $f = DB::table('rekap_prod')->where('keyid', $id)->get();
         $g = DB::table('hasil_prod')->where('keyid', $id)->get();
         return view('admin.detail', ['data1' => $a, 'data2' => $b, 'data3' => $c, 'data4' => $d, 'data5' => $e, 'data6' => $f, 'data7' => $g, 'id' => $id]);
-}
-
-public function change_password() {
-
-}
-
-public function add_lotcard() {
-
 }
 }

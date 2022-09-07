@@ -13,15 +13,9 @@
 
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
-    <script type="text/javascript" src="{{ asset('/js/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/bootstrap.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/bootstrap-select.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/axios.min.js') }}"></script>
     @livewireStyles
     <!-- Styles -->
-    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/font-awesome.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap-select.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/dataTables.bootstrap4.min.css') }}">
@@ -53,6 +47,8 @@
                     DigiPro
                 </a>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    @guest 
+                    @else
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         @if ( Auth::user()->department == 999)
@@ -121,11 +117,11 @@
                                 <a href="{{route('change_password')}}" class="dropdown-item">Change Password</a>
                                 @can('isDeveloper')
                                 <a href="{{route('route_list')}}" class="dropdown-item">Route List</a>
+                                <a href="{{route('department_control')}}" class="dropdown-item">Department Control</a>
                                 @endcan
                                 @can('isAdmin')
                                 <a href="{{route('users_control')}}" class="dropdown-item">Users Control</a>
                                 <a href="{{route('product_control')}}" class="dropdown-item">Product Control</a>
-                                <a href="{{route('department_control')}}" class="dropdown-item">Department Control</a>
                                 @endcan
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -139,14 +135,22 @@
                         </li>
                     </ul>
                 </div>
+                @endguest
             </div>
         </nav>
         <main class="py-4">
             @yield('content')
         </main>
     </div>
-    @stack('scripts')
+    <script type="text/javascript" src="{{ asset('/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/bootstrap-select.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/axios.min.js') }}"></script>
     @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>

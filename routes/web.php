@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\noLoginController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\ApiController;
 
 /*
@@ -36,15 +37,29 @@ Route::get('/transfers_records', [HomeController::class, 'transfers_records'])->
 
 // User Control
 Route::get('/change_password', [HomeController::class, 'change_password'])->middleware('can:isUser')->name('change_password');
+
+Route::post('/new_lotcard', [UserController::class, 'new_lotcard'])->middleware('can:isUser')->name('new_lotcard');
 Route::post('/add_lotcard', [UserController::class, 'add_lotcard'])->middleware('can:isUser')->name('add_lotcard');
+Route::post('/del_lotcard', [UserController::class, 'del_lotcard'])->middleware('can:isUser')->name('del_lotcard');
+Route::get('/show_lotcard/{id}', [UserController::class, 'show_lotcard'])->middleware('can:isUser')->name('show_lotcard');
 
 // Admin Control
-Route::get('/users_control', [AdminController::class, 'users_control'])->middleware('can:isAdmin')->name('users_control');
 Route::get('/product_control', [AdminController::class, 'product_control'])->middleware('can:isAdmin')->name('product_control');
+Route::get('/users_control', [AdminController::class, 'users_control'])->middleware('can:isAdmin')->name('users_control');
 Route::get('/department_control', [AdminController::class, 'department_control'])->middleware('can:isAdmin')->name('department_control');
-Route::post('/add_department', [AdminController::class, 'add_department'])->middleware('can:isAdmin')->name('add_department');
+Route::get('/detail_product/{id}', [AdminController::class, 'detail_product'])->middleware('can:isAdmin')->name('detail_product');
 
-Route::post('/edit_product', [AdminController::class, 'edit_product'])->middleware('can:isAdmin')->name('edit_product');
+
+Route::post('/add_product', [AdminController::class, 'add_product'])->middleware('can:isAdmin')->name('add_product');
+Route::post('/del_product', [AdminController::class, 'del_product'])->middleware('can:isAdmin')->name('del_product');
+Route::post('/edt_product', [AdminController::class, 'edt_product'])->middleware('can:isAdmin')->name('edt_product');
+
+Route::post('/add_users', [AdminController::class, 'add_users'])->middleware('can:isAdmin')->name('add_users');
+Route::post('/del_users', [AdminController::class, 'del_users'])->middleware('can:isAdmin')->name('del_users');
+Route::post('/edt_users', [AdminController::class, 'edt_users'])->middleware('can:isAdmin')->name('edt_users');
+Route::post('/upd_users', [AdminController::class, 'upd_users'])->middleware('can:isAdmin')->name('upd_users');
+
+Route::post('/add_department', [AdminController::class, 'add_department'])->middleware('can:isAdmin')->name('add_department');
 
 // Developer Control
 Route::get('/reroute_list', [DeveloperController::class, 'route_list'])->middleware('can:isDeveloper')->name('route_list');
