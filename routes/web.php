@@ -41,7 +41,9 @@ Route::get('/change_password', [HomeController::class, 'change_password'])->midd
 Route::post('/new_lotcard', [UserController::class, 'new_lotcard'])->middleware('can:isUser')->name('new_lotcard');
 Route::post('/add_lotcard', [UserController::class, 'add_lotcard'])->middleware('can:isUser')->name('add_lotcard');
 Route::post('/del_lotcard', [UserController::class, 'del_lotcard'])->middleware('can:isUser')->name('del_lotcard');
+
 Route::get('/show_lotcard/{id}', [UserController::class, 'show_lotcard'])->middleware('can:isUser')->name('show_lotcard');
+Route::get('/show_inspection/{id}', [UserController::class, 'show_inspection'])->middleware('can:isUser')->name('show_inspection');
 
 // Admin Control
 Route::get('/product_control', [AdminController::class, 'product_control'])->middleware('can:isAdmin')->name('product_control');

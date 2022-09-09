@@ -69,8 +69,9 @@ class HomeController extends Controller
     {
         $line = DB::table('product')->select('line')->distinct()->get();
         $section = DB::table('product')->select('section')->distinct()->get();
-        $record = DB::table('production')->where('status', 1)->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
-        ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift', 'production.model_no as model_no', 'production.fg_1 as finish_goods',
+        $record = DB::table('production')->where('status', 1)->leftJoin('quality', 'production.id', '=', 'quality.productionId')
+        ->leftJoin('users', 'quality.userId', '=', 'users.id')->leftJoin('product', 'production.model_no', '=', 'product.id')
+        ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift', 'product.model_no as model_no', 'production.fg_1 as finish_goods',
         'production.name_1 as pic', 'production.status as status', 'users.name as checker')->get();
         return view('in_production', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
     }

@@ -15,9 +15,10 @@ class Quality extends Migration
     {
         Schema::create('quality', function (Blueprint $table) {
             $table->id();
-            $table->string('productionId');
-            $table->string('date');
+            $table->integer('productionId');
+            $table->date('date');
             $table->boolean('judgement');
+            $table->string('remark')->nullable();
             $table->integer('userId');
         });
     }

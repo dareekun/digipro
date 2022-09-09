@@ -15,10 +15,10 @@ class Transfers extends Migration
     {
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
-            $table->string('refer');
+            $table->integer('refer');
             $table->date('date');
             $table->boolean('status');
-            $table->string('userId');
+            $table->integer('userId');
         });
     }
 

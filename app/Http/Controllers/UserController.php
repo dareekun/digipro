@@ -37,8 +37,8 @@ class UserController extends Controller
                 );
                 $insert_data[] = $data; 
                     DB::table('materials')->updateOrInsert([
-                        'part_name' => strtoupper($parts[$i]),
-                        'model_no' => strtoupper($request->tipe),
+                        ['part_name' => strtoupper($parts[$i]),
+                        'model_no' => strtoupper($request->tipe)]
                     ]);
             }
             DB::table('production')->insert([
@@ -70,8 +70,21 @@ class UserController extends Controller
         'production.name_1 as name_1', 'production.name_2 as name_2')
         ->get();
         // return $record;
-	    return PDF::loadview('dll.lotdetail', ['data' => $record])->setPaper($customPaper)->stream();
+	    return PDF::loadview('dll.detail_lotcard', ['data' => $record])->setPaper($customPaper)->stream();
     }
+
+    public function show_inspection($id){
+        $customPaper = array(0,0,245,500);
+        $record = DB::table('production')->where('barcode', $id)->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
+        ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
+        'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status', 'product.section as section', 'product.line as line',
+        'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark')
+        ->get();
+        // return $record;
+	    return PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->stream();
+    }
+
+
 
     public static function menu(){
         $menu = DB::table('produk')->select('bagian')->distinct()->orderBy('bagian')->pluck('bagian');

@@ -15,9 +15,9 @@ class Transaction extends Migration
     {
         Schema::create('transaction', function (Blueprint $table) {
             $table->id();
-            $table->string('productionId');
+            $table->integer('productionId');
             $table->date('date');
-            $table->string('userId');
+            $table->integer('userId');
             $table->string('referTransfers');
         });
     }

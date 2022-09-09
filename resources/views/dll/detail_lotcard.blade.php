@@ -107,14 +107,14 @@
                         <td align="center">{{$dt->fg_1}}</td>
                         <td align="center">{{$dt->ng_1}}</td>
                         <td align="center">
-                            {{date('d m Y', strtotime($dt->date_1))}}</td>
+                            {{date('d/m/Y', strtotime($dt->date_1))}}</td>
                         <td align="center">{{$dt->name_1}}</td>
                     </tr>
                     <tr>
                         <td align="center">{{$dt->fg_2}}</td>
                         <td align="center">{{$dt->ng_2}}</td>
                         <td align="center">
-                            {{date('d m Y', strtotime($dt->date_2))}}</td>
+                            {{date('d/m/Y', strtotime($dt->date_2))}}</td>
                         <td align="center">{{$dt->name_2}}</td>
                     </tr>
                 </table>

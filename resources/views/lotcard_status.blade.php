@@ -33,7 +33,7 @@
                             <table id="table_records" class="table table-striped table-bordered w-100">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
+                                        <th>Barcode</th>
                                         <th>Lot Number</th>
                                         <th>Shift</th>
                                         <th>Model Product</th>
@@ -46,9 +46,9 @@
                                 <tbody>
                                     @foreach ($data as $dt)
                                     <tr>
-                                        <td>{{$i++}}</td>
-                                        <td>{{date($dt->lotno)}}</td>
-                                        <td>{{$dt->shifts}}</td>
+                                        <td><a href="{{route('show_lotcard', $dt->id)}}" style="text-decoration: none;" target=”_blank”>{{$dt->id}}</a></td>
+                                        <td>{{date('Ymd', strtotime($dt->lotno))}}</td>
+                                        <td>{{$dt->shift}}</td>
                                         <td>{{$dt->model_no}}</td>
                                         <td>{{$dt->finish_goods}}</td>
                                         <td>{{$dt->no_goods}}</td>

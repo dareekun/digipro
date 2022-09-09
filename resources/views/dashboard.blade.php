@@ -18,7 +18,6 @@
                             <table id="table_records" class="table table-striped table-bordered w-100">
                             <thead>
                                 <tr>
-                                    <th>No</th>
                                     <th>Lot Number</th>
                                     <th>Shift</th>
                                     <th>Model Product</th>
@@ -31,9 +30,8 @@
                             <tbody>
                                 @foreach ($data as $dt)
                                 <tr>
-                                    <td>{{$i++}}</td>
-                                    <td>{{date($dt->lotno)}}</td>
-                                    <td>{{$dt->shifts}}</td>
+                                    <td>{{date('Ymd', strtotime($dt->lotno))}}</td>
+                                    <td>{{$dt->shift}}</td>
                                     <td>{{$dt->model_no}}</td>
                                     <td>{{$dt->fg_1}}</td>
                                     <td>{{$dt->ng_1}}</td>
