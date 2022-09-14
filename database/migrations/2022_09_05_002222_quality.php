@@ -17,7 +17,7 @@ class Quality extends Migration
             $table->id();
             $table->integer('productionId');
             $table->date('date');
-            $table->boolean('judgement');
+            $table->boolean('judgement')->default(0);
             $table->string('remark')->nullable();
             $table->integer('userId');
         });

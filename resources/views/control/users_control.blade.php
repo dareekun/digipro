@@ -98,7 +98,7 @@
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-5">Password</div>
-                                <div class="col-md-7"><input type="password" minlength="6" required class="form-control" name="password_add">
+                                <div class="col-md-7"><input type="number" style="-webkit-text-security:disc;" minlength="6" required class="form-control" name="password_add">
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -116,7 +116,7 @@
                                 <div class="col-md-5">Role</div>
                                 <div class="col-md-7">
                                     <select class="form-control" required name="role_add">
-                                        <option value="admin">Admin</option>
+                                        <option value="">Select Role</option>
                                         <option value="admin">Admin</option>
                                         <option value="manager">Manager</option>
                                         <option value="users">User</option>
@@ -124,7 +124,7 @@
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-5">Email</div>
-                                <div class="col-md-7"><input type="email" required class="form-control"
+                                <div class="col-md-7"><input type="email" class="form-control"
                                         name="email_add"></div>
                             </div>
                         </div>
@@ -217,13 +217,13 @@
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-5">Password</div>
-                                <div class="col-md-7"><input type="password" minlength="6" required class="form-control"
-                                        name="password1" id="password1"></div>
+                                <div class="col-md-7"><input type="number" minlength="6" required class="form-control"
+                                        name="password1" style="-webkit-text-security:disc;" id="password1"></div>
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-5"></div>
-                                <div class="col-md-7"><input type="password" minlength="6" required class="form-control"
-                                        name="password2" id="password2"></div>
+                                <div class="col-md-7"><input type="number" minlength="6" required class="form-control"
+                                        name="password2" style="-webkit-text-security:disc;" id="password2"></div>
                             </div>
                         </div>
                         <div class="modal-footer">

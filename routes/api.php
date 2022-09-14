@@ -19,6 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/lotcard_mobile',  [ApiController::class, 'lotcard_mobile']);
+Route::post('/login',  [ApiController::class, 'login']);
+
 Route::get('/show/{id}',  [ApiController::class, 'show']);
 Route::get('/index',  [ApiController::class, 'index']);
 Route::get('/update/{id}/{jumlah}',  [ApiController::class, 'update']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class ApiController extends Controller
 {
@@ -45,6 +46,52 @@ class ApiController extends Controller
                 'status' => 'Ok',
                 'message' => 'Data was updated'
             ], 200);
+        }
+    }
+
+    public function lotcard_mobile(Request $request) {
+        $data = DB::table('production')->where('barcode', $request->id)->get();
+        return response([
+            'data' => $data[0],
+            'status' => 200
+        ]);
+    }
+    public function scaninspection_mobile(Request $request) {
+        return response([
+            'data' => $request->id,
+            'status' => 200
+        ]);
+    }
+    public function scantransfers_mobile(Request $request) {
+        return response([
+            'data' => $request->id,
+            'status' => 200
+        ]);
+    }
+    
+    public function login(Request $request) {
+        if (DB::table('users')->where('username', $request->username)->exists()) {
+            if (Hash::check($request->password, DB::table('users')->where('username', $request->username)->value('password'))) {
+                $date = date('YmdHis');
+                $user_name = DB::table('users')->where('username', $request->username)->value('name');
+                // DB::table('users')->where('username', $request->username)->update(['token_login' => bcrypt($date)]);
+                return response([
+                    'status' => 200,
+                    'message' => "Success!!!",
+                    'token' => bcrypt($date),
+                    'user' => $user_name
+                    ]);
+            } else {
+                return response([
+                    'status' => 500,
+                    'message' => "Error!!!"
+                    ]);
+            }
+        } else {
+            return response([
+                'status' => 500,
+                'message' => "Error!!!"
+                ]);
         }
     }
 
