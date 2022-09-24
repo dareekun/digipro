@@ -24,8 +24,6 @@
     <style>
     html,
     body {
-        background-image: url("{{ asset('/img/bg.png') }}");
-        background-size: cover;
         scroll-behavior: smooth;
     }
 
