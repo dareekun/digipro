@@ -51,7 +51,7 @@
                     @else
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        @if ( Auth::user()->department == 999)
+                        @if ( Auth::user()->department == 1)
                         <!-- Authentication Links -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
@@ -83,21 +83,21 @@
                                 <a class="dropdown-item" href="{{route('transfers_records')}}">Transfers Records</a>
                             </div>
                         </li>
-                        @elseif (Auth::user()->department == 1)
+                        @elseif (Auth::user()->department == 3)
                         <li class="nav-item active">
                                 <a class="nav-link" href="{{route('lotcard_status')}}">Lotcard Status</a>
                         </li>
                         <li class="nav-item active">
                                 <a class="nav-link" href="{{route('production_data')}}">Production Data</a>
                         </li>
-                        @elseif (Auth::user()->department == 2)
+                        @elseif (Auth::user()->department == 4)
                         <li class="nav-item active">
                                 <a class="nav-link" href="{{route('in_production')}}">In Production</a>
                         </li>
                         <li class="nav-item active">
                                 <a class="nav-link" href="{{route('finish_data')}}">Finish Data</a>
                         </li>
-                        @elseif (Auth::user()->department == 3)
+                        @elseif (Auth::user()->department == 5)
                         <li class="nav-item active">
                                 <a class="nav-link" href="{{route('transaction_data')}}">Transaction Data</a>
                         </li>

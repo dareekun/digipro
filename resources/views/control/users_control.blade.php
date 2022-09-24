@@ -106,9 +106,9 @@
                                 <div class="col-md-7">
                                     <select class="form-control" required name="department_add">
                                         <option>Select Department</option>
-                                        <option value="1">Production</option>
-                                        <option value="2">Quality Control</option>
-                                        <option value="3">Warehouse</option>
+                                        <option value="3">Production</option>
+                                        <option value="4">Quality Control</option>
+                                        <option value="5">Warehouse</option>
                                     </select>
                                 </div>
                             </div>
@@ -136,7 +136,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Edit Modal -->
         <div class="modal fade" id="edit_user" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -153,16 +152,16 @@
                         <div class="modal-body">
                             <div class="row mt-1">
                                 <div class="col-md-5">Name</div>
-                                <div class="col-md-7"><input type="text" required class="form-control" name="name_deit"
-                                        id="name_deit"></div>
+                                <div class="col-md-7"><input type="text" required class="form-control" name="name_edit"
+                                        id="name_edit"></div>
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-5">Department</div>
                                 <div class="col-md-7">
                                     <select class="form-control" id="department_edit" required name="department_edit">
-                                        <option value="1">Production</option>
-                                        <option value="2">Quality Control</option>
-                                        <option value="3">Warehouse</option>
+                                        <option value="3">Production</option>
+                                        <option value="4">Quality Control</option>
+                                        <option value="5">Warehouse</option>
                                     </select>
                                 </div>
                             </div>
@@ -172,7 +171,7 @@
                                     <select class="form-control" id="role_edit" required name="role_edit">
                                         <option value="admin">Admin</option>
                                         <option value="manager">Manager</option>
-                                        <option value="users">User</option>
+                                        <option value="user">User</option>
                                     </select>
                                 </div>
                             </div>
@@ -190,7 +189,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Update Modal -->
         <div class="modal fade" id="update_password" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -287,9 +285,7 @@ var table = $('#table_records').DataTable({
 });
 
 function throw_delete(uid) {
-    axios.post("{{route('data_users')}}", {
-            id: uid
-        })
+    axios.post("{{route('data_users')}}", {id: uid})
         .then(function(response) {
             document.getElementById("uid_delete").value = uid;
             document.getElementById("name_delete").innerHTML = response.data[0].name;

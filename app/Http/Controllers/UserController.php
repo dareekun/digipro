@@ -37,14 +37,15 @@ class UserController extends Controller
                 );
                 $insert_data[] = $data; 
                     DB::table('materials')->updateOrInsert([
-                        ['part_name' => strtoupper($parts[$i]),
-                        'model_no' => strtoupper($request->tipe)]
+                        'part_name' => strtoupper($parts[$i]),
+                        'model_no' => strtoupper($request->tipe)
                     ]);
             }
             DB::table('production')->insert([
                 'barcode' => $lotid,
                 'model_no' => $request->tipe,
-                'lotno' => $request->tanggal,
+                'lotno' => date('Ymd', strtotime($request->tanggal)),
+                'date' => $request->tanggal,
                 'shift'=> $request->shift,
                 'parts_data' => json_encode($insert_data),
                 'fg_1' => $request->input1,

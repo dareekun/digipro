@@ -27,10 +27,9 @@ class AdminController extends Controller
     public function users_control () {
         $data = DB::table('users')->leftJoin('department_list', 'users.department', '=', 'department_list.id')
         ->select('users.id as id', 'users.name as name', 'users.username as username', 'department_list.department as department', 'users.role as role', 'users.email as email')
-        ->where('users.department', '<>', 999)->get();
+        ->where('users.department', '<>', 1)->get();
         return view('control.users_control', ['users' => $data]);
     }
-
     public function add_users(Request $request) {
         if (DB::table('users')->where('username', $request->nik_add)->exists()) {
             return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'User NIK Already Exists']);
@@ -41,17 +40,14 @@ class AdminController extends Controller
                 'department' => $request->department_add,
                 'role' => $request->role_add,
                 'email' => $request->email_add,
-                'password' => bcrypt($request->password_add),
-            ]);
+                'password' => bcrypt($request->password_add)]);
             return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Users Successfully Added']);
         } 
     }
-
     public function del_users(Request $request){
         DB::table('users')->where('id', $request->uid_delete)->delete();
         return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Users Successfully Added']);
     }
-
     public function edt_users(Request $request){
         if (DB::table('users')->where('id', '<>', $request->uid_edit)->where('username', $request->nik_edit)->exists()) {
             return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Duplicate Data Users']);
@@ -65,7 +61,6 @@ class AdminController extends Controller
             return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Data Users Successfully Update']);
         }
     }
-
     public function upd_users(Request $request){
         if ($request->password1 != $request->password2) {
             return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Password Missmatch']);
@@ -124,11 +119,9 @@ class AdminController extends Controller
         }
     }
     
-    
     // =====================================
     // ============ P R O D U K ============
     // =====================================
-
 
     public function product_control () {
         $data = DB::table('product')->get();

@@ -17,7 +17,8 @@ class Production extends Migration
             $table->id();
             $table->string('barcode');
             $table->integer('model_no');
-            $table->date('lotno');
+            $table->string('lotno');
+            $table->date('date');
             $table->integer('shift');
             $table->json('parts_data');
             $table->integer('fg_1')->nullable();

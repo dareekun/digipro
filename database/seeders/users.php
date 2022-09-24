@@ -18,28 +18,28 @@ class users extends Seeder
             'name' => 'Developer',
             'username' => 'developer',
             'password' => bcrypt('developer123'),
-            'department' => 999,
+            'department' => 1,
             'role' => 'developer',
         ]);
         DB::table('users')->insert([
             'name' => 'Admin',
             'username' => 'admin',
             'password' => bcrypt('admin123'),
-            'department' => 1,
+            'department' => 3,
             'role' => 'admin',
         ]);
         DB::table('users')->insert([
             'name' => 'Manager',
             'username' => 'manager',
             'password' => bcrypt('manager123'),
-            'department' => 1,
+            'department' => 3,
             'role' => 'manager',
         ]);
         DB::table('users')->insert([
             'name' => 'Operator',
             'username' => 'operator',
             'password' => bcrypt('operator123'),
-            'department' => 1,
+            'department' => 3,
             'role' => 'user',
         ]);
     }

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MobileController;
 use App\Http\Controllers\ApiController;
 
 /*
@@ -19,9 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/lotcard_mobile',  [ApiController::class, 'lotcard_mobile']);
-Route::post('/login',  [ApiController::class, 'login']);
+Route::post('/login',  [MobileController::class, 'login']);
 
+Route::post('/lotcard_mobile',  [MobileController::class, 'lotcard_mobile']);
+ 
 Route::get('/show/{id}',  [ApiController::class, 'show']);
 Route::get('/index',  [ApiController::class, 'index']);
 Route::get('/update/{id}/{jumlah}',  [ApiController::class, 'update']);

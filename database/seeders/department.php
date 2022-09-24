@@ -15,11 +15,11 @@ class department extends Seeder
     public function run()
     {
         DB::table('department_list')->insert([
-            ['id' => 0, 'department' => 'Common', 'remark' => NULL],
-            ['id' => 1, 'department' => 'Production', 'remark' => NULL],
-            ['id' => 2, 'department' => 'Quality Control', 'remark' => NULL],
-            ['id' => 3, 'department' => 'Warehouse', 'remark' => NULL],
-            ['id' => 999, 'department' => 'Developer', 'remark' => NULL],
+            ['department' => 'Developer', 'remark' => NULL],
+            ['department' => 'Common', 'remark' => NULL],
+            ['department' => 'Production', 'remark' => NULL],
+            ['department' => 'Quality Control', 'remark' => NULL],
+            ['department' => 'Warehouse', 'remark' => NULL],
 
         ]);
     }
