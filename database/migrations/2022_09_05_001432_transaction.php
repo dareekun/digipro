@@ -16,7 +16,7 @@ class Transaction extends Migration
         Schema::create('transaction', function (Blueprint $table) {
             $table->id();
             $table->integer('productionId');
-            $table->date('date');
+            $table->timestamp('date', $precision = 0)->useCurrent();
             $table->integer('userId');
             $table->string('referTransfers');
         });

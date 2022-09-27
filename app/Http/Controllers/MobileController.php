@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 
@@ -141,21 +140,27 @@ class MobileController extends Controller
     }
 
     public function transfers_process_mobile(Request $request) {
-
         if (DB::table('users')->where('token_login', $request->token)->exists()) {
             $status = DB::table('production')->where('barcode', $request->id)->value('status');
-            if ($status == 2) {
-                $data = DB::table('production')->where('barcode', $request->id)->leftJoin('product', 'production.model_no', '=', 'product.id')
-                ->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
-                ->select('product.model_no as model_no', 'production.shift as shift', 'production.lotno as lotno', 'production.parts_data as parts',
-                'production.date_1 as date_1', 'production.date_2 as date_2', 'production.name_1 as name_1', 'production.name_2 as name_2', 
-                'production.fg_1 as finish_goods_1', 'production.fg_2 as finish_goods_2', 'production.ng_1 as no_goods_1', 'production.ng_2 as no_goods_2',
-                'quality.judgement as judgement', 'users.name as checker_name')->get();
+            if ($status == 1) {
+                DB::table('production')->where('barcode', $request->id)->update([
+                    'status' => 2
+                ]);
+                DB::table('transaction')->insert([
+                    'productionId'   => DB::table('production')->where('barcode', $request->id)->value('id'),
+                    'userId'         => DB::table('users')->where('token_login',  $request->token)->value('id'),
+                    'referTransfers' => 0
+                ]);
+                return response([
+                    'data' => $data[0],
+                    'status' => 200
+                ]);
+            } else {
+                return response([
+                    'status' => 500,
+                    'message' => "Opps Something was Wrong!"
+                ]);
             }
-            return response([
-                'data' => $data[0],
-                'status' => 200
-            ]);
         } else {            
             return response([
             'status' => 403,
@@ -164,28 +169,69 @@ class MobileController extends Controller
         }
     }
 
-    public function printinspection_mobile(Request $request) {
-        // $customPaper = array(0,0,245,500);
-        // $record = DB::table('production')->where('barcode', $request->id)->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
-        // ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
-        // 'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status', 'product.section as section', 'product.line as line',
-        // 'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark')
-        // ->get();
-        // $content = PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
-        // Storage::put('inspection_'.$request->id.'.pdf', $content);
-        $process = new Process(['ls',]);
-        $process->start();
-        
-        foreach ($process as $type => $data) {
-            if ($process::OUT === $type) {
-                echo "\nRead from stdout: ".$data;
-            } else { // $process::ERR === $type
-                echo "\nRead from stderr: ".$data;
+    public function printlotcard_mobile(Request $request) {
+        $customPaper = array(0,0,245,500);
+        $random = rand(10, 30);
+        if (DB::table('users')->where('token_login', $request->token)->exists()) {
+            $status = DB::table('production')->where('barcode', $request->id)->value('status');
+            if ($status == 1) {
+                $record = DB::table('production')->where('barcode', $id)->leftJoin('product', 'production.model_no', '=', 'product.id')
+                ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
+                'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.ng_1 as ng_1', 'production.ng_2 as ng_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status',
+                'production.name_1 as name_1', 'production.name_2 as name_2')
+                ->get();
+                $content = PDF::loadview('dll.detail_lotcard', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
+                Storage::put('lotcard_'.$random.$request->id.'.pdf', $content);
+                exec('lp /var/www/digipro/storage/app/lotcard_'.$random.$request->id.'.pdf -o fit-to-page');
+                exec('rm /var/www/digipro/storage/app/lotcard_'.$random.$request->id.'.pdf');
+                return response([
+                    'status' => 200,
+                    'message' => "Print Command Already Successfully sended"
+                ]);
+            } else {
+                return response([
+                    'status' => 500,
+                    'message' => "Opps Something was Wrong!"
+                ]);
             }
-        } 
-        // return response([
-        //     'status' => 200,
-        //     'message' => "Print Command Already Successfully sended"
-        // ]);
+        } else {            
+            return response([
+            'status' => 403,
+            'message' => "Forbiden Access, Session Not Exists"
+        ]);
+        }
+    }
+    
+    public function printinspection_mobile(Request $request) {
+        $customPaper = array(0,0,245,500);
+        $random = rand(31, 50);
+        if (DB::table('users')->where('token_login', $request->token)->exists()) {
+            $status = DB::table('production')->where('barcode', $request->id)->value('status');
+            if ($status == 1) {
+                $record = DB::table('production')->where('barcode', $request->id)->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
+                ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
+                'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status', 'product.section as section', 'product.line as line',
+                'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark')
+                ->get();
+                $content = PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
+                Storage::put('inspection_'.$random.$request->id.'.pdf', $content);
+                exec('lp /var/www/digipro/storage/app/inspection_'.$random.$request->id.'.pdf -o fit-to-page');
+                exec('rm /var/www/digipro/storage/app/inspection_'.$random.$request->id.'.pdf');
+                return response([
+                    'status' => 200,
+                    'message' => "Print Command Already Successfully sended"
+                ]);
+            } else {
+                return response([
+                    'status' => 500,
+                    'message' => "Opps Something was Wrong!"
+                ]);
+            }
+        } else {            
+            return response([
+            'status' => 403,
+            'message' => "Forbiden Access, Session Not Exists"
+        ]);
+        }
     }
 }
