@@ -16,7 +16,7 @@ class Quality extends Migration
         Schema::create('quality', function (Blueprint $table) {
             $table->id();
             $table->integer('productionId');
-            $table->date('date');
+            $table->timestamp('date', $precision = 0)->useCurrent();
             $table->boolean('judgement')->default(0);
             $table->string('remark')->nullable();
             $table->integer('userId');

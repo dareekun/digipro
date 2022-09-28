@@ -119,7 +119,7 @@
                                         <option value="">Select Role</option>
                                         <option value="admin">Admin</option>
                                         <option value="manager">Manager</option>
-                                        <option value="users">User</option>
+                                        <option value="user">User</option>
                                     </select></div>
                             </div>
                             <div class="row mt-1">
@@ -177,7 +177,7 @@
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-5">Email</div>
-                                <div class="col-md-7"><input type="email" required class="form-control"
+                                <div class="col-md-7"><input type="email" class="form-control"
                                         name="email_edit" id="email_edit"></div>
                             </div>
                         </div>

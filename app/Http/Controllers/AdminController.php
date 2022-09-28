@@ -53,10 +53,10 @@ class AdminController extends Controller
             return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Duplicate Data Users']);
         } else {
             DB::table('users')->where('id', $request->uid_edit)->update([
-                'name' => $request->model_edit,
-                'department' => $request->section_edit,
-                'role' => $request->line_edit,
-                'email' => $request->packing_edit,
+                'name' => $request->name_edit,
+                'department' => $request->department_edit,
+                'role' => $request->role_edit,
+                'email' => $request->email_edit,
             ]);
             return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Data Users Successfully Update']);
         }
@@ -66,7 +66,7 @@ class AdminController extends Controller
             return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Password Missmatch']);
         } else {
             $nik = DB::table('users')->where('id', $request->password_id)->value('username');
-            DB::table('users')->where('id', $request->uid_edit)->update([
+            DB::table('users')->where('id', $request->password_id)->update([
                 'password' => bcrypt($request->password1),
             ]);
             return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Password User '. $nik .' Successfully Update']);

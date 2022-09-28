@@ -32,6 +32,9 @@ Route::get('/reverse/{id}',  [ApiController::class, 'reverse']);
 Route::get('/all/products',  [ApiController::class, 'all_products'])->name('all_products');
 
 Route::post('/printinspection_mobile',  [MobileController::class, 'printinspection_mobile']);
+Route::post('/scaninspection_mobile',  [MobileController::class, 'scaninspection_mobile']);
+Route::post('/processinspection_mobile',  [MobileController::class, 'processinspection_mobile']);
+Route::post('/showinspection_mobile',  [MobileController::class, 'showinspection_mobile']);
 
 Route::post('/data/product',  [ApiController::class, 'data_product'])->name('data_product');
 Route::post('/data/user',  [ApiController::class, 'data_user'])->name('data_users');
