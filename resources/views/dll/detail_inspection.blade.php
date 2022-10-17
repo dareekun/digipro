@@ -78,9 +78,6 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3"><br></td>
-        </tr>
-        <tr>
             <td colspan="3" align="center">
                 <table style="width:100%">
                     <tr>
@@ -108,8 +105,7 @@
                         <td align="right">{{$dt->line}}</td>
                     </tr>
                     <tr>
-                        <td colspan="2"> Remark :
-                            <p>{{$dt->remark}}</p>
+                        <td colspan="2"> Remark
                         </td>
                     </tr>
                     <tr>
@@ -117,8 +113,10 @@
                         </td>
                     </tr>
                 </table>
-                <br>
             </td>
+        </tr>
+        <tr>
+            <td style="width:40%"><center><b>{{$dt->barcode}}</b></center></td>
         </tr>
         <tr>
             <td style="width:40%">
@@ -145,5 +143,4 @@
     </table>
     @endforeach
 </body>
-
 </html>

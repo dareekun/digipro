@@ -13,6 +13,9 @@
                     </div>
                 </div>
                 <div class="card-body">
+                <div class="row justify-content-center">
+                            <div class="col-md-12"><a class="btn btn-outline-primary" href="{{route('generate_data')}}">Generate Data</a></div>
+                        </div>
                     <div class="row justify-content-center">
                         <div class="col-md-12">
                             <table id="table_records" class="table table-striped table-bordered w-100">

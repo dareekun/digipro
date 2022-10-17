@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('new_lotcard')}}" method="post">
+                    <form action="{{route('new_lotcard')}}" method="post" target="_blank">
                         @csrf
                         <div class="row mb-3">
                             <div class="col-md-3 offset-7">
@@ -46,7 +46,7 @@
                                 <tbody>
                                     @foreach ($data as $dt)
                                     <tr>
-                                        <td><a href="{{route('show_lotcard', $dt->id)}}" style="text-decoration: none;" target=”_blank”>{{$dt->id}}</a></td>
+                                        <td><a href="{{route('show_lotcard', $dt->id)}}" style="text-decoration: none;" target="_blank">{{$dt->id}}</a></td>
                                         <td>{{date('Ymd', strtotime($dt->lotno))}}</td>
                                         <td>{{$dt->shift}}</td>
                                         <td>{{$dt->model_no}}</td>

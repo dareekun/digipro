@@ -85,8 +85,6 @@ class UserController extends Controller
 	    return PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->stream();
     }
 
-
-
     public static function menu(){
         $menu = DB::table('produk')->select('bagian')->distinct()->orderBy('bagian')->pluck('bagian');
         return $menu;
@@ -209,5 +207,56 @@ class UserController extends Controller
         $f = DB::table('rekap_prod')->where('keyid', $id)->get();
         $g = DB::table('hasil_prod')->where('keyid', $id)->get();
         return view('admin.detail', ['data1' => $a, 'data2' => $b, 'data3' => $c, 'data4' => $d, 'data5' => $e, 'data6' => $f, 'data7' => $g, 'id' => $id]);
-}
+    }
+
+    public function create_inspection(Request $request) {
+        if (Auth::user()->department == 4 || Auth::user()->department == 1) {
+            if ($request->packing_size == 0) {
+                return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Packing Size (@ BOX) Must Be Bigger Than 0']);
+            }
+            if ($request->total_box == 0) {
+                return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Total Box Must Be Bigger Than 0']);
+            }
+            if ($request->lot_size == 0) {
+                return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Lot Size Must Be Bigger Than 0']);
+            }
+            $productionId = DB::table('production')->where('barcode', $request->barcode_id)->value('id');
+            $model_no     = DB::table('production')->where('barcode', $request->barcode_id)->value('model_no');
+            DB::table('quality')->insert([
+                'productionId' => $productionId,
+                'judgement'    => $request->status,
+                'remark'       => $request->remark != NULL ? : "-",
+                'userId'       => Auth::user()->id,
+            ]);
+            DB::table('production')->where('barcode', $request->barcode_id)->update([
+                'fg_1'   => $request->lot_size,
+                'fg_2'   => $request->total_box,
+                'status' => 1
+            ]);
+            DB::table('product')->where('id', $model_no)->update([
+                'packing' => $request->packing_size
+            ]);
+            $data = DB::table('production')->where('barcode', $request->id)->leftJoin('product', 'production.model_no', '=', 'product.id')
+            ->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
+            ->select('production.barcode as barcode', 'product.model_no as model_no', 'product.packing as packing', 'production.shift as shift', 'production.lotno as lotno', 'production.parts_data as parts',
+            'production.date_1 as date_1', 'production.date_2 as date_2', 'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.remark as remark',
+            'production.fg_1 as finish_goods_1', 'production.fg_2 as finish_goods_2', 'production.ng_1 as no_goods_1', 'production.ng_2 as no_goods_2',
+            'quality.judgement as judgement', 'users.name as checker_name', 'product.section as section', 'product.line as line')->get();
+            return redirect(route('show_inspection', $request->barcode_id));
+        } else {
+            return "Error 403, Forbidden User Input";
+        }
+    }
+
+    public function generate_data() {
+        if (Auth::user()->department == 5 || Auth::user()->department == 1) {
+            if (DB::table('transaction')->where('referTransfers', 0)->doesntExist()) {
+                return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'No Production Data Has Been Scanned']);
+            } else {
+                
+            }
+        } else {
+            return "Error 403, Forbidden User Input";
+        }
+    }
 }

@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -13,34 +12,43 @@
                     </div>
                 </div>
                 <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12"><a class="btn btn-outline-primary" href="{{route('download_data', 'finish_production')}}">Download Data</a></div>
+                        </div>
                     <div class="row justify-content-center">
                         <div class="col-md-12">
                             <table id="table_records" class="table table-striped table-bordered w-100">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Section</th>
+                                    <th>Barcode</th>
                                     <th>Line</th>
                                     <th>Model Product</th>
                                     <th>Lot Number</th>
                                     <th>Shift</th>
                                     <th>Lot Size</th>
                                     <th>Checker</th>
-                                    <th>Judgement</th>
+                                    <th>Option</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data as $dt)
                                 <tr>
-                                    <td>{{$i++}}</td>
-                                    <td>{{$dt->section}}</td>
+                                    <td><a href="{{route('show_inspection', $dt->id)}}" style="text-decoration: none;" target="_blank">{{$dt->id}}</a></td>
                                     <td>{{$dt->line}}</td>
-                                    <td>{{date($dt->model_no)}}</td>
+                                    <td>
+                                    @if ($dt->judgement == 1) 
+                                    <i class="text-success">{{$dt->model_no}}</i> <i class="fa fa-check text-success" aria-hidden="false"></i>
+                                    @elseif ($dt->judgement == 2) 
+                                    <i class="text-danger">{{$dt->model_no}}</i> <i class="fa fa-times text-danger" aria-hidden="false"></i>
+                                    @else 
+                                    <i class="text-warning">{{$dt->model_no}}</i> <i class="fa fa-exclamation text-warning" aria-hidden="false"></i>
+                                    @endif</td>
                                     <td>{{date($dt->lotno)}}</td>
-                                    <td>{{$dt->shifts}}</td>
-                                    <td>{{$dt->fg_1}}</td>
+                                    <td>{{$dt->shift}}</td>
+                                    <td>{{$dt->finish_goods}}</td>
                                     <td>{{$dt->checker}}</td>
-                                    <td>{{$dt->judgjement}}</td>
+                                    <td><a href="{{route('process_quality', $dt->id)}}" class="btn btn-sm btn-outline-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Modify</a>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -52,9 +60,7 @@
         </div>
     </div>
 </div>
-
 @stop
-
 @push('scripts')
 <script>
 $(document).ready(function() {

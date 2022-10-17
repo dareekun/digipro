@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Cetak Lot Card</title>
+    <title>Form Permintaan Pemeriksaan Dan Penyerahan Finish Goods</title>
     <style>
     @page {
         margin: 0px;
@@ -44,6 +44,7 @@
 </head>
 
 <body>
+    
     @foreach ($data as $dt)
     <table id="table1">
         <tr>
@@ -141,9 +142,6 @@
                     </table>
                 </center>
             </td>
-        </tr>
-        <tr>
-            <td style="width:40%"><center><b>{{$dt->barcode}}</b></center></td>
         </tr>
     </table>
     @endforeach

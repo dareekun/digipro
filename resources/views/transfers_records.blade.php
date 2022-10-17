@@ -14,34 +14,34 @@
                 </div>
                 <div class="card-body">
                     <div class="row justify-content-center">
+                        <div class="col-md-12"><a class="btn btn-outline-primary"
+                                href="{{route('download_data', 'transfers_record')}}">Download Data</a></div>
+                    </div>
+                    <div class="row justify-content-center">
                         <div class="col-md-12">
                             <table id="table_records" class="table table-striped table-bordered w-100">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Lot Number</th>
-                                    <th>Shift</th>
-                                    <th>Model Product</th>
-                                    <th>FG</th>
-                                    <th>NG</th>
-                                    <th>PIC</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data as $dt)
-                                <tr>
-                                    <td>{{$i++}}</td>
-                                    <td>{{date($dt->lotno)}}</td>
-                                    <td>{{$dt->shifts}}</td>
-                                    <td>{{$dt->model_no}}</td>
-                                    <td>{{$dt->fg_1}}</td>
-                                    <td>{{$dt->ng_1}}</td>
-                                    <td>{{$dt->name_1}}</td>
-                                    <td>{{$dt->status}}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Reference Number</th>
+                                        <th>Transfers Date</th>
+                                        <th>Item type</th>
+                                        <th>Item Qty</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data as $dt)
+                                    <tr>
+                                        <td>{{$i++}}</td>
+                                        <td><a href="{{route('transfers_details', $dt->refer)}}" style="text-decoration: none;" target="_blank">{{$dt->refer}}</a></td>
+                                        <td>{{date($dt->transfers_date)}}</td>
+                                        <td>{{$dt->item_type}}</td>
+                                        <td>{{$dt->item_qty}}</td>
+                                        <td>{{$dt->status}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>

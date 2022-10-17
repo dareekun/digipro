@@ -21,20 +21,21 @@
                                         <th>Lot Number</th>
                                         <th>Shift</th>
                                         <th>Model Product</th>
-                                        <th>Checker</th>
-                                        <th>Status</th>
+                                        <th>Line</th>
+                                        <th>PIC</th>
+                                        <th>Option</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $dt)
                                     <tr>
-                                        <td><a href="{{route('show_inspection', $dt->id)}}" style="text-decoration: none;"
-                                                target=”_blank”>{{$dt->id}}</a></td>
+                                        <td><a href="{{route('show_inspection', $dt->id)}}" style="text-decoration: none;" target="_blank">{{$dt->id}}</a></td>
                                         <td>{{date('Ymd', strtotime($dt->lotno))}}</td>
                                         <td>{{$dt->shift}}</td>
                                         <td>{{$dt->model_no}}</td>
-                                        <td>{{$dt->checker}}</td>
-                                        <td>{{$dt->status}}</td>
+                                        <td>{{$dt->line}}</td>
+                                        <td>{{$dt->pic}}</td>
+                                        <td><a href="{{route('process_quality', $dt->id)}}" class="btn btn-sm btn-outline-primary" target="_blank">Process</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -46,7 +47,6 @@
         </div>
     </div>
 </div>
-
 @stop
 
 @push('scripts')

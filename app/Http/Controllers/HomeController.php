@@ -9,6 +9,10 @@ use App\Http\Controllers\Validator;
 
 use Illuminate\Support\Facades\Http;
 
+use App\Exports\FinishProduction;
+use App\Exports\ProductionData;
+use App\Exports\TransfersRecord;
+
 use App\User;
 Use Redirect;
 use Auth;
@@ -49,7 +53,7 @@ class HomeController extends Controller
     public function lotcard_status() 
     {    
         $product = DB::table('product')->select('id', 'model_no')->get();
-        $record = DB::table('production')->where('status', '<', 1)->leftJoin('product', 'production.model_no', '=', 'product.id')
+        $record = DB::table('production')->where('status', 0)->leftJoin('product', 'production.model_no', '=', 'product.id')
         ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift',  'product.model_no as model_no', 
         'production.fg_1 as finish_goods', 'production.ng_1 as no_goods', 'production.name_1 as pic', 'production.status as status')
         ->get();
@@ -57,47 +61,62 @@ class HomeController extends Controller
     }
     public function production_data() 
     {
-        $line = DB::table('product')->select('line')->distinct()->get();
-        $section = DB::table('product')->select('section')->distinct()->get();
-        $record = DB::table('production')->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
-        ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift', 'production.model_no as model_no', 'production.fg_1 as finish_goods',
-        'production.name_1 as pic', 'quality.judgement as judgement', 'production.status as status', 'users.name as checker')->get();
-        return view('production_data', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
-        
+        $record = DB::table('production')->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
+        ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift', 'product.model_no as model_no', 'production.fg_1 as finish_goods',
+        'production.ng_1 as not_goods', 'production.name_1 as pic', 'quality.judgement as judgement')->get();
+        return view('production_data', ['data' => $record, 'i' => 1]);
     }
     public function in_production() 
     {
-        $line = DB::table('product')->select('line')->distinct()->get();
-        $section = DB::table('product')->select('section')->distinct()->get();
-        $record = DB::table('production')->where('status', 0)->leftJoin('quality', 'production.id', '=', 'quality.productionId')
-        ->leftJoin('users', 'quality.userId', '=', 'users.id')->leftJoin('product', 'production.model_no', '=', 'product.id')
+        $record = DB::table('production')->leftJoin('quality', 'production.id', '=', 'quality.productionId')
+        ->leftJoin('users', 'quality.userId', '=', 'users.id')->leftJoin('product', 'production.model_no', '=', 'product.id')->where('production.status', 0)
         ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift', 'product.model_no as model_no', 'production.fg_1 as finish_goods',
-        'production.name_1 as pic', 'production.status as status', 'users.name as checker')->get();
-        return view('in_production', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
+        'production.name_1 as pic', 'product.line as line')->get();
+        return view('in_production', ['data' => $record, 'i' => 1]);
     }
     public function finish_data() 
     {
-        $line = DB::table('product')->select('line')->distinct()->get();
-        $section = DB::table('product')->select('section')->distinct()->get();
         $record = DB::table('production')->where('status', '>', 0)->leftJoin('quality', 'production.id', '=', 'quality.productionId')
-        ->leftJoin('users', 'quality.userId', '=', 'users.id')->leftJoin('product', 'production.model_no', '=', 'production.id')
+        ->leftJoin('product', 'product.id', '=', 'production.model_no')->leftJoin('users', 'quality.userId', '=', 'users.id')
         ->select('production.barcode as id', 'product.section as section', 'product.line as line', 'product.model_no as model_no',
         'production.lotno as lotno', 'production.shift as shift', 'production.fg_1 as finish_goods',
         'quality.judgement as judgement', 'users.name as checker')->get();
-        return view('finish_data', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
+        return view('finish_data', ['data' => $record, 'i' => 1]);
+    }
+    public function inspection_detail($id) {
+
     }
     public function transaction_data() 
     {
-        $line = DB::table('product')->select('line')->distinct()->get();
-        $section = DB::table('product')->select('section')->distinct()->get();
         $record = DB::table('production')->where('status', 2 )->get();
-        return view('transaction_data', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
+        return view('transaction_data', ['data' => $record, 'i' => 1]);
     }
-    public function transfers_records() 
+    public function transfers_records()
     {
-        $line = DB::table('product')->select('line')->distinct()->get();
-        $section = DB::table('product')->select('section')->distinct()->get();
-        $record = DB::table('production')->where('status', '>', 2 )->orderBy('lotno', 'desc')->get();
-        return view('transfers_records', ['data' => $record, 'line' => $line, 'section' => $section, 'i' => 1]);
+        $record = DB::table('transfers')->orderBy('transfers_date', 'desc')->get();
+        return view('transfers_records', ['data' => $record, 'i' => 1]);
     }
+    public function transfers_details($id) {
+
+    }
+
+    public function download_data($id) {
+        if ($id == 'finish_production') {
+            return Excel::download(new FinishProduction, 'Export Finish Data Production '.date('Y-m-d').'.xlsx');
+        } elseif ($id == 'production_data') {
+            return Excel::download(new ProductionData, 'Export Production Data History '.date('Y-m-d').'.xlsx');
+        } else if ($id == 'transfers_record') {
+            return Excel::download(new TransfersRecord, 'Export Transfers Data Records '.date('Y-m-d').'.xlsx');
+        } else {
+            return "Error Data Not Found";
+        }
+    }
+
+    public function process_quality($id) {
+        $record = DB::table('production')->leftJoin('product', 'production.model_no', '=', 'product.id')
+        ->select('production.barcode as barcode', 'production.lotno as lotno', 'production.shift as shift', 'production.fg_1 as lot_size', 
+        'production.fg_2 as total_box', 'product.model_no as model_no', 'product.section as section', 'product.line as line', 'product.packing as packing')->get();
+        return view('process_quality', ['data' => $record, 'i' => 1]);
+    }
+
 }
