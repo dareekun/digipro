@@ -70,7 +70,7 @@ class MobileController extends Controller
                 'data'   => $data[0],
                 'status' => 200
             ]);
-        } else {            
+        } else {
             return response([
             'status' => 403,
             'message' => "Forbiden Access, Session Not Exists"
