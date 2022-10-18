@@ -2,6 +2,18 @@
 
 @section('content')
 <div class="container mt-5">
+    <div class="row my-2">
+        <div class="col-md-12">
+            @if (session()->has('alerts'))
+            <div class="alert {{ session('alerts.type') }} alert-dismissible fade show" role="alert">
+                {{ session('alerts.message') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -21,7 +33,6 @@
                             <table id="table_records" class="table table-striped table-bordered w-100">
                             <thead>
                                 <tr>
-                                    <th>No</th>
                                     <th>Lot Number</th>
                                     <th>Shift</th>
                                     <th>Model Product</th>
@@ -34,9 +45,8 @@
                             <tbody>
                                 @foreach ($data as $dt)
                                 <tr>
-                                    <td>{{$i++}}</td>
                                     <td>{{date($dt->lotno)}}</td>
-                                    <td>{{$dt->shifts}}</td>
+                                    <td>{{$dt->shift}}</td>
                                     <td>{{$dt->model_no}}</td>
                                     <td>{{$dt->fg_1}}</td>
                                     <td>{{$dt->ng_1}}</td>

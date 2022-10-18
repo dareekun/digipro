@@ -24,7 +24,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Reference Number</th>
-                                        <th>Transfers Date</th>
+                                        <th>Generated Date</th>
                                         <th>Item type</th>
                                         <th>Item Qty</th>
                                         <th>Status</th>
@@ -34,7 +34,7 @@
                                     @foreach ($data as $dt)
                                     <tr>
                                         <td>{{$i++}}</td>
-                                        <td><a href="{{route('transfers_details', $dt->refer)}}" style="text-decoration: none;" target="_blank">{{$dt->refer}}</a></td>
+                                        <td><a href="{{route('show_pdf_form', $dt->refer)}}" style="text-decoration: none;" target="_blank">{{$dt->refer}}</a></td>
                                         <td>{{date($dt->transfers_date)}}</td>
                                         <td>{{$dt->item_type}}</td>
                                         <td>{{$dt->item_qty}}</td>

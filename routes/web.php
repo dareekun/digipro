@@ -44,6 +44,7 @@ Route::post('/del_lotcard', [UserController::class, 'del_lotcard'])->middleware(
 
 Route::get('/show_lotcard/{id}', [UserController::class, 'show_lotcard'])->middleware('can:isUser')->name('show_lotcard');
 Route::get('/show_inspection/{id}', [UserController::class, 'show_inspection'])->middleware('can:isUser')->name('show_inspection');
+Route::get('/show_pdf_form/{id}', [UserController::class, 'show_pdf_form'])->middleware('can:isUser')->name('show_pdf_form');
 
 // Admin Control
 Route::get('/product_control', [AdminController::class, 'product_control'])->middleware('can:isAdmin')->name('product_control');
@@ -81,6 +82,8 @@ Route::get('/download_data/{id}', [HomeController::class, 'download_data'])->mid
 // Developer Control
 Route::get('/reroute_list', [DeveloperController::class, 'route_list'])->middleware('can:isDeveloper')->name('route_list');
 
+Route::get('/bypass_data/{id}', [DeveloperController::class, 'bypass_data'])->middleware('can:isDeveloper')->name('bypass_data');
+Route::get('/bypass_scan', [DeveloperController::class, 'bypass_scan'])->middleware('can:isDeveloper')->name('bypass_scan');
 // JSON 
 Route::post('/data1-json', [ApiController::class, 'json_data1'])->name('data1-json.data1');
 Route::post('/data2-json', [ApiController::class, 'json_data2'])->name('data2-json.data2');

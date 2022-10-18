@@ -9,13 +9,13 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Produksi') }}</title>
+    <title>{{ config('app.name', 'Digipro') }}</title>
 
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
     @livewireStyles
     <!-- Styles -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/font-awesome.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap-select.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/dataTables.bootstrap4.min.css') }}">
@@ -41,9 +41,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="/">
-                    DigiPro
-                </a>
+                <a class="navbar-brand" href="/"> DigiPro </a>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     @guest 
                     @else
@@ -77,6 +75,7 @@
                                 Warehouse
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{route('bypass_scan')}}">Bypass Scan</a>
                                 <a class="dropdown-item" href="{{route('transaction_data')}}">Transaction Data</a>
                                 <a class="dropdown-item" href="{{route('transfers_records')}}">Transfers Records</a>
                             </div>

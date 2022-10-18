@@ -42,11 +42,11 @@
                                     <td>{{$dt->pic}}</td>
                                     <td>
                                     @if ($dt->judgement == 1) 
-                                    <i class="text-success">OK </i> <i class="fa fa-check text-success" aria-hidden="false"></i>
+                                    <span class="text-success">OK </span> <i class="fa fa-check text-success" aria-hidden="false"></i>
                                     @elseif ($dt->judgement == 2) 
-                                    <i class="text-danger">NG </i> <i class="fa fa-times text-danger" aria-hidden="false"></i>
+                                    <span class="text-danger">NG </span> <i class="fa fa-times text-danger" aria-hidden="false"></i>
                                     @else 
-                                    <i class="text-warning">HOLD </i> <i class="fa fa-exclamation text-warning" aria-hidden="false"></i>
+                                    <span class="text-warning">HOLD </span> <i class="fa fa-exclamation text-warning" aria-hidden="false"></i>
                                     @endif</td>
                                 </tr>
                                 @endforeach

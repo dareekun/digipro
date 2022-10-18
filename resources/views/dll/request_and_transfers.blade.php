@@ -7,7 +7,7 @@
     <title>Form Permintaan Pemeriksaan Dan Penyerahan Finish Goods</title>
     <style>
     @page {
-        margin: 0px;
+        margin: 2px;
     }
 
     html,
@@ -22,19 +22,21 @@
     }
 
     #table1 {
-        width:100%;
+        width: 100%;
         padding-left: 2pt;
         padding-right: 2pt;
     }
 
     #table2 {
-        width:100%;
+        width: 100%;
         border-collapse: collapse;
         border: 1px solid black;
     }
+
     #table2 tr {
         border: 1px solid black;
     }
+
     #table2 td {
         border: 1px solid black;
     }
@@ -44,107 +46,99 @@
 </head>
 
 <body>
-    
-    @foreach ($data as $dt)
-    <table id="table1">
+    <table style="width:100%; border: 1px solid black;">
         <tr>
-            <td colspan="3" align="center">
-                <h4>Lot Card Production</h4>
+            <td colspan="2" align="center">
+                <h3>FORM PERMINTAAN PEMERIKSAAN DAN PENYERAHAN FINISH GOOD</h3>
             </td>
         </tr>
         <tr>
-            <td colspan="3">
-                <table style="width:100%">
+            <td>
+                <h4>Tanggal Produksi: {{date('Y - m - d', strtotime($tanggal))}}</h4>
+            </td>
+            <td>
+                <table id="table2">
                     <tr>
-                        <td> Model No </td>
-                        <td> : </td>
-                        <td> {{$dt->model_no}}</td>
+                        <td align="center" colspan="2" style="width:50%">Petugas PC</td>
+                        <td align="center" colspan="2" style="width:50%">Petugas Produksi</td>
                     </tr>
                     <tr>
-                        <td>Lot No </td>
-                        <td> : </td>
+                        <td><br><br><br></td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td>Shift </td>
-                        <td> : </td>
-                        <td> Shift {{$dt->shift}}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3"><br></td>
+                        <td><br></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td colspan="3">
-                <table style="width:100%">
-                    <tr>
-                        <td align="left">Part Name</td>
-                        <td align="right" style="width:25%">No Lot</td>
-                    </tr>
-                    @foreach (json_decode($dt->parts) as $pts)
-                    <tr>
-                        <td align="left" style="font-size: 13px;">{{$pts->parts}}</td>
-                        <td align="right" style="font-size: 13px;">{{date('d/m/Y', strtotime($pts->lot_parts))}}</td>
-                    </tr>
-                    @endforeach
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3"><br></td>
-        </tr>
-        <tr>
-            <td colspan="3" align="center">
+            <td colspan="2">
                 <table id="table2">
                     <tr>
-                        <td align="center">Input</td>
-                        <td align="center">NG</td>
-                        <td align="center">Date</td>
-                        <td align="center">Name</td>
+                        <td align="center" style="width:10px">No</td>
+                        <td align="center" style="width:200px">Tipe Produk</td>
+                        <td align="center">No Lot</td>
+                        <td align="center">Shift</td>
+                        <td align="center">Packing</td>
+                        <td align="center">Total Box</td>
+                        <td align="center">Total Qty</td>
+                        <td align="center">Keterangan</td>
                     </tr>
+                    @foreach ($data as $dt)
                     <tr>
-                        <td align="center">{{$dt->fg_1}}</td>
-                        <td align="center">{{$dt->ng_1}}</td>
-                        <td align="center">
-                            {{date('d/m/Y', strtotime($dt->date_1))}}</td>
-                        <td align="center">{{$dt->name_1}}</td>
+                        <td>{{$i++}}</td>
+                        <td>{{$dt->model_no}}</td>
+                        <td align="center">{{date('Ymd', strtotime($dt->lotno))}}</td>
+                        <td align="center">{{$dt->shift}}</td>
+                        <td align="center">{{$dt->packing}}</td>
+                        <td align="center">{{$dt->total_box}}</td>
+                        <td align="center">{{$dt->total_qty}}</td>
+                        <td>{{$dt->remark}}</td>
                     </tr>
+                    @endforeach
+                    @for($n = $i ; $n < 34; $n++)
                     <tr>
-                        <td align="center">{{$dt->fg_2}}</td>
-                        <td align="center">{{$dt->ng_2}}</td>
-                        <td align="center">
-                            {{date('d/m/Y', strtotime($dt->date_2))}}</td>
-                        <td align="center">{{$dt->name_2}}</td>
+                        <td>{{$n}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
+                    @endfor
                 </table>
             </td>
         </tr>
         <tr>
-            <td style="width:40%">
-                <center>
-                    {!!DNS2D::getBarcodeHTML($dt->barcode, 'QRCODE',5,5)!!}
-                </center>
-            </td>
             <td colspan="2">
-                <center>
-                    <table style="width:100%" id="table2">
-                        <tr>
-                            <td align="center">Judgement</td>
-                        </tr>
-                        <tr>
-                            <td><br><br><br></td>
-                        </tr>
-                        <tr>
-                            <td><br></td>
-                        </tr>
-                    </table>
-                </center>
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <b>Catatan : </b><br>
+                            <span style="font-size: 12px">1. Pengecekan hasil transfers produksi shift 1 dilakukan oleh
+                                Group Leader Shift 1</span><br>
+                            <span style="font-size: 12px">2. Pengecekan hasil transfers produksi shift 2 dilakukan oleh
+                                Line Leader Shift 3</span><br>
+                            <span style="font-size: 12px">3. Pengecekan hasil transfers produksi shift 3 dilakukan oleh
+                                Group Leader Shift 1</span><br>
+                            <span style="font-size: 12px">4. Setelah petugas produksi selesai input hasil produksi, form
+                                diserahkan kepada PC</span>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
-    @endforeach
+    <br>
+    <center>PT. Panasonic Gobel Life Solutions Manufacturing Indonesia</center>
 </body>
 
 </html>

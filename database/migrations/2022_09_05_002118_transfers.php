@@ -16,7 +16,7 @@ class Transfers extends Migration
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
             $table->integer('refer');
-            $table->date('transfers_date');
+            $table->timestamp('transfers_date', $precision = 0)->useCurrent();
             $table->integer('item_type');
             $table->integer('item_qty');
             $table->boolean('status');

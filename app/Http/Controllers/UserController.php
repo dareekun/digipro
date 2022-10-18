@@ -89,125 +89,6 @@ class UserController extends Controller
         $menu = DB::table('produk')->select('bagian')->distinct()->orderBy('bagian')->pluck('bagian');
         return $menu;
     }
-    public function input0($id){
-        $s1     = Auth::user();
-        $line   = DB::table('produk')->where('bagian', $id)->select('tempat')->distinct()->orderBy('tempat')->get();
-        $waktu  = DB::table('waktu')->select('shift', 'value')->get();
-        $stat   = DB::table('dataharian')->where('bagian', $id)->where('autosave', 'belum')->where('lastedit', $s1->username)->select('autosave')->distinct()->value('autosave');
-        $data   = DB::table('dataharian')->where('bagian', $id)->where('autosave', 'belum')->where('lastedit', $s1->username)->select('keyid')->distinct()->value('keyid');
-        return view('user.data', ['bagian' => $id, 'line' => $line, 'waktu' => $waktu, 'status' => $stat, 'data' => $data]);
-    }
-    public function next(Request $request) {
-        $s0 = DB::table('waktu')->select('start')->where('shift', $request->shift)->value('start');
-        $s1 = DB::table('waktu')->select('finish')->where('shift', $request->shift)->value('finish');
-        $s2 = DB::table('waktu')->select('duration')->where('shift', $request->shift)->value('duration');
-        $s4 = DB::table('waktu')->select('value')->where('shift', $request->shift)->value('value');
-        $s3 = Auth::user();
-        $keyid = strtoupper(base_convert($s3->id.date('YmdHis'),10,32));
-        $id = DB::table('produk')->select('bagian')->distinct()->where('tempat', $request->line)->value('bagian');
-        DB::table('dataharian') ->insert([
-            'keyid' => $keyid,
-            'bagian' => $id,
-            'tanggal' => $request->tanggal,
-            'line'=> $request->line,
-            'pic' => $request->pic,
-            'shift' => $request->shift,
-            'kartap' => $request->kartap,
-            'absenkartap' => $request->absenkartap,
-            'waktukartap' => $s2,
-            'otkartap' => $request->otkartap,
-            'kwt' => $request->kwt,
-            'absenkwt' => $request->absenkwt,
-            'waktukwt' => $s2,
-            'otkwt' => $request->otkwt,
-            'izin' => $request->izin,
-            'optplan' => $request->kartap + $request->kwt,
-            'start' => $s0,
-            'finish' => $s1,
-            'waktukerja' => ($s2 * $request->kartap) + ($s2 * $request->kwt) + $request->otkartap + $request->otkwt + $request->waktumasuk - $request->waktukeluar,
-            'bantuan_masuk' => $request->bantuanmasuk,
-            'bantuan_keluar' => $request->bantuankeluar,
-            'bantuan_masuk_waktu' => $request->waktumasuk,
-            'bantuan_keluar_waktu' => $request->waktukeluar,
-            'lastedit' => $s3->username,
-            'autosave' => 'belum',
-        ]);
-        return redirect('/resume/'.$keyid);
-    }
-    public function refresh($id) {
-        $s1 = DB::table('dataharian')->select('bagian')->where('keyid', $id)->value('bagian');
-        DB::table('dataharian')->where('keyid', $id)->delete();
-        DB::table('loss_data')->where('keyid', $id)->delete();
-        DB::table('rekap_prod')->where('keyid', $id)->delete();
-        return redirect('/data/'.$s1);
-    }
-    public function resume($id) {
-        $s1 = Auth::user();
-        $s2 = DB::table('dataharian')->select('bagian')->where('keyid', $id)->distinct()->value('bagian');
-        $s3 = DB::table('dataharian')->where('autosave', 'belum')->where('lastedit', $s1->username)->select('autosave')->distinct()->value('autosave');
-        if ($s3 == 'selesai') {
-            return redirect('/data/'.$bagian);
-        }
-        $data  = DB::table('dataharian')->where('keyid', $id)->get();
-        $bline = DB::table('produk')->where('bagian', $s2)->select('tempat')->distinct()->orderBy('tempat')->get();
-        $waktu = DB::table('waktu')->select('shift')->get();
-        $p1 = DB::table('rekap_prod')->select('id')->where('keyid', $id)->where('status', 0)->where('lastedit', $s1->username)->value('id');
-        return view('user.data2', ['bagian' => $s2, 'data' => $data, 'bline' => $bline, 'waktu' => $waktu, 'refer' => $id, 'tagkey' => $p1]);
-    }
-    // ===================================================
-    // ================= H A R I A N 2 ===================
-    // ===================================================
-    public function next2(Request $request) {
-        $s1 = Auth::user();
-        $s2 = DB::table('waktu')->where('shift', $request->shift)->select('duration')->value('duration');
-        DB::table('dataharian')->where('keyid', $request->subaru)->update([
-            'tanggal' => $request->tanggal,
-            'line'=> $request->line,
-            'pic' => $request->pic,
-            'shift' => $request->shift,
-            'kartap' => $request->kartap,
-            'absenkartap' => $request->absenkartap,
-            'waktukartap' => $s2,
-            'otkartap' => $request->otkartap,
-            'kwt' => $request->kwt,
-            'absenkwt' => $request->absenkwt,
-            'waktukwt' => $s2,
-            'otkwt' => $request->otkwt,
-            'izin' => $request->izin,
-            'optplan' => $request->optplan,
-            'start' => $request->start,
-            'finish' => $request->finish,
-            'waktukerja' => ($s2 * $request->kartap) + ($s2 * $request->kwt) + $request->otkartap + $request->otkwt + $request->waktumasuk - $request->waktukeluar,
-            'bantuan_masuk' => $request->bantuanmasuk,
-            'bantuan_keluar' => $request->bantuankeluar,
-            'bantuan_masuk_waktu' => $request->waktumasuk,
-            'bantuan_keluar_waktu' => $request->waktukeluar,
-            'lastedit' => $s1->username,
-        ]);
-        return redirect('/resume/'.$request->subaru);
-    }
-    public function hapusdataproduk($id){
-        $alamat = DB::table('dataharian')->where('keyid', $id)->select('bagian')->value('bagian');
-        DB::table('dataharian')->where('keyid', $id)->delete();
-        DB::table('loss_data')->where('keyid', $id)->delete();
-        DB::table('loss_data')->where('keyid', $id)->delete();
-        DB::table('loss_data')->where('keyid', $id)->delete();
-        DB::table('loss_data')->where('keyid', $id)->delete();
-        DB::table('resultprod')->where('keyid', $id)->delete();
-        DB::table('rekap_prod')->where('keyid', $id)->delete();
-        return redirect('/tabel/'.$alamat);
-    }
-    
-    public function detail($id) {
-        $a = DB::table('dataharian')->where('keyid', $id)->get();
-        $b = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Regulated Loss')->where('keyid', $id)->get();
-        $c = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Work Loss')->where('keyid', $id)->get();
-        $d = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Organization Loss')->where('keyid', $id)->get();
-        $e = DB::table('loss_data')->leftJoin('loss_type', 'loss_type.loss', '=', 'loss_data.problem')->where('type', 'Defect Loss')->where('keyid', $id)->get();
-        $f = DB::table('rekap_prod')->where('keyid', $id)->get();
-        $g = DB::table('hasil_prod')->where('keyid', $id)->get();
-        return view('admin.detail', ['data1' => $a, 'data2' => $b, 'data3' => $c, 'data4' => $d, 'data5' => $e, 'data6' => $f, 'data7' => $g, 'id' => $id]);
-    }
 
     public function create_inspection(Request $request) {
         if (Auth::user()->department == 4 || Auth::user()->department == 1) {
@@ -244,7 +125,7 @@ class UserController extends Controller
             'quality.judgement as judgement', 'users.name as checker_name', 'product.section as section', 'product.line as line')->get();
             return redirect(route('show_inspection', $request->barcode_id));
         } else {
-            return "Error 403, Forbidden User Input";
+            return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
         }
     }
 
@@ -253,10 +134,42 @@ class UserController extends Controller
             if (DB::table('transaction')->where('referTransfers', 0)->doesntExist()) {
                 return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'No Production Data Has Been Scanned']);
             } else {
-                
+                $current   = date('ymd').rand(10, 99);
+                $item_type = DB::table('transaction')->leftJoin('production', 'transaction.productionId', '=', 'production.id')->where('referTransfers', 0)->count();
+                $item_qty  = DB::table('transaction')->leftJoin('production', 'transaction.productionId', '=', 'production.id')->where('referTransfers', 0)->sum('production.fg_1');
+                DB::table('transaction')->leftJoin('production', 'transaction.productionId', '=', 'production.id')->where('referTransfers', 0)->update([
+                    'transaction.referTransfers' => $current,
+                    'production.status' => 3
+                ]);
+                DB::table('transfers')->insert([
+                    'refer' => $current,
+                    'item_type' => $item_type,
+                    'item_qty' => $item_qty,
+                    'status' => 0,
+                    'userId' => Auth::user()->id
+                ]);
             }
+            return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Data Successfully Generated']);
         } else {
-            return "Error 403, Forbidden User Input";
+            return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
+        }
+    }
+
+    public function show_pdf_form($id) {
+        if (Auth::user()->department == 5 || Auth::user()->department == 1) {
+            if (DB::table('transfers')->where('refer', $id)->doesntExist()) {
+                return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Data Was Not Found']);
+            } else {
+                $transl = DB::table('transfers')->where('refer', $id)->value('transfers_date');
+                $record = DB::table('transaction')->leftJoin('production', 'production.id', '=', 'transaction.productionId')
+                ->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
+                ->select('product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'product.packing as packing', 'production.fg_2 as total_box', 'production.fg_1 as total_qty', 'quality.remark as remark')
+                ->where('transaction.referTransfers', $id)->get();
+            }
+            return PDF::loadview('dll.request_and_transfers', ['data' => $record, 'tanggal' => $transl, 'i' => 1])->setPaper('a4')->stream();
+            // return view('dll.request_and_transfers', ['data' => $record, 'tanggal' => $transl, 'i' => 1]);
+        } else {
+            return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
         }
     }
 }

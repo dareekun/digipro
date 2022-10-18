@@ -1,13 +1,25 @@
 @extends('layouts.app')
 @section('content')
 <div class="container mt-5">
+    <div class="row my-2">
+        <div class="col-md-12">
+            @if (session()->has('alerts'))
+            <div class="alert {{ session('alerts.type') }} alert-dismissible fade show" role="alert">
+                {{ session('alerts.message') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-2">
-                            Finish Production
+                            Bypass Process
                         </div>
                     </div>
                 </div>
@@ -48,7 +60,7 @@
                                     <td>{{$dt->shift}}</td>
                                     <td>{{$dt->finish_goods}}</td>
                                     <td>{{$dt->checker}}</td>
-                                    <td><a href="{{route('process_quality', $dt->id)}}" class="btn btn-sm btn-outline-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Modify</a>
+                                    <td><a href="{{route('bypass_data', $dt->id)}}" class="btn btn-sm btn-outline-primary"><i class="fa fa-ship" aria-hidden="true"></i> Bypass</a>
                                     </td>
                                 </tr>
                                 @endforeach
