@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Validator;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Http;
 
@@ -135,7 +136,7 @@ class UserController extends Controller
                 Storage::put('inspection_'.$random.$request->id.'.pdf', $content);
                 exec('lp /var/www/digipro/storage/app/inspection_'.$random.$request->id.'.pdf -o fit-to-page');
                 exec('rm /var/www/digipro/storage/app/inspection_'.$random.$request->id.'.pdf');
-                
+
             return redirect(route('show_inspection', $request->barcode_id));
         } else {
             return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
