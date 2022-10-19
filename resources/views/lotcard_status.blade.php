@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('new_lotcard')}}" method="post" target="_blank">
+                    <form action="{{route('new_lotcard')}}" id="form" method="post" target="_blank">
                         @csrf
                         <div class="row mb-3">
                             <div class="col-md-3 offset-7">
@@ -25,7 +25,7 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <button type="submit" onclick="reset()" class="btn btn-outline-success w-100">New Lotcard</button>
+                                <button type="submit" class="btn btn-outline-success w-100">New Lotcard</button>
                             </div>
                         </div>
                     </form>
@@ -77,9 +77,5 @@ $('#table_records').DataTable({
         ],
         dom: "<'row'<'col-sm-6'i><'col-sm-6'f>>tp",
     });
-
-function reset() {
-    document.getElementById("tipe").selectedIndex = 0;
-}
 </script>
 @endpush
