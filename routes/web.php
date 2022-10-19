@@ -64,14 +64,17 @@ Route::post('/upd_users', [AdminController::class, 'upd_users'])->middleware('ca
 
 Route::post('/add_department', [AdminController::class, 'add_department'])->middleware('can:isAdmin')->name('add_department');
 
-// Quality Barrier
-Route::get('/production_detail/{id}', [HomeController::class, 'production_detail'])->middleware('can:isUser')->name('production_detail');
-Route::get('/process_quality/{id}', [HomeController::class, 'process_quality'])->middleware('can:isUser')->name('process_quality');
-
-Route::post('/create_inspection', [UserController::class, 'create_inspection'])->middleware('can:isUser')->name('create_inspection');
 
 // Production Barrier
 Route::get('/inspection_detail/{id}', [HomeController::class, 'inspection_detail'])->middleware('can:isUser')->name('inspection_detail');
+
+// Quality Barrier
+Route::get('/production_detail/{id}', [HomeController::class, 'production_detail'])->middleware('can:isUser')->name('production_detail');
+Route::get('/process_quality/{id}', [HomeController::class, 'process_quality'])->middleware('can:isUser')->name('process_quality');
+Route::get('/modify_quality/{id}', [HomeController::class, 'modify_quality'])->middleware('can:isUser')->name('modify_quality');
+
+Route::post('/create_inspection', [UserController::class, 'create_inspection'])->middleware('can:isUser')->name('create_inspection');
+Route::post('/modify_inspection', [UserController::class, 'modify_inspection'])->middleware('can:isUser')->name('modify_inspection');
 
 // Warehouse Barrier
 Route::get('/transfers_details/{id}', [HomeController::class, 'transfers_details'])->middleware('can:isUser')->name('transfers_details');

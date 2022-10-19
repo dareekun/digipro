@@ -48,7 +48,7 @@
                                     <td>{{$dt->shift}}</td>
                                     <td>{{$dt->finish_goods}}</td>
                                     <td>{{$dt->checker}}</td>
-                                    <td><a href="{{route('process_quality', $dt->id)}}" class="btn btn-sm btn-outline-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Modify</a>
+                                    <td><a href="{{route('modify_quality', $dt->id)}}" class="btn btn-sm btn-outline-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Modify</a>
                                     </td>
                                 </tr>
                                 @endforeach

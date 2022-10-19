@@ -122,4 +122,12 @@ class HomeController extends Controller
         return view('process_quality', ['data' => $record, 'i' => 1]);
     }
 
+    public function modify_quality($id) {
+        $record = DB::table('production')->leftJoin('product', 'production.model_no', '=', 'product.id')
+        ->select('production.barcode as barcode', 'production.lotno as lotno', 'production.shift as shift', 'production.fg_1 as lot_size', 'quality.remark as remark',
+        'quality.judgement as judgement', 'production.fg_2 as total_box', 'product.model_no as model_no', 'product.section as section', 'product.line as line', 'product.packing as packing')
+        ->where('production.barcode', $id)->get();
+        return view('process_quality', ['data' => $record, 'i' => 1]);
+    }
+
 }
