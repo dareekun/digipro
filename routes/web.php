@@ -72,6 +72,7 @@ Route::get('/inspection_detail/{id}', [HomeController::class, 'inspection_detail
 Route::get('/production_detail/{id}', [HomeController::class, 'production_detail'])->middleware('can:isUser')->name('production_detail');
 Route::get('/process_quality/{id}', [HomeController::class, 'process_quality'])->middleware('can:isUser')->name('process_quality');
 Route::get('/modify_quality/{id}', [HomeController::class, 'modify_quality'])->middleware('can:isUser')->name('modify_quality');
+Route::get('/print_inspection/{id}', [UserController::class, 'print_inspection'])->middleware('can:isUser')->name('print_inspection');
 
 Route::post('/create_inspection', [UserController::class, 'create_inspection'])->middleware('can:isUser')->name('create_inspection');
 Route::post('/modify_inspection', [UserController::class, 'modify_inspection'])->middleware('can:isUser')->name('modify_inspection');
