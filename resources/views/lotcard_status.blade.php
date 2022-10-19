@@ -43,7 +43,6 @@
                                         <th>FG</th>
                                         <th>NG</th>
                                         <th>PIC</th>
-                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,7 +55,6 @@
                                         <td>{{$dt->finish_goods}}</td>
                                         <td>{{$dt->no_goods}}</td>
                                         <td>{{$dt->pic}}</td>
-                                        <td>{{$dt->status}}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

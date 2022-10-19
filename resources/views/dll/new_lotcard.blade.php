@@ -9,7 +9,7 @@
     <script type="text/javascript" src="{{ asset('/js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/axios.min.js') }}"></script>
-    <title>Produksi</title>
+    <title>Digipro</title>
     <style>
     html,
     body {
