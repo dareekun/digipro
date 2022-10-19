@@ -17,7 +17,9 @@
                         @csrf
                         <div class="row mb-3">
                             <div class="col-md-3 offset-7">
-                                <select name="tipe" id="tipe" class="selectpicker w-100" required data-live-search="true" data-size="10">
+                                <select name="tipe" id="tipe" class="selectpicker w-100" required data-live-search="true" 
+                                data-toggle="popover" data-placement="top" data-content="Please Select Model Number"
+                                data-size="10">
                                     <option value="">Model Number</option>
                                     @foreach ($products as $pd)
                                     <option value="{{$pd->id}}">{{$pd->model_no}}</option>
@@ -25,7 +27,7 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <button type="submit" class="btn btn-outline-success w-100">New Lotcard</button>
+                                <button type="submit" onclick="qwerasd()" class="btn btn-outline-success w-100">New Lotcard</button>
                             </div>
                         </div>
                     </form>
@@ -77,5 +79,16 @@ $('#table_records').DataTable({
         ],
         dom: "<'row'<'col-sm-6'i><'col-sm-6'f>>tp",
     });
+    function qwerasd() {
+        if (document.getElementById("tipe").value != "") {
+            document.getElementById("form").submit(); 
+            document.getElementById("tipe").selectedIndex = 0;
+            document.getElementsByClassName("filter-option-inner-inner")[0].innerHTML = "Model Number";
+            return false;
+        } else {
+            console.log(document.getElementById("tipe").value)
+            $('.id').popover('show')
+        }
+    }
 </script>
 @endpush
