@@ -17,7 +17,8 @@
                         @csrf
                         <div class="row mb-3">
                             <div class="col-md-3 offset-7">
-                                <select name="tipe" id="tipe" class="selectpicker w-100" data-live-search="true" data-size="10">
+                                <select name="tipe" id="tipe" class="selectpicker w-100" required data-live-search="true" data-size="10">
+                                    <option value="">Model Number</option>
                                     @foreach ($products as $pd)
                                     <option value="{{$pd->id}}">{{$pd->model_no}}</option>
                                     @endforeach

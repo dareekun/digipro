@@ -123,6 +123,19 @@ class UserController extends Controller
             'production.date_1 as date_1', 'production.date_2 as date_2', 'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.remark as remark',
             'production.fg_1 as finish_goods_1', 'production.fg_2 as finish_goods_2', 'production.ng_1 as no_goods_1', 'production.ng_2 as no_goods_2',
             'quality.judgement as judgement', 'users.name as checker_name', 'product.section as section', 'product.line as line')->get();
+
+                $customPaper = array(0,0,245,500);
+                $random = rand(10, 99);
+                $record = DB::table('production')->where('barcode', $request->id)->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
+                ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
+                'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status', 'product.section as section', 'product.line as line',
+                'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark')
+                ->get();
+                $content = PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
+                Storage::put('inspection_'.$random.$request->id.'.pdf', $content);
+                exec('lp /var/www/digipro/storage/app/inspection_'.$random.$request->id.'.pdf -o fit-to-page');
+                exec('rm /var/www/digipro/storage/app/inspection_'.$random.$request->id.'.pdf');
+                
             return redirect(route('show_inspection', $request->barcode_id));
         } else {
             return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
