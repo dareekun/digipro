@@ -25,7 +25,7 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <button type="submit" class="btn btn-outline-success w-100">New Lotcard</button>
+                                <button type="submit" onclick="reset()" class="btn btn-outline-success w-100">New Lotcard</button>
                             </div>
                         </div>
                     </form>
@@ -77,5 +77,9 @@ $('#table_records').DataTable({
         ],
         dom: "<'row'<'col-sm-6'i><'col-sm-6'f>>tp",
     });
+
+function reset() {
+    document.getElementById("tipe").selectedIndex = 0;
+}
 </script>
 @endpush
