@@ -19,7 +19,7 @@ class Quality extends Migration
             $table->timestamp('date', $precision = 0)->useCurrent();
             $table->boolean('judgement')->default(0);
             $table->string('remark')->nullable();
-            $table->integer('userId');
+            $table->string('userId');
         });
     }
 

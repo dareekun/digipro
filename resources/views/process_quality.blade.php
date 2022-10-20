@@ -47,16 +47,15 @@
                                     </div>
                                 </div>
                                 <div class="row my-2">
-                                    <div class="col-md-3">Section</div>
-                                    <div class="col-md-9"><input type="text" value="{{$dt->section}}" disabled
-                                            class="form-control">
+                                    <div class="col-md-3">Supplier</div>
+                                    <div class="col-md-9">{{$dt->section}} / {{$dt->line}}
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="row my-2">
-                                    <div class="col-md-3">Line</div>
-                                    <div class="col-md-9"><input type="text" value="{{$dt->line}}" disabled
+                                    <div class="col-md-3">Checker</div>
+                                    <div class="col-md-9"><input type="text" required name="checker"
                                             class="form-control"></div>
                                 </div>
                                 <div class="row my-2">

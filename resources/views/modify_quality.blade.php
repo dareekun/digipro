@@ -47,16 +47,15 @@
                                     </div>
                                 </div>
                                 <div class="row my-2">
-                                    <div class="col-md-3">Section</div>
-                                    <div class="col-md-9"><input type="text" value="{{$dt->section}}" disabled
-                                            class="form-control">
+                                    <div class="col-md-3">Supplier</div>
+                                    <div class="col-md-9">{{$dt->section}} / {{$dt->line}}
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="row my-2">
-                                    <div class="col-md-3">Line</div>
-                                    <div class="col-md-9"><input type="text" value="{{$dt->line}}" disabled
+                                    <div class="col-md-3">Checker</div>
+                                    <div class="col-md-9"><input type="text" required value="{{$dt->checker}}" name="checker"
                                             class="form-control"></div>
                                 </div>
                                 <div class="row my-2">
@@ -88,7 +87,7 @@
                                     <div class="col-md-9">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" @if ($dt->judgement == 1) checked @else @endif type="radio" required name="status" id="inlineRadio1"
-                                                value="1">
+                                                value="1"> 
                                             <label class="form-check-label" for="inlineRadio1">OK</label>
                                         </div>
                                         <div class="form-check form-check-inline">

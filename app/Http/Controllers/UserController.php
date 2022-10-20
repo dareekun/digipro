@@ -80,7 +80,7 @@ class UserController extends Controller
         $record = DB::table('production')->where('barcode', $id)->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
         ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
         'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status', 'product.section as section', 'product.line as line',
-        'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark')
+        'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark', 'quality.userId as checker')
         ->get();
         // return $record;
 	    return PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->stream();
@@ -108,8 +108,8 @@ class UserController extends Controller
                 DB::table('quality')->insert([
                     'productionId' => $productionId,
                     'judgement'    => $request->status,
-                    'remark'       => $request->remark != NULL ? : "-",
-                    'userId'       => Auth::user()->id,
+                    'remark'       => $request->remark != NULL ? $request->remark : "-",
+                    'userId'       => $request->checker
                 ]);
                 DB::table('production')->where('barcode', $request->barcode_id)->update([
                     'fg_1'   => $request->lot_size,
@@ -119,18 +119,12 @@ class UserController extends Controller
                 DB::table('product')->where('id', $model_no)->update([
                     'packing' => $request->packing_size
                 ]);
-                    $data = DB::table('production')->where('barcode', $request->barcode_id)->leftJoin('product', 'production.model_no', '=', 'product.id')
-                    ->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
-                    ->select('production.barcode as barcode', 'product.model_no as model_no', 'product.packing as packing', 'production.shift as shift', 'production.lotno as lotno', 'production.parts_data as parts',
-                    'production.date_1 as date_1', 'production.date_2 as date_2', 'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.remark as remark',
-                    'production.fg_1 as finish_goods_1', 'production.fg_2 as finish_goods_2', 'production.ng_1 as no_goods_1', 'production.ng_2 as no_goods_2',
-                    'quality.judgement as judgement', 'users.name as checker_name', 'product.section as section', 'product.line as line')->get();
                     $customPaper = array(0,0,245,500);
                     $random = rand(10, 99);
                     $record = DB::table('production')->where('barcode', $request->barcode_id)->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
                     ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
                     'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status', 'product.section as section', 'product.line as line',
-                    'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark')
+                    'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark', 'quality.userId as checker')
                     ->get();
                     $content = PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
                     Storage::put('inspection_'.$random.$request->barcode_id.'.pdf', $content);
@@ -152,18 +146,12 @@ class UserController extends Controller
             if (DB::table('quality')->where('productionId', $productionId)->doesntExist()) {
                 return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 404, Data Not Found']);
             } else {
-                $data = DB::table('production')->where('barcode', $id)->leftJoin('product', 'production.model_no', '=', 'product.id')
-                ->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
-                ->select('production.barcode as barcode', 'product.model_no as model_no', 'product.packing as packing', 'production.shift as shift', 'production.lotno as lotno', 'production.parts_data as parts',
-                'production.date_1 as date_1', 'production.date_2 as date_2', 'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.remark as remark',
-                'production.fg_1 as finish_goods_1', 'production.fg_2 as finish_goods_2', 'production.ng_1 as no_goods_1', 'production.ng_2 as no_goods_2',
-                'quality.judgement as judgement', 'users.name as checker_name', 'product.section as section', 'product.line as line')->get();
                 $customPaper = array(0,0,245,500);
                 $random = rand(10, 99);
                 $record = DB::table('production')->where('barcode', $id)->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
                 ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
                 'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status', 'product.section as section', 'product.line as line',
-                'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark')
+                'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark', 'quality.userId as checker')
                 ->get();
                 $content = PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
                 Storage::put('inspection_'.$random.$id.'.pdf', $content);
@@ -189,8 +177,8 @@ class UserController extends Controller
             $model_no     = DB::table('production')->where('barcode', $request->barcode_id)->value('model_no');
             DB::table('quality')->where('productionId', $productionId)->update([
                 'judgement'    => $request->status,
-                'remark'       => $request->remark != NULL ? : "-",
-                'userId'       => Auth::user()->id,
+                'remark'       => $request->remark != NULL ? $request->remark : "-",
+                'userId'       => $request->checker
             ]);
             DB::table('production')->where('barcode', $request->barcode_id)->update([
                 'fg_1'   => $request->lot_size,
@@ -200,19 +188,12 @@ class UserController extends Controller
             DB::table('product')->where('id', $model_no)->update([
                 'packing' => $request->packing_size
             ]);
-            $data = DB::table('production')->where('barcode', $request->barcode_id)->leftJoin('product', 'production.model_no', '=', 'product.id')
-            ->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
-            ->select('production.barcode as barcode', 'product.model_no as model_no', 'product.packing as packing', 'production.shift as shift', 'production.lotno as lotno', 'production.parts_data as parts',
-            'production.date_1 as date_1', 'production.date_2 as date_2', 'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.remark as remark',
-            'production.fg_1 as finish_goods_1', 'production.fg_2 as finish_goods_2', 'production.ng_1 as no_goods_1', 'production.ng_2 as no_goods_2',
-            'quality.judgement as judgement', 'users.name as checker_name', 'product.section as section', 'product.line as line')->get();
-
                 $customPaper = array(0,0,245,500);
                 $random = rand(10, 99);
                 $record = DB::table('production')->where('barcode', $request->barcode_id)->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
                 ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
                 'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status', 'product.section as section', 'product.line as line',
-                'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark')
+                'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark', 'quality.userId as checker')
                 ->get();
                 $content = PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
                 Storage::put('inspection_'.$random.$request->barcode_id.'.pdf', $content);

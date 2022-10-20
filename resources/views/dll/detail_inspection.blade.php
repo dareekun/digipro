@@ -134,7 +134,7 @@
                             <td><br><br><br></td>
                         </tr>
                         <tr>
-                            <td><br></td>
+                            <td>{{$dt->checker}}</td>
                         </tr>
                     </table>
                 </center>

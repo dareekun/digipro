@@ -107,7 +107,7 @@ class MobileController extends Controller
                 DB::table('quality')->insert([
                     'productionId' => $productionId,
                     'judgement'    => $request->judgeme,
-                    'remark'       => $request->remark != NULL ? : "-",
+                    'remark'       => $request->remark != NULL ? $request->remark : "-",
                     'userId'       => $userId,
                 ]);
                 DB::table('production')->where('barcode', $request->id)->update([
