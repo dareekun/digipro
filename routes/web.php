@@ -32,6 +32,7 @@ Route::get('/lotcard_status', [HomeController::class, 'lotcard_status'])->name('
 Route::get('/production_data', [HomeController::class, 'production_data'])->name('production_data');
 Route::get('/in_production', [HomeController::class, 'in_production'])->name('in_production');
 Route::get('/finish_data', [HomeController::class, 'finish_data'])->name('finish_data');
+Route::get('/later_input', [HomeController::class, 'later_input'])->name('later_input');
 Route::get('/transaction_data', [HomeController::class, 'transaction_data'])->name('transaction_data');
 Route::get('/transfers_records', [HomeController::class, 'transfers_records'])->name('transfers_records');
 

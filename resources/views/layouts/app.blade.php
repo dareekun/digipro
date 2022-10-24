@@ -67,6 +67,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{{route('in_production')}}">In Production</a>
                                 <a class="dropdown-item" href="{{route('finish_data')}}">Finish Data</a>
+                                <a class="dropdown-item" href="{{route('later_input')}}">Later Input</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -93,6 +94,9 @@
                         </li>
                         <li class="nav-item active">
                                 <a class="nav-link" href="{{route('finish_data')}}">Finish Data</a>
+                        </li>
+                        <li class="nav-item active">
+                                <a class="nav-link" href="{{route('later_input')}}">Later Input</a>
                         </li>
                         @elseif (Auth::user()->department == 5)
                         <li class="nav-item active">

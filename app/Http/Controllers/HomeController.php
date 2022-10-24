@@ -85,6 +85,12 @@ class HomeController extends Controller
         'quality.judgement as judgement', 'quality.userId as checker')->get();
         return view('finish_data', ['data' => $record]);
     }
+
+    public function later_input() 
+    {    
+        return view('later_inspection');
+    }
+
     public function inspection_detail($id) {
 
     }

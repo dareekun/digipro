@@ -64,8 +64,18 @@
                     </tr>
                     <tr>
                         <td>{{$dt->model_no}} </td>
-                        <td>{{$dt->packing}}</td>
-                        <td>{{$dt->fg_2}}</td>
+                        <td>
+                            @if ($dt->packing == 0)
+                            @else
+                            {{$dt->packing}}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($dt->fg_2 == 0)
+                            @else
+                            {{$dt->fg_2}}
+                            @endif
+                        </td>
                     </tr>
                 </table>
             </td>
@@ -86,7 +96,12 @@
                     </tr>
                     <tr>
                         <td>Lot Size</td>
-                        <td align="right">{{$dt->fg_1}}</td>
+                        <td align="right">
+                        @if ($dt->fg_1 == 0)
+                        @else
+                        {{$dt->fg_1}}
+                        @endif
+                    </td>
                     </tr>
                     <tr>
                         <td>Lot Number</td>
@@ -109,14 +124,17 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2"><p>{{$dt->remark}}</p>
+                        <td colspan="2">
+                            <p>{{$dt->remark}}</p>
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td style="width:40%"><center><b>{{$dt->barcode}}</b></center></td>
+            <td style="width:40%">
+                <center><b>{{$dt->barcode}}</b></center>
+            </td>
         </tr>
         <tr>
             <td style="width:40%">
@@ -143,4 +161,5 @@
     </table>
     @endforeach
 </body>
+
 </html>

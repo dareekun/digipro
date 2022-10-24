@@ -60,17 +60,17 @@
                                 </div>
                                 <div class="row my-2">
                                     <div class="col-md-3">@ Box</div>
-                                    <div class="col-md-9"><input type="number" required value="{{$dt->packing}}"
+                                    <div class="col-md-9"><input type="number" value="{{$dt->packing}}"
                                             name="packing_size" min="0" class="form-control"></div>
                                 </div>
                                 <div class="row my-2">
                                     <div class="col-md-3">Total Box</div>
-                                    <div class="col-md-9"><input type="number" required value="{{$dt->total_box}}"
+                                    <div class="col-md-9"><input type="number" value="{{$dt->total_box}}"
                                             name="total_box" min="0" class="form-control"></div>
                                 </div>
                                 <div class="row my-2">
                                     <div class="col-md-3">Lot Size</div>
-                                    <div class="col-md-9"><input type="number" required value="{{$dt->lot_size}}"
+                                    <div class="col-md-9"><input type="number" value="{{$dt->lot_size}}"
                                             name="lot_size" min="0" class="form-control"></div>
                                 </div>
                             </div>
