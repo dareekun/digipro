@@ -73,7 +73,7 @@
         <tr>
             <td colspan="3" align="center">
                 <p>Status Product</p>
-                <h1>{{strtoupper($dt->judgement == 1 ? "OK" : ($dt->judgement == 2 ? "NG" : ($dt->judgement == 3 ? "HOLD" : "STATUS")))}}
+                <h1>{{strtoupper($dt->judgement == 1 ? "GOOD" : ($dt->judgement == 2 ? "NG" : ($dt->judgement == 3 ? "HOLD" : "STATUS")))}}
                 </h1>
             </td>
         </tr>

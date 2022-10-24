@@ -88,7 +88,7 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" @if ($dt->judgement == 1) checked @else @endif type="radio" required name="status" id="inlineRadio1"
                                                 value="1"> 
-                                            <label class="form-check-label" for="inlineRadio1">OK</label>
+                                            <label class="form-check-label" for="inlineRadio1">GOOD</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" @if ($dt->judgement == 2) checked @else @endif type="radio" required name="status" id="inlineRadio2"

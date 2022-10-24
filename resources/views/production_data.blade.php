@@ -42,7 +42,7 @@
                                     <td>{{$dt->pic}}</td>
                                     <td>
                                     @if ($dt->judgement == 1) 
-                                    <span class="text-success">OK </span> <i class="fa fa-check text-success" aria-hidden="false"></i>
+                                    <span class="text-success">GOOD </span> <i class="fa fa-check text-success" aria-hidden="false"></i>
                                     @elseif ($dt->judgement == 2) 
                                     <span class="text-danger">NG </span> <i class="fa fa-times text-danger" aria-hidden="false"></i>
                                     @else 
