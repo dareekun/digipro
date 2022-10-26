@@ -44,7 +44,7 @@ class HomeController extends Controller
     {   
         $record = DB::table('production')->leftJoin('product', 'product.id', '=', 'production.model_no')->leftJoin('quality', 'production.id', '=', 'quality.productionId')
         ->select('production.lotno as lotno', 'production.shift as shift', 'product.model_no as model_no', 'production.fg_1 as finish_goods', 'production.ng_1 as not_goods', 'production.name_1 as pic', 'production.status as status',
-        'quality.judgement as judgement')->orderBy('lotno', 'desc')->get();
+        'quality.judgement as judgement')->where('production.status', '<', 99)->get();
         return view('dashboard', ['data' => $record]);
     }
 
@@ -65,7 +65,7 @@ class HomeController extends Controller
     {
         $record = DB::table('production')->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'production.id', '=', 'quality.productionId')
         ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift', 'product.model_no as model_no', 'production.fg_1 as finish_goods',
-        'production.ng_1 as not_goods', 'production.name_1 as pic', 'quality.judgement as judgement')->get();
+        'production.status as status', 'production.ng_1 as not_goods', 'production.name_1 as pic', 'quality.judgement as judgement')->where('production.status', '<', 99)->get();
         return view('production_data', ['data' => $record]);
     }
     public function in_production() 
@@ -73,7 +73,7 @@ class HomeController extends Controller
         $record = DB::table('production')->leftJoin('quality', 'production.id', '=', 'quality.productionId')
         ->leftJoin('users', 'quality.userId', '=', 'users.id')->leftJoin('product', 'production.model_no', '=', 'product.id')->where('production.status', 0)
         ->select('production.barcode as id', 'production.lotno as lotno', 'production.shift as shift', 'product.model_no as model_no', 'production.fg_1 as finish_goods',
-        'production.name_1 as pic', 'product.line as line')->get();
+        'production.name_1 as pic', 'product.line as line')->where('production.status', '<', 99)->get();
         return view('in_production', ['data' => $record]);
     }
     public function finish_data() 

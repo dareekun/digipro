@@ -30,23 +30,24 @@
                             <table id="table_records" class="table table-striped table-bordered w-100">
                             <thead>
                                 <tr>
+                                    <th>Barcode</th>
                                     <th>Lot Number</th>
                                     <th>Shift</th>
                                     <th>Model Product</th>
                                     <th>FG</th>
-                                    <th>NG</th>
                                     <th>PIC</th>
                                     <th>Status</th>
+                                    <th>Option</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data as $dt)
                                 <tr>
+                                    <td>{{$dt->barcode}}</td>
                                     <td>{{date('Ymd', strtotime($dt->lotno))}}</td>
                                     <td>{{$dt->shift}}</td>
                                     <td>{{$dt->model_no}}</td>
                                     <td>{{$dt->finish_goods}}</td>
-                                    <td>{{$dt->not_goods}}</td>
                                     <td>{{$dt->pic}}</td>
                                     <td>
                                         @if ($dt->status == 0)
@@ -64,7 +65,18 @@
                                         @elseif ($dt->status == 3)
                                         Transfered
                                         @else
-                                        Closed
+                                                <span>Closed </span> <i class="fa fa-times" aria-hidden="false"></i>
+                                        @endif
+                                    </td>
+                                    <td>
+                                    @if ($dt->status == 0)
+                                    <a class="btn btn-sm btn-outline-primary" href="{{route('closed_data', $dt->id)}}"><i class="fa fa-window-close-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-sm btn-outline-success" href="{{route('print_lotcard', $dt->id)}}"><i class="fa fa-print" aria-hidden="true"></i></a>
+                                    <a class="btn btn-sm btn-outline-danger" href="{{route('delete_data', $dt->id)}}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                        @else
+                                    <a disable class="btn btn-sm btn-outline-primary disabled" href="{{route('closed_data', $dt->id)}}"><i class="fa fa-window-close-o" aria-hidden="true"></i></a>
+                                    <a disable class="btn btn-sm btn-outline-success disabled" href="{{route('print_lotcard', $dt->id)}}"><i class="fa fa-print" aria-hidden="true"></i></a>
+                                    <a disable class="btn btn-sm btn-outline-danger disabled" href="{{route('delete_data', $dt->id)}}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                                         @endif
                                     </td>
                                 </tr>
@@ -85,9 +97,6 @@
 <script>
 $(document).ready(function() {
     var table = $('#table_records').DataTable({
-        order: [
-            [0, 'desc']
-        ],
         dom: "<'row'<'col-sm-6'i><'col-sm-6'f>>tp",
     });
 });

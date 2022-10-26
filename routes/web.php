@@ -90,6 +90,11 @@ Route::get('/reroute_list', [DeveloperController::class, 'route_list'])->middlew
 Route::get('/printer_control', [DeveloperController::class, 'printer_control'])->middleware('can:isDeveloper')->name('printer_control');
 
 Route::get('/printer_control', [DeveloperController::class, 'printer_control'])->middleware('can:isDeveloper')->name('printer_control');
+Route::get('/print_lotcard/{id}', [DeveloperController::class, 'print_lotcard'])->middleware('can:isDeveloper')->name('print_lotcard');
+
+Route::get('/data_control', [DeveloperController::class, 'data_control'])->middleware('can:isDeveloper')->name('data_control');
+Route::get('/closed_data/{id}', [DeveloperController::class, 'closed_data'])->middleware('can:isDeveloper')->name('closed_data');
+Route::get('/delete_data/{id}', [DeveloperController::class, 'delete_data'])->middleware('can:isDeveloper')->name('delete_data');
 
 Route::post('/add_printer', [DeveloperController::class, 'add_printer'])->middleware('can:isDeveloper')->name('add_printer');
 Route::post('/edt_printer', [DeveloperController::class, 'edt_printer'])->middleware('can:isDeveloper')->name('edt_printer');

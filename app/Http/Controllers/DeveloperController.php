@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Validator;
+use Illuminate\Support\Facades\Storage;
 
 Use Redirect;
 use Auth;
+use PDF;
 
 class DeveloperController extends Controller
 {
@@ -43,42 +45,45 @@ class DeveloperController extends Controller
         return view('control.printer_control', ['printer' => $record]);
     }
 
-    public function add_printer(Request $request) {
-        if (DB::table('printer')->where('username', $request->nik_add)->exists()) {
-            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'User NIK Already Exists']);
-        } else {
-            DB::table('printer')->insert([
-                'name' => $request->name_add,
-                'username' => $request->nik_add,
-                'department' => $request->department_add,
-                'role' => $request->role_add,
-                'email' => $request->email_add,
-                'password' => bcrypt($request->password_add)]);
-            return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Users Successfully Added']);
-        } 
-    }
-    
-    public function edt_printer(Request $request) {
-        if (DB::table('printer')->where('device_name', $request->name_edit)->exists()) {
-            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error, Duplicate Device Name']);
-        } else {
-            DB::table('printer')->insert([
-                'name' => $request->name_add,
-                'username' => $request->nik_add,
-                'department' => $request->department_add,
-                'role' => $request->role_add,
-                'email' => $request->email_add,
-                'password' => bcrypt($request->password_add)]);
-            return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Users Successfully Added']);
-        } 
+    public function data_control() {
+        $record = DB::table('production')->leftJoin('product', 'product.id', '=', 'production.model_no')->leftJoin('quality', 'production.id', '=', 'quality.productionId')
+        ->select('production.id as id', 'production.barcode as barcode', 'production.lotno as lotno', 'production.shift as shift', 'product.model_no as model_no', 
+        'production.fg_1 as finish_goods', 'production.name_1 as pic', 'production.status as status', 'quality.judgement as judgement')->get();
+        return view('control.data_control', ['data' => $record]);
     }
 
-    public function del_printer(Request $request) {
-        if (DB::table('printer')->where('id', $request->uid_delete)->exists()) {
-            DB::table('printer')->where('id', $request->uid_delete)->delete();
-            return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Users Successfully Added']);
+    public function closed_data($id) {
+        if (DB::table('quality')->where('productionId', $id)->exists()) {
+            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'User NIK Already Exists']);
         } else {
-            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error, Opps Something Was Wrong']);
-        } 
+            DB::table('production')->where('id', $id)->update([
+                'status' => 99
+            ]);
+            return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Data Successfully Closed']);
+        }
+    }
+
+    public function delete_data($id) {
+        if (DB::table('quality')->where('productionId', $id)->exists()) {
+            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Data Already Created On Inspection']);
+        } else {
+            DB::table('production')->where('id', $id)->delete();
+            return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Data Successfully Delete']);
+        }
+    }
+
+    public function print_lotcard($id) {
+        $customPaper = array(0,0,245,500);
+        $random = rand(10, 99);
+        $record = DB::table('production')->where('barcode', $id)->leftJoin('product', 'production.model_no', '=', 'product.id')
+        ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
+        'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.ng_1 as ng_1', 'production.ng_2 as ng_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status',
+        'production.name_1 as name_1', 'production.name_2 as name_2')
+        ->get();
+        $content = PDF::loadview('dll.detail_lotcard', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
+        Storage::put('lotcard_'.$random.$id.'.pdf', $content);
+        exec('lp /var/www/digipro/storage/app/lotcard_'.$random.$id.'.pdf -o fit-to-page -d'.Auth::user()->printer);
+        exec('rm /var/www/digipro/storage/app/lot_card'.$random.$id.'.pdf');
+        return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Command Successfully Send']);
     }
 }

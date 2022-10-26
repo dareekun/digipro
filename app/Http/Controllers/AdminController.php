@@ -25,10 +25,20 @@ class AdminController extends Controller
     
 
     public function users_control () {
-        $list = exec("lpstat -a | cut -f1 -d ' '");
+        $output=null;
+        $retval=null;
+        exec("lpstat -a | cut -f1 -d ' '", $output, $retval);
+        $list = $output;
+        if (Auth::user()->department == 1) {
+            $data = DB::table('users')->leftJoin('department_list', 'users.department', '=', 'department_list.id')
+            ->select('users.id as id', 'users.name as name', 'users.username as username', 'department_list.department as department', 
+            'users.role as role', 'users.email as email', 'users.printer as printer')->get();
+        } else {
         $data = DB::table('users')->leftJoin('department_list', 'users.department', '=', 'department_list.id')
-        ->select('users.id as id', 'users.name as name', 'users.username as username', 'department_list.department as department', 'users.role as role', 'users.email as email')
+        ->select('users.id as id', 'users.name as name', 'users.username as username', 'department_list.department as department', 
+        'users.role as role', 'users.email as email', 'users.printer as printer')
         ->where('users.department', '<>', 1)->get();
+        }
         return view('control.users_control', ['users' => $data, 'printer' => $list]);
     }
     public function add_users(Request $request) {
@@ -41,6 +51,7 @@ class AdminController extends Controller
                 'department' => $request->department_add,
                 'role' => $request->role_add,
                 'email' => $request->email_add,
+                'printer' => $request->printer_add,
                 'password' => bcrypt($request->password_add)]);
             return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Users Successfully Added']);
         } 
@@ -58,6 +69,7 @@ class AdminController extends Controller
                 'department' => $request->department_edit,
                 'role' => $request->role_edit,
                 'email' => $request->email_edit,
+                'printer' => $request->printer_edit,
             ]);
             return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Data Users Successfully Update']);
         }

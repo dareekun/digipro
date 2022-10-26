@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-12">
                             Users Control
                         </div>
                     </div>
@@ -43,6 +43,7 @@
                                         <th>Department</th>
                                         <th>Role</th>
                                         <th>Email</th>
+                                        <th>Printer</th>
                                         <th>Option</th>
                                     </tr>
                                 </thead>
@@ -54,6 +55,7 @@
                                         <td>{{$dt->department}}</td>
                                         <td>{{$dt->role}}</td>
                                         <td>{{$dt->email}}</td>
+                                        <td>{{$dt->printer}}</td>
                                         <td>
                                             <button class="btn btn-sm btn-outline-primary"
                                                 onclick="throw_edit({{$dt->id}})"><i class="fa fa-pencil-square-o"
@@ -106,6 +108,9 @@
                                 <div class="col-md-7">
                                     <select class="form-control" required name="department_add">
                                         <option>Select Department</option>
+                                        @if ( Auth::user()->department == 1)
+                                        <option value="1">Developer</option>
+                                        @endif
                                         <option value="3">Production</option>
                                         <option value="4">Quality Control</option>
                                         <option value="5">Warehouse</option>
@@ -117,6 +122,9 @@
                                 <div class="col-md-7">
                                     <select class="form-control" required name="role_add">
                                         <option value="">Select Role</option>
+                                        @if ( Auth::user()->department == 1)
+                                        <option value="developer">Developer</option>
+                                        @endif
                                         <option value="admin">Admin</option>
                                         <option value="manager">Manager</option>
                                         <option value="user">User</option>
@@ -127,9 +135,9 @@
                                 <div class="col-md-7">
                                     <select class="form-control" required name="printer_add">
                                         <option value="">Select Printer Device</option>
-                                        @foreach ($printer as $prt)
-                                        <option value="{{$prt->id}}">{{$prt->device_name}}</option>
-                                        @endforeach
+                                        @for ($i = 0; $i < count($printer); $i++)
+                                        <option value="{{$printer[$i]}}">{{$printer[$i]}}</option>
+                                        @endfor
                                     </select>
                                     </div>
                             </div>
@@ -170,6 +178,9 @@
                                 <div class="col-md-5">Department</div>
                                 <div class="col-md-7">
                                     <select class="form-control" id="department_edit" required name="department_edit">
+                                        @if ( Auth::user()->department == 1)
+                                        <option value="1">Developer</option>
+                                        @endif
                                         <option value="3">Production</option>
                                         <option value="4">Quality Control</option>
                                         <option value="5">Warehouse</option>
@@ -180,6 +191,9 @@
                                 <div class="col-md-5">Role</div>
                                 <div class="col-md-7">
                                     <select class="form-control" id="role_edit" required name="role_edit">
+                                        @if ( Auth::user()->department == 1)
+                                        <option value="developer">Developer</option>
+                                        @endif
                                         <option value="admin">Admin</option>
                                         <option value="manager">Manager</option>
                                         <option value="user">User</option>
@@ -189,10 +203,10 @@
                             <div class="row mt-1">
                                 <div class="col-md-5">Printer</div>
                                 <div class="col-md-7">
-                                    <select class="form-control" name="printer_edit">
-                                        @foreach ($printer as $i => $prt)
-                                        <option value="{{$prt[$i]}}">{{$prt[$i]}}</option>
-                                        @endforeach
+                                    <select class="form-control" name="printer_edit" id="printer_edit">
+                                        @for ($i = 0; $i < count($printer); $i++)
+                                        <option value="{{$printer[$i]}}">{{$printer[$i]}}</option>
+                                        @endfor
                                     </select>
                                     </div>
                             </div>
@@ -326,6 +340,7 @@ function throw_edit(uid) {
             document.getElementById("uid_edit").value = uid;
             document.getElementById("name_edit").value = response.data[0].name;
             document.getElementById("department_edit").value = response.data[0].department;
+            document.getElementById("printer_edit").value = response.data[0].printer;
             document.getElementById("role_edit").value = response.data[0].role;
             document.getElementById("email_edit").value = response.data[0].email;
         })

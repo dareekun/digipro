@@ -41,13 +41,24 @@
                                     <td>{{$dt->not_goods}}</td>
                                     <td>{{$dt->pic}}</td>
                                     <td>
-                                    @if ($dt->judgement == 1) 
-                                    <span class="text-success">GOOD </span> <i class="fa fa-check text-success" aria-hidden="false"></i>
-                                    @elseif ($dt->judgement == 2) 
-                                    <span class="text-danger">NG </span> <i class="fa fa-times text-danger" aria-hidden="false"></i>
-                                    @else 
-                                    <span class="text-warning">HOLD </span> <i class="fa fa-exclamation text-warning" aria-hidden="false"></i>
-                                    @endif</td>
+                                        @if ($dt->status == 0)
+                                        On Production
+                                        @elseif ($dt->status == 1)
+                                            @if ($dt->judgement == 1) 
+                                                <span class="text-success">GOOD </span> <i class="fa fa-check text-success" aria-hidden="false"></i>
+                                            @elseif ($dt->judgement == 2) 
+                                                <span class="text-danger">NG </span> <i class="fa fa-times text-danger" aria-hidden="false"></i>
+                                            @else 
+                                                <span class="text-warning">HOLD</span> <i class="fa fa-exclamation text-warning" aria-hidden="false"></i>
+                                            @endif
+                                        @elseif ($dt->status == 2)
+                                        On Waiting
+                                        @elseif ($dt->status == 3)
+                                        Transfered
+                                        @else
+                                        Closed
+                                        @endif
+                                </td>
                                 </tr>
                                 @endforeach
                             </tbody>

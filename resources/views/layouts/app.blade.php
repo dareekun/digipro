@@ -81,6 +81,15 @@
                                 <a class="dropdown-item" href="{{route('transfers_records')}}">Transfers Records</a>
                             </div>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Developer
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{route('data_control')}}">Data Control</a>
+                            </div>
+                        </li>
                         @elseif (Auth::user()->department == 3)
                         <li class="nav-item active">
                                 <a class="nav-link" href="{{route('lotcard_status')}}">Lotcard Status</a>
@@ -119,7 +128,6 @@
                                 @can('isDeveloper')
                                 <a href="{{route('route_list')}}" class="dropdown-item">Route List</a>
                                 <a href="{{route('department_control')}}" class="dropdown-item">Department Control</a>
-                                <a href="{{route('printer_control')}}" class="dropdown-item">Printer Control</a>
                                 @endcan
                                 @can('isAdmin')
                                 <a href="{{route('users_control')}}" class="dropdown-item">Users Control</a>

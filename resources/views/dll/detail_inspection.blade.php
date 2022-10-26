@@ -25,6 +25,7 @@
         width: 100%;
         padding-left: 2pt;
         padding-right: 2pt;
+        border: 2px solid black;
     }
 
     #table2 {
@@ -47,6 +48,7 @@
 </head>
 
 <body>
+    <br>
     @foreach ($data as $dt)
     <table id="table1">
         <tr>
@@ -81,10 +83,11 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3" align="center">
-                <p>Status Product</p>
-                <h1>{{strtoupper($dt->judgement == 1 ? "GOOD" : ($dt->judgement == 2 ? "NG" : ($dt->judgement == 3 ? "HOLD" : "STATUS")))}}
-                </h1>
+            <td colspan="3" align="center">Status Product</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="center" style="border: 3px solid black;">
+                <b><h1>{{strtoupper($dt->judgement == 1 ? "GOOD" : ($dt->judgement == 2 ? "NG" : ($dt->judgement == 3 ? "HOLD" : "STATUS")))}}</h1></b>
             </td>
         </tr>
         <tr>

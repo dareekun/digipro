@@ -27,7 +27,7 @@ class UserController extends Controller
     }
 
     public function add_lotcard(Request $request) {
-        $lotid = strtoupper(base_convert(date("ymdHms"),10,32));
+        $lotid = strtoupper(base_convert(rand(10, 99).date("ymdHms"),10,32));
         $parts = $request->parts;
         $lotparts = $request->lot_parts;
         if (isset($request->parts)) {
@@ -58,6 +58,17 @@ class UserController extends Controller
                 'Name_1' => $request->name1,
                 'name_2' => $request->name2,
             ]);
+            $customPaper = array(0,0,245,500);
+            $random = rand(10, 99);
+            $record = DB::table('production')->where('barcode', $lotid)->leftJoin('product', 'production.model_no', '=', 'product.id')
+            ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
+            'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.ng_1 as ng_1', 'production.ng_2 as ng_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status',
+            'production.name_1 as name_1', 'production.name_2 as name_2')
+            ->get();
+            $content = PDF::loadview('dll.detail_lotcard', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
+            Storage::put('lotcard_'.$random.$lotid.'.pdf', $content);
+            exec('lp /var/www/digipro/storage/app/lotcard_'.$random.$lotid.'.pdf -o fit-to-page -d'.Auth::user()->printer);
+            exec('rm /var/www/digipro/storage/app/lotcard_'.$random.$lotid.'.pdf');
             return redirect(route('show_lotcard', $lotid));
         } else {
             return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error Input Data, please check your data']);
@@ -71,7 +82,6 @@ class UserController extends Controller
         'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.ng_1 as ng_1', 'production.ng_2 as ng_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status',
         'production.name_1 as name_1', 'production.name_2 as name_2')
         ->get();
-        // return $record;
 	    return PDF::loadview('dll.detail_lotcard', ['data' => $record])->setPaper($customPaper)->stream();
     }
 
@@ -84,6 +94,28 @@ class UserController extends Controller
         ->get();
         // return $record;
 	    return PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->stream();
+    }
+
+    public function print_inspection($id) {
+        if (Auth::user()->department == 4 || Auth::user()->department == 1) {
+            $productionId = DB::table('production')->where('barcode', $id)->value('id');
+            if (DB::table('quality')->where('productionId', $productionId)->doesntExist()) {
+                return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 404, Data Not Found']);
+            } else {
+                $customPaper = array(0,0,245,500);
+                $random = rand(10, 99);
+                $record = DB::table('production')->where('barcode', $id)->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
+                ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
+                'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status', 'product.section as section', 'product.line as line',
+                'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark', 'quality.userId as checker')
+                ->get();
+                $content = PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
+                Storage::put('inspection_'.$random.$id.'.pdf', $content);
+                exec('lp /var/www/digipro/storage/app/inspection_'.$random.$id.'.pdf -o fit-to-page -d'.Auth::user()->printer);
+                exec('rm /var/www/digipro/storage/app/inspection_'.$random.$id.'.pdf');
+                return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Print command successfully sent']);
+            }
+        }
     }
 
     public function create_inspection(Request $request) {
@@ -114,7 +146,7 @@ class UserController extends Controller
                     ->get();
                     $content = PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
                     Storage::put('inspection_'.$random.$request->barcode_id.'.pdf', $content);
-                    exec('lp /var/www/digipro/storage/app/inspection_'.$random.$request->barcode_id.'.pdf -o fit-to-page');
+                    exec('lp /var/www/digipro/storage/app/inspection_'.$random.$request->barcode_id.'.pdf -o fit-to-page -d'.Auth::user()->printer);
                     exec('rm /var/www/digipro/storage/app/inspection_'.$random.$request->barcode_id.'.pdf');
     
                 return redirect(route('show_inspection', $request->barcode_id));
@@ -123,28 +155,6 @@ class UserController extends Controller
             }
         } else {
             return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
-        }
-    }
-
-    public function print_inspection($id) {
-        if (Auth::user()->department == 4 || Auth::user()->department == 1) {
-            $productionId = DB::table('production')->where('barcode', $id)->value('id');
-            if (DB::table('quality')->where('productionId', $productionId)->doesntExist()) {
-                return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 404, Data Not Found']);
-            } else {
-                $customPaper = array(0,0,245,500);
-                $random = rand(10, 99);
-                $record = DB::table('production')->where('barcode', $id)->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
-                ->select('production.id as id', 'production.barcode as barcode', 'product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'production.parts_data as parts',
-                'production.fg_1 as fg_1', 'production.fg_2 as fg_2', 'production.date_1 as date_1', 'production.date_2 as date_2', 'production.status as status', 'product.section as section', 'product.line as line',
-                'production.name_1 as name_1', 'production.name_2 as name_2', 'quality.judgement as judgement', 'product.packing as packing', 'quality.date as date', 'quality.remark as remark', 'quality.userId as checker')
-                ->get();
-                $content = PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
-                Storage::put('inspection_'.$random.$id.'.pdf', $content);
-                exec('lp /var/www/digipro/storage/app/inspection_'.$random.$id.'.pdf -o fit-to-page');
-                exec('rm /var/www/digipro/storage/app/inspection_'.$random.$id.'.pdf');
-                return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Print command successfully sent']);
-            }
         }
     }
 
@@ -186,7 +196,7 @@ class UserController extends Controller
                 ->get();
                 $content = PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->download()->getOriginalContent();
                 Storage::put('inspection_'.$random.$request->barcode_id.'.pdf', $content);
-                exec('lp /var/www/digipro/storage/app/inspection_'.$random.$request->barcode_id.'.pdf -o fit-to-page');
+                exec('lp /var/www/digipro/storage/app/inspection_'.$random.$request->barcode_id.'.pdf -o fit-to-page -d'.Auth::user()->printer);
                 exec('rm /var/www/digipro/storage/app/inspection_'.$random.$request->barcode_id.'.pdf');
 
             return redirect(route('show_inspection', $request->barcode_id));
