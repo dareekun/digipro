@@ -86,22 +86,8 @@ class UserController extends Controller
 	    return PDF::loadview('dll.detail_inspection', ['data' => $record])->setPaper($customPaper)->stream();
     }
 
-    public static function menu(){
-        $menu = DB::table('produk')->select('bagian')->distinct()->orderBy('bagian')->pluck('bagian');
-        return $menu;
-    }
-
     public function create_inspection(Request $request) {
         if (Auth::user()->department == 4 || Auth::user()->department == 1) {
-            // if ($request->packing_size == 0) {
-            //     return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Packing Size (@ BOX) Must Be Bigger Than 0']);
-            // }
-            // if ($request->total_box == 0) {
-            //     return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Total Box Must Be Bigger Than 0']);
-            // }
-            // if ($request->lot_size == 0) {
-            //     return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Lot Size Must Be Bigger Than 0']);
-            // }
             $productionId = DB::table('production')->where('barcode', $request->barcode_id)->value('id');
             $model_no     = DB::table('production')->where('barcode', $request->barcode_id)->value('model_no');
             if (DB::table('quality')->where('productionId', $productionId)->doesntExist()) {
@@ -181,9 +167,12 @@ class UserController extends Controller
                 'userId'       => $request->checker
             ]);
             DB::table('production')->where('barcode', $request->barcode_id)->update([
-                'fg_1'   => $request->lot_size,
-                'fg_2'   => $request->total_box,
-                'status' => 1
+                'model_no' => $request->model_no,
+                'lotno'    => $request->lotno,
+                'shift'    => $request->shift,
+                'fg_1'     => $request->lot_size,
+                'fg_2'     => $request->total_box,
+                'status'   => 1
             ]);
             DB::table('product')->where('id', $model_no)->update([
                 'packing' => $request->packing_size
@@ -244,7 +233,6 @@ class UserController extends Controller
                 ->where('transaction.referTransfers', $id)->get();
             }
             return PDF::loadview('dll.request_and_transfers', ['data' => $record, 'tanggal' => $transl, 'i' => 1])->setPaper('a4')->stream();
-            // return view('dll.request_and_transfers', ['data' => $record, 'tanggal' => $transl, 'i' => 1]);
         } else {
             return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
         }

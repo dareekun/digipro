@@ -55,7 +55,8 @@
                                             <option value="1">Shift 1</option>
                                             <option value="2">Shift 2</option>
                                             <option value="3">Shift 3</option>
-                                        </select></td>
+                                        </select>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><br></td>

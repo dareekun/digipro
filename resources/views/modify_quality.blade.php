@@ -32,18 +32,30 @@
                             <div class="col-md-6">
                                 <div class="row my-2">
                                     <div class="col-md-3">Product Name</div>
-                                    <div class="col-md-9"><input type="text" disabled class="form-control" value="{{$dt->model_no}}"></div>
+                                    <div class="col-md-9">
+                                        <select name="model_no" id="model_no" class="selectpicker w-100" required
+                                            data-live-search="true" data-toggle="popover" data-placement="top"
+                                            data-content="Please Select Model Number" data-size="10">
+                                            @foreach ($products as $pd)
+                                            <option @if ($dt->model_no == $pd->id) selected @else @endif value="{{$pd->id}}">{{$pd->model_no}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="row my-2">
                                     <div class="col-md-3">Lot Number</div>
-                                    <div class="col-md-9"><input type="text" value="{{$dt->lotno}}" disabled
+                                    <div class="col-md-9"><input type="number" name="lotno" value="{{$dt->lotno}}"
                                             class="form-control">
                                     </div>
                                 </div>
                                 <div class="row my-2">
                                     <div class="col-md-3">Shift</div>
-                                    <div class="col-md-9"><input type="text" value="{{$dt->shift}}" disabled
-                                            class="form-control">
+                                    <div class="col-md-9">
+                                        <select class="form-control" name="shift" id="shift">
+                                            <option value="1">Shift 1</option>
+                                            <option value="2">Shift 2</option>
+                                            <option value="3">Shift 3</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row my-2">
@@ -55,8 +67,8 @@
                             <div class="col-md-6">
                                 <div class="row my-2">
                                     <div class="col-md-3">Checker</div>
-                                    <div class="col-md-9"><input type="text" required value="{{$dt->checker}}" name="checker"
-                                            class="form-control"></div>
+                                    <div class="col-md-9"><input type="text" required value="{{$dt->checker}}"
+                                            name="checker" class="form-control"></div>
                                 </div>
                                 <div class="row my-2">
                                     <div class="col-md-3">@ Box</div>
@@ -77,7 +89,8 @@
                         </div>
                         <div class="row my-2">
                             <div class="col-md-12">
-                                <input type="text" name="remark" value="{{$dt->remark}}" class="form-control" placeholder="Remark">
+                                <input type="text" name="remark" value="{{$dt->remark}}" class="form-control"
+                                    placeholder="Remark">
                             </div>
                         </div>
                         <div class="row">
@@ -86,18 +99,21 @@
                                     <div class="col-md-3">Status</div>
                                     <div class="col-md-9">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" @if ($dt->judgement == 1) checked @else @endif type="radio" required name="status" id="inlineRadio1"
-                                                value="1"> 
+                                            <input class="form-check-input" @if ($dt->judgement == 1) checked @else
+                                            @endif type="radio" required name="status" id="inlineRadio1"
+                                            value="1">
                                             <label class="form-check-label" for="inlineRadio1">GOOD</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" @if ($dt->judgement == 2) checked @else @endif type="radio" required name="status" id="inlineRadio2"
-                                                value="2">
+                                            <input class="form-check-input" @if ($dt->judgement == 2) checked @else
+                                            @endif type="radio" required name="status" id="inlineRadio2"
+                                            value="2">
                                             <label class="form-check-label" for="inlineRadio2">NG</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" @if ($dt->judgement == 3) checked @else @endif type="radio" required name="status" id="inlineRadio2"
-                                                value="3">
+                                            <input class="form-check-input" @if ($dt->judgement == 3) checked @else
+                                            @endif type="radio" required name="status" id="inlineRadio2"
+                                            value="3">
                                             <label class="form-check-label" for="inlineRadio2">HOLD</label>
                                         </div>
                                     </div>

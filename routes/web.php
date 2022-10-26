@@ -27,6 +27,7 @@ Route::get('/', [HomeController::class, 'index']);
 
 
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+Route::get('/home', [HomeController::class, 'dashboard'])->name('dashboard');
 
 Route::get('/lotcard_status', [HomeController::class, 'lotcard_status'])->name('lotcard_status');
 Route::get('/production_data', [HomeController::class, 'production_data'])->name('production_data');

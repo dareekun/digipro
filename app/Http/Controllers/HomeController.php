@@ -125,15 +125,16 @@ class HomeController extends Controller
         ->select('production.barcode as barcode', 'production.lotno as lotno', 'production.shift as shift', 'production.fg_1 as lot_size', 'quality.userId as checker',
         'production.fg_2 as total_box', 'product.model_no as model_no', 'product.section as section', 'product.line as line', 'product.packing as packing')
         ->where('production.barcode', $id)->get();
-        return view('process_quality', ['data' => $record, 'i' => 1]);
+        return view('process_quality', ['data' => $record]);
     }
 
     public function modify_quality($id) {
+        $product = DB::table('product')->select('id', 'model_no')->get();
         $record = DB::table('production')->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'production.id', '=', 'quality.productionId')
         ->select('production.barcode as barcode', 'production.lotno as lotno', 'production.shift as shift', 'production.fg_1 as lot_size', 'quality.remark as remark',  'quality.userId as checker',
         'quality.judgement as judgement', 'production.fg_2 as total_box', 'product.model_no as model_no', 'product.section as section', 'product.line as line', 'product.packing as packing')
         ->where('production.barcode', $id)->get();
-        return view('modify_quality', ['data' => $record, 'i' => 1]);
+        return view('modify_quality', ['data' => $record, 'products' => $product]);
     }
 
 }

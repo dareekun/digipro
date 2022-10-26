@@ -86,7 +86,7 @@
                                     <div class="col-md-3">Status</div>
                                     <div class="col-md-9">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" required name="status" id="inlineRadio1"
+                                            <input class="form-check-input" type="radio" checked required name="status" id="inlineRadio1"
                                                 value="1">
                                             <label class="form-check-label" for="inlineRadio1">GOOD</label>
                                         </div>

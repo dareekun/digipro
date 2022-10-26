@@ -53,7 +53,7 @@ class MobileController extends Controller
         } else {            
             return response([
             'status' => 403,
-            'message' => "Forbiden Access, Session Not Exists"
+            'message' => "Session Error, Forbiden Access"
         ]);
         }
     }
@@ -73,7 +73,7 @@ class MobileController extends Controller
         } else {
             return response([
             'status' => 403,
-            'message' => "Forbiden Access, Session Not Exists"
+            'message' => "Session Error, Forbiden Access"
         ]);
         }
     }
@@ -138,7 +138,7 @@ class MobileController extends Controller
         } else {            
             return response([
             'status' => 403,
-            'message' => "Forbiden Access, Session Not Exists"
+            'message' => "Session Error, Forbiden Access"
         ]);
         }
     }
@@ -166,7 +166,7 @@ class MobileController extends Controller
         } else {            
             return response([
             'status' => 403,
-            'message' => "Forbiden Access, Session Not Exists"
+            'message' => "Session Error, Forbiden Access"
         ]);
         }
     }
@@ -175,27 +175,31 @@ class MobileController extends Controller
         if (DB::table('users')->where('token_login', $request->token)->where('department', 5)->exists()) {
             if (DB::table('production')->where('barcode', $request->id)->value('status') == 1) {
                 $data = DB::table('production')->where('barcode', $request->id)->leftJoin('product', 'production.model_no', '=', 'product.id')
-                ->leftJoin('quality', 'production.id', '=', 'quality.productionId')->leftJoin('users', 'quality.userId', '=', 'users.id')
-                ->select('production.barcode as barcode', 'product.model_no as model_no', 'production.shift as shift', 'production.lotno as lotno', 'production.parts_data as parts',
-                'production.date_1 as date_1', 'production.date_2 as date_2', 'production.name_1 as name_1', 'production.name_2 as name_2', 
-                'production.fg_1 as finish_goods_1', 'production.fg_2 as finish_goods_2', 'production.ng_1 as no_goods_1', 'production.ng_2 as no_goods_2',
-                'quality.judgement as judgement', 'users.name as checker_name')->get();
+                ->leftJoin('quality', 'production.id', '=', 'quality.productionId')
+                ->select('production.barcode as barcode', 'product.model_no as model_no', 'production.shift as shift', 
+                'production.lotno as lotno', 'production.fg_1 as finish_goods_1', 'production.fg_2 as finish_goods_2',
+                'product.packing as packing', 'quality.judgement as judgement', 'quality.userId as checker')->get();
                 $status = DB::table('production')->where('barcode', $request->id)->value('status');
                 return response([
                     'post' => $status,
                     'data' => $data[0],
                     'status' => 200
                 ]);
+            } elseif (DB::table('production')->where('barcode', $request->id)->value('status') == 1) {
+                return response([
+                    'status' => 500,
+                    'message' => "Opps Something was Wrong! Looks like data already scan"
+                ]);
             } else {
                 return response([
                     'status' => 500,
-                    'message' => "Opps Something was Wrong! Data Not Found"
+                    'message' => "Opps Something was Wrong! Please Check Carefully"
                 ]);
             }
         } else {            
             return response([
             'status' => 403,
-            'message' => "Forbiden Access, Session Not Exists"
+            'message' => "Session Error, Forbiden Access"
         ]);
         }
     }
@@ -203,18 +207,44 @@ class MobileController extends Controller
     public function processtransfers_mobile(Request $request) {
         if (DB::table('users')->where('token_login', $request->token)->where('department', 5)->exists()) {
             if (DB::table('production')->where('barcode', $request->id)->value('status') == 1) {
+                if ($request->packing == 0) {
+                    return response([
+                        'status' => 502,
+                        'message' => "Error, Packing Size Input 0",
+                        'type' => "packing"
+                    ]);
+                }
+                if ($request->totsbox == 0) {
+                    return response([
+                        'status' => 502,
+                        'message' => "Error, Total Packing Input 0",
+                        'type' => "totsbox"
+                    ]);
+                }
+                if ($request->lotsize == 0) {
+                    return response([
+                        'status' => 502,
+                        'message' => "Error, Lot Size Input 0",
+                        'type' => "lotsize"
+                    ]);
+                }
+                $userId = DB::table('users')->where('token_login',  $request->token)->value('id');
+                $productionId = DB::table('production')->where('barcode', $request->id)->value('id');
                 DB::table('production')->where('barcode', $request->id)->update([
+                    'fg_1' => $request->lotsize,
+                    'fg_2' => $request->totsbox,
                     'status' => 2
                 ]);
-                $productionId = DB::table('production')->where('barcode', $request->id)->value('id');
-                $userId = DB::table('users')->where('token_login',  $request->token)->value('id');
+                DB::table('product')->where('id', $productionId)->update([
+                    'packing' => $request->packing,
+                ]);
                 DB::table('transaction')->insert([
                     'productionId'   => $productionId,
                     'userId'         => $userId,
                     'referTransfers' => 0
                 ]);
                 return response([
-                    'data' => $data[0],
+                    'message' => "Data Successfully Insert!",
                     'status' => 200
                 ]);
             } else {
@@ -226,9 +256,13 @@ class MobileController extends Controller
         } else {            
             return response([
             'status' => 403,
-            'message' => "Forbiden Access, Session Not Exists"
+            'message' => "Session Error, Forbiden Access"
         ]);
         }
+    }
+
+    public function close_transaction() {
+        
     }
 
     public function completetransaction_mobile() {
@@ -250,7 +284,7 @@ class MobileController extends Controller
         } else {            
             return response([
             'status' => 403,
-            'message' => "Forbiden Access, Session Not Exists"
+            'message' => "Session Error, Forbiden Access"
         ]);
         }
     }
@@ -282,7 +316,7 @@ class MobileController extends Controller
         } else {            
             return response([
             'status' => 403,
-            'message' => "Forbiden Access, Session Not Exists"
+            'message' => "Session Error, Forbiden Access"
         ]);
         }
     }
@@ -314,7 +348,7 @@ class MobileController extends Controller
         } else {            
             return response([
             'status' => 403,
-            'message' => "Forbiden Access, Session Not Exists"
+            'message' => "Session Error, Forbiden Access"
         ]);
         }
     }
