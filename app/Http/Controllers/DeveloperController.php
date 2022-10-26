@@ -37,4 +37,48 @@ class DeveloperController extends Controller
         'quality.judgement as judgement', 'users.name as checker')->get();
         return view('bypass_device', ['data' => $record]);
     }
+
+    public function printer_control() {
+        $record = DB::table('printer')->get();
+        return view('control.printer_control', ['printer' => $record]);
+    }
+
+    public function add_printer(Request $request) {
+        if (DB::table('printer')->where('username', $request->nik_add)->exists()) {
+            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'User NIK Already Exists']);
+        } else {
+            DB::table('printer')->insert([
+                'name' => $request->name_add,
+                'username' => $request->nik_add,
+                'department' => $request->department_add,
+                'role' => $request->role_add,
+                'email' => $request->email_add,
+                'password' => bcrypt($request->password_add)]);
+            return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Users Successfully Added']);
+        } 
+    }
+    
+    public function edt_printer(Request $request) {
+        if (DB::table('printer')->where('device_name', $request->name_edit)->exists()) {
+            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error, Duplicate Device Name']);
+        } else {
+            DB::table('printer')->insert([
+                'name' => $request->name_add,
+                'username' => $request->nik_add,
+                'department' => $request->department_add,
+                'role' => $request->role_add,
+                'email' => $request->email_add,
+                'password' => bcrypt($request->password_add)]);
+            return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Users Successfully Added']);
+        } 
+    }
+
+    public function del_printer(Request $request) {
+        if (DB::table('printer')->where('id', $request->uid_delete)->exists()) {
+            DB::table('printer')->where('id', $request->uid_delete)->delete();
+            return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Users Successfully Added']);
+        } else {
+            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error, Opps Something Was Wrong']);
+        } 
+    }
 }

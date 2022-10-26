@@ -87,6 +87,13 @@ Route::get('/download_data/{id}', [HomeController::class, 'download_data'])->mid
 
 // Developer Control
 Route::get('/reroute_list', [DeveloperController::class, 'route_list'])->middleware('can:isDeveloper')->name('route_list');
+Route::get('/printer_control', [DeveloperController::class, 'printer_control'])->middleware('can:isDeveloper')->name('printer_control');
+
+Route::get('/printer_control', [DeveloperController::class, 'printer_control'])->middleware('can:isDeveloper')->name('printer_control');
+
+Route::post('/add_printer', [DeveloperController::class, 'add_printer'])->middleware('can:isDeveloper')->name('add_printer');
+Route::post('/edt_printer', [DeveloperController::class, 'edt_printer'])->middleware('can:isDeveloper')->name('edt_printer');
+Route::post('/del_printer', [DeveloperController::class, 'del_printer'])->middleware('can:isDeveloper')->name('del_printer');
 
 Route::get('/bypass_data/{id}', [DeveloperController::class, 'bypass_data'])->middleware('can:isDeveloper')->name('bypass_data');
 Route::get('/bypass_scan', [DeveloperController::class, 'bypass_scan'])->middleware('can:isDeveloper')->name('bypass_scan');

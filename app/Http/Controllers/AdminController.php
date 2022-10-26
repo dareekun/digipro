@@ -25,10 +25,11 @@ class AdminController extends Controller
     
 
     public function users_control () {
+        $list = exec("lpstat -a | cut -f1 -d ' '");
         $data = DB::table('users')->leftJoin('department_list', 'users.department', '=', 'department_list.id')
         ->select('users.id as id', 'users.name as name', 'users.username as username', 'department_list.department as department', 'users.role as role', 'users.email as email')
         ->where('users.department', '<>', 1)->get();
-        return view('control.users_control', ['users' => $data]);
+        return view('control.users_control', ['users' => $data, 'printer' => $list]);
     }
     public function add_users(Request $request) {
         if (DB::table('users')->where('username', $request->nik_add)->exists()) {

@@ -63,6 +63,11 @@ class ApiController extends Controller
         return $data;
     }
 
+    public function data_printer(Request $request) {
+        $data = DB::table('printer')->where('id', $request->id)->get();
+        return $data;
+    }
+
     public function delete_parts(Request $request){
         DB::table('materials')->where('id', $request->id)->delete();
     }

@@ -119,6 +119,7 @@
                                 @can('isDeveloper')
                                 <a href="{{route('route_list')}}" class="dropdown-item">Route List</a>
                                 <a href="{{route('department_control')}}" class="dropdown-item">Department Control</a>
+                                <a href="{{route('printer_control')}}" class="dropdown-item">Printer Control</a>
                                 @endcan
                                 @can('isAdmin')
                                 <a href="{{route('users_control')}}" class="dropdown-item">Users Control</a>

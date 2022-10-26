@@ -27,7 +27,7 @@ class LaterInspection extends Component
         DB::table('product')->where('id', $model_no)->update([
             'packing' => $packing
         ]);
-        session()->flash('alerts', ['type' => 'alert-success', 'message' => 'Data Success Fully Change']);
+        session()->flash('alerts', ['type' => 'alert-success', 'message' => 'Data Successfully Change']);
         $this->search= "";
     }
 

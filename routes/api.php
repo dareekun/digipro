@@ -44,5 +44,6 @@ Route::post('/processtransfers_mobile',  [MobileController::class, 'processtrans
 Route::post('/data/product',  [ApiController::class, 'data_product'])->name('data_product');
 Route::post('/data/user',  [ApiController::class, 'data_user'])->name('data_users');
 Route::post('/data/parts',  [ApiController::class, 'data_parts'])->name('data_parts');
+Route::post('/data/printer',  [ApiController::class, 'data_printer'])->name('data_printer');
 
 Route::post('/delete/parts',  [ApiController::class, 'delete_parts'])->name('delete_parts');

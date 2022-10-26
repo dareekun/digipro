@@ -123,6 +123,17 @@
                                     </select></div>
                             </div>
                             <div class="row mt-1">
+                                <div class="col-md-5">Printer</div>
+                                <div class="col-md-7">
+                                    <select class="form-control" required name="printer_add">
+                                        <option value="">Select Printer Device</option>
+                                        @foreach ($printer as $prt)
+                                        <option value="{{$prt->id}}">{{$prt->device_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    </div>
+                            </div>
+                            <div class="row mt-1">
                                 <div class="col-md-5">Email</div>
                                 <div class="col-md-7"><input type="email" class="form-control"
                                         name="email_add"></div>
@@ -174,6 +185,16 @@
                                         <option value="user">User</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-5">Printer</div>
+                                <div class="col-md-7">
+                                    <select class="form-control" name="printer_edit">
+                                        @foreach ($printer as $i => $prt)
+                                        <option value="{{$prt[$i]}}">{{$prt[$i]}}</option>
+                                        @endforeach
+                                    </select>
+                                    </div>
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-5">Email</div>
