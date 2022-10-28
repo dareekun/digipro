@@ -33,11 +33,11 @@
                             <thead>
                                 <tr>
                                     <th>Barcode</th>
+                                    <th>Lot Size</th>
                                     <th>Line</th>
                                     <th>Model Product</th>
                                     <th>Lot Number</th>
                                     <th>Shift</th>
-                                    <th>Lot Size</th>
                                     <th>Checker</th>
                                     <th>Option</th>
                                 </tr>
@@ -46,6 +46,7 @@
                                 @foreach ($data as $dt)
                                 <tr>
                                     <td><a href="{{route('show_inspection', $dt->id)}}" style="text-decoration: none;" target="_blank">{{$dt->id}}</a></td>
+                                    <td>{{date($dt->lotno)}}</td>
                                     <td>{{$dt->line}}</td>
                                     <td>
                                     @if ($dt->judgement == 1) 
@@ -56,7 +57,6 @@
                                     <span class="text-warning">{{$dt->model_no}}</span> <i class="fa fa-exclamation text-warning" aria-hidden="false"></i>
                                     @endif
                                     </td>
-                                    <td>{{date($dt->lotno)}}</td>
                                     <td>{{$dt->shift}}</td>
                                     <td>{{$dt->finish_goods}}</td>
                                     <td>{{$dt->checker}}</td>
@@ -78,6 +78,9 @@
 <script>
 $(document).ready(function() {
     var table = $('#table_records').DataTable({
+        order: [
+            [1, 'desc']
+        ],
         dom: "<'row'<'col-sm-6'i><'col-sm-6'f>>tp",
     });
 });

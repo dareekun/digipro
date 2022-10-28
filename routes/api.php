@@ -33,13 +33,17 @@ Route::get('/all/products',  [ApiController::class, 'all_products'])->name('all_
 
 Route::post('/printlotcard_mobile',  [MobileController::class, 'printlotcard_mobile']);
 
-Route::post('/scaninspection_mobile',  [MobileController::class, 'scaninspection_mobile']);
-Route::post('/processinspection_mobile',  [MobileController::class, 'processinspection_mobile']);
-Route::post('/showinspection_mobile',  [MobileController::class, 'showinspection_mobile']);
-Route::post('/printinspection_mobile',  [MobileController::class, 'printinspection_mobile']);
+Route::post('/scaninspection_mobile',  [MobileController::class, 'scaninspection_mobile'])->name('scaninspection_mobile');
+Route::post('/processinspection_mobile',  [MobileController::class, 'processinspection_mobile'])->name('processinspection_mobile');
+Route::post('/showinspection_mobile',  [MobileController::class, 'showinspection_mobile'])->name('showinspection_mobile');
+Route::post('/printinspection_mobile',  [MobileController::class, 'printinspection_mobile'])->name('printinspection_mobile');
+Route::post('/closed_transaction',  [MobileController::class, 'closed_transaction'])->name('closed_transaction');
 
-Route::post('/scantransfers_mobile',  [MobileController::class, 'scantransfers_mobile']);
-Route::post('/processtransfers_mobile',  [MobileController::class, 'processtransfers_mobile']);
+Route::post('/changepassword_mobile',  [MobileController::class, 'changepassword_mobile'])->name('changepassword_mobile');
+
+Route::post('/scantransfers_mobile',  [MobileController::class, 'scantransfers_mobile'])->name('scantransfers_mobile');
+Route::post('/processtransfers_mobile',  [MobileController::class, 'processtransfers_mobile'])->name('processtransfers_mobile');
+Route::post('/datatransaction_mobile',  [MobileController::class, 'datatransaction_mobile'])->name('datatransaction_mobile');
 
 Route::post('/data/product',  [ApiController::class, 'data_product'])->name('data_product');
 Route::post('/data/user',  [ApiController::class, 'data_user'])->name('data_users');

@@ -1,17 +1,9 @@
 <div class="container mt-5">
     <div class="row my-2">
         <div class="col-md-12">
-            @if (session()->has('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-            @if (session()->has('failure'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('failure') }}
+            @if (session()->has('alerts'))
+            <div class="alert {{ session('alerts.type') }} alert-dismissible fade show" role="alert">
+                {{ session('alerts.message') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

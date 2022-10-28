@@ -185,7 +185,7 @@ class MobileController extends Controller
                     'data' => $data[0],
                     'status' => 200
                 ]);
-            } elseif (DB::table('production')->where('barcode', $request->id)->value('status') == 1) {
+            } elseif (DB::table('production')->where('barcode', $request->id)->value('status') == 2) {
                 return response([
                     'status' => 500,
                     'message' => "Opps Something was Wrong! Looks like data already scan"
@@ -193,7 +193,7 @@ class MobileController extends Controller
             } else {
                 return response([
                     'status' => 500,
-                    'message' => "Opps Something was Wrong! Please Check Carefully"
+                    'message' => "Opps Something was Wrong! Looks like the item hasn't been checked yet"
                 ]);
             }
         } else {            
@@ -250,7 +250,7 @@ class MobileController extends Controller
             } else {
                 return response([
                     'status' => 500,
-                    'message' => "Opps Something was Wrong!"
+                    'message' => "Opps Something was Wrong! Looks like the item hasn't been checked yet"
                 ]);
             }
         } else {            
@@ -261,26 +261,95 @@ class MobileController extends Controller
         }
     }
 
-    public function close_transaction() {
-        
-    }
-
-    public function completetransaction_mobile() {
+    public function datatransaction_mobile(Request $request) {
         if (DB::table('users')->where('token_login', $request->token)->where('department', 5)->exists()) {
-                DB::table('production')->leftJoin('')->where('barcode', $request->id)->update([
-                    'status' => 3
-                ]);
-                $productionId = DB::table('production')->where('barcode', $request->id)->value('id');
-                $userId = DB::table('users')->where('token_login',  $request->token)->value('id');
-                DB::table('transaction')->insert([
-                    'productionId'   => $productionId,
-                    'userId'         => $userId,
-                    'referTransfers' => 0
-                ]);
+            if (DB::table('transaction')->where('referTransfers', 0)->exists()) {
+                $data = DB::table('production')->leftJoin('transaction', 'transaction.productionId', '=', 'production.id')
+                ->leftJoin('product', 'production.model_no', '=', 'product.id')->where('referTransfers', 0)
+                ->select('product.model_no as model_no', 'production.fg_1 as total_qty', 'production.fg_2 as total_box')->get();
                 return response([
-                    'data' => $data[0],
+                    'data' => $data,
                     'status' => 200
                 ]);
+            } else {
+                return response([
+                    'status' => 500,
+                    'message' => "Opps Something was Wrong! No Production Data Has Been Scanned"
+                ]);
+            }
+        } else {            
+            return response([
+            'status' => 403,
+            'message' => "Session Error, Forbiden Access"
+        ]);
+        }
+    }
+
+    public function closed_transaction(Request $request) {
+        if (DB::table('users')->where('token_login', $request->token)->where('department', 5)->exists()) {
+            if (DB::table('transaction')->where('referTransfers', 0)->exists()) {
+                $current   = date('ymd').rand(10, 99);
+                $item_type = DB::table('transaction')->leftJoin('production', 'transaction.productionId', '=', 'production.id')->where('referTransfers', 0)->count();
+                $item_qty  = DB::table('transaction')->leftJoin('production', 'transaction.productionId', '=', 'production.id')->where('referTransfers', 0)->sum('production.fg_1');
+                $user      = DB::table('users')->where('token_login', $request->token)->where('department', 5)->value('id');
+                DB::table('transaction')->leftJoin('production', 'transaction.productionId', '=', 'production.id')->where('referTransfers', 0)->update([
+                    'transaction.referTransfers' => $current,
+                    'production.status' => 3
+                ]);
+                DB::table('transfers')->insert([
+                    'refer' => $current,
+                    'item_type' => $item_type,
+                    'item_qty' => $item_qty,
+                    'status' => 0,
+                    'userId' => $user
+                ]);
+                return response([
+                    'message' => "Data Was Successfully Generated",
+                    'status' => 200
+                ]);
+            } else {
+                return response([
+                    'status' => 500,
+                    'message' => "Opps Something was Wrong! No Production Data Has Been Scanned"
+                ]);
+            }
+        } else {            
+            return response([
+            'status' => 403,
+            'message' => "Session Error, Forbiden Access"
+        ]);
+        }
+    }
+
+    public function changepassword_mobile(Request $request) {
+        if (DB::table('users')->where('token_login', $request->token)->exists()) {
+            $old_password = DB::table('users')->where('token_login', $request->token)->value('password');
+            if (Hash::check($request->pass0, $old_password)) {
+                if ($request->pass1 == $request->pass2) {
+                        if (strlen($request->pass1) > 5) {
+                            DB::table('users')->where('token_login', $request->token)->update(['password' => bcrypt($request->pass1),]);
+                            return response([
+                                'status' => 200,
+                                'message' => "Password successfully updated."
+                            ]);
+                        } else {
+                            return response([
+                                'status' => 500,
+                                'message' => "Opps Something was Wrong! Password minimal 6 character is required'"
+                            ]);
+                        }
+                } else {
+                    return response([
+                        'status' => 500,
+                        'message' => "Opps Something was Wrong! Looks like password didn't match"
+                    ]);
+                }
+            } else {
+                return response([
+                    'status' => 500,
+                    'message' => "Opps Something was Wrong! Looks like your input wrong password"
+                ]);
+            }
         } else {            
             return response([
             'status' => 403,

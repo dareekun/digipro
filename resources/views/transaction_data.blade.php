@@ -51,7 +51,15 @@
                                     <td>{{$dt->fg_1}}</td>
                                     <td>{{$dt->ng_1}}</td>
                                     <td>{{$dt->name_1}}</td>
-                                    <td>{{$dt->status}}</td>
+                                    <td>
+                                    @if ($dt->judgement == 1) 
+                                    <span class="text-success">GOOD</span> <i class="fa fa-check text-success" aria-hidden="false"></i>
+                                    @elseif ($dt->judgement == 2) 
+                                    <span class="text-danger">NO GOOD</span> <i class="fa fa-times text-danger" aria-hidden="false"></i>
+                                    @else 
+                                    <span class="text-warning">HOLD</span> <i class="fa fa-exclamation text-warning" aria-hidden="false"></i>
+                                    @endif
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

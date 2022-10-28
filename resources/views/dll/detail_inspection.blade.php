@@ -48,7 +48,6 @@
 </head>
 
 <body>
-    <br>
     @foreach ($data as $dt)
     <table id="table1">
         <tr>
@@ -87,7 +86,7 @@
         </tr>
         <tr>
             <td colspan="3" align="center" style="border: 3px solid black;">
-                <b><h1>{{strtoupper($dt->judgement == 1 ? "GOOD" : ($dt->judgement == 2 ? "NG" : ($dt->judgement == 3 ? "HOLD" : "STATUS")))}}</h1></b>
+                <b style="font-size:28px">{{strtoupper($dt->judgement == 1 ? "GOOD" : ($dt->judgement == 2 ? "NG" : ($dt->judgement == 3 ? "HOLD" : "STATUS")))}}</b>
             </td>
         </tr>
         <tr>
@@ -128,7 +127,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <p>{{$dt->remark}}</p>
+                            {{$dt->remark}}
                         </td>
                     </tr>
                 </table>

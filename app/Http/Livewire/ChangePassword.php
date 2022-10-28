@@ -38,12 +38,12 @@ class ChangePassword extends Component
             $this->oldpassword = NULL;
             $this->newpassword = NULL;
             $this->confirmpassword = NULL;
-            session()->flash('success', 'Password successfully updated.');
+            session()->flash('alerts', ['type' => 'alert-success', 'message' => 'Password successfully updated.']);
         }else {
             $this->oldpassword = NULL;
             $this->newpassword = NULL;
             $this->confirmpassword = NULL;
-            session()->flash('failure', 'Password is Wrong');
+            session()->flash('alerts', ['type' => 'alert-danger', 'message' => 'Your input password is wrong.']);
         }
     }
 

@@ -96,7 +96,11 @@ class HomeController extends Controller
     }
     public function transaction_data() 
     {
-        $record = DB::table('production')->where('status', 2)->get();
+        $record = DB::table('production')->where('status', 2)->leftJoin('product', 'production.model_no', '=', 'product.id')
+        ->leftJoin('quality', 'production.id', '=', 'quality.productionId')->select(
+            'production.lotno as lotno', 'production.shift as shift', 'product.model_no as model_no', 'production.fg_1 as fg_1', 
+            'production.ng_1 as ng_1', 'production.name_1 as name_1', 'quality.judgement as judgement'
+        )->get();
         return view('transaction_data', ['data' => $record]);
     }
     public function transfers_records()
