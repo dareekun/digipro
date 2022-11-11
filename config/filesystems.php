@@ -55,6 +55,14 @@ return [
             'visibility' => 'public',
         ],
 
+        
+        'mounting' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/excel_stores'),
+            'url' => env('APP_URL').'/excel_stories',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

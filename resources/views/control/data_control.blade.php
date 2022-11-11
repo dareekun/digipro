@@ -97,6 +97,9 @@
 <script>
 $(document).ready(function() {
     var table = $('#table_records').DataTable({
+        order: [
+            [1, 'asc']
+        ],
         dom: "<'row'<'col-sm-6'i><'col-sm-6'f>>tp",
     });
 });

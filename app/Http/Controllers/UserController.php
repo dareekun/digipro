@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Validator;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+
+use App\Exports\excel_rnt;
 
 use Illuminate\Support\Facades\Http;
 
@@ -241,8 +244,26 @@ class UserController extends Controller
                 ->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
                 ->select('product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'product.packing as packing', 'production.fg_2 as total_box', 'production.fg_1 as total_qty', 'quality.remark as remark')
                 ->where('transaction.referTransfers', $id)->get();
+                return PDF::loadview('dll.request_and_transfers', ['data' => $record, 'tanggal' => $transl, 'i' => 1])->setPaper('a4')->stream();
             }
-            return PDF::loadview('dll.request_and_transfers', ['data' => $record, 'tanggal' => $transl, 'i' => 1])->setPaper('a4')->stream();
+        } else {
+            return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
+        }
+    }
+
+    public function show_excel_form($id) {
+        if (Auth::user()->department == 5 || Auth::user()->department == 1) {
+            if (DB::table('transfers')->where('refer', $id)->doesntExist()) {
+                return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Data Was Not Found']);
+            } else {
+                return Excel::download(new excel_rnt($id), 'Form Request & Transfers - '.$id.rand(1000, 9999).'.xlsx');
+                // $transl = DB::table('transfers')->where('refer', $id)->value('transfers_date');
+                // $record = DB::table('transaction')->leftJoin('production', 'production.id', '=', 'transaction.productionId')
+                // ->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
+                // ->select('product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'product.packing as packing', 'production.fg_2 as total_box', 'production.fg_1 as total_qty', 'quality.remark as remark')
+                // ->where('transaction.referTransfers', $id)->get();
+                // return view('dll.excel_rnt', ['data' => $record, 'tanggal' => $transl, 'i' => 1]);
+            }
         } else {
             return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
         }

@@ -15,21 +15,21 @@ use PDF;
 class DeveloperController extends Controller
 {
     public function bypass_data($id) {
-            if (DB::table('production')->where('barcode', $id)->value('status') == 1) {
-                DB::table('production')->where('barcode', $id)->update([
-                    'status' => 2
-                ]);
-                $productionId = DB::table('production')->where('barcode', $id)->value('id');
-                DB::table('transaction')->insert([
-                    'productionId'   => $productionId,
-                    'userId'         => Auth::user()->id,
-                    'referTransfers' => 0
-                ]);
-                return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Data Successfully Bypassed']);
-            } else {
-                return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error Input Data, please check your data']);
-            }
-        } 
+        if (DB::table('production')->where('barcode', $id)->value('status') == 1) {
+            DB::table('production')->where('barcode', $id)->update([
+                'status' => 2
+            ]);
+            $productionId = DB::table('production')->where('barcode', $id)->value('id');
+            DB::table('transaction')->insert([
+                'productionId'   => $productionId,
+                'userId'         => Auth::user()->id,
+                'referTransfers' => 0
+            ]);
+            return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Data Successfully Bypassed']);
+        } else {
+            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error Input Data, please check your data']);
+        }
+    } 
 
     public function bypass_scan() {
         $record = DB::table('production')->where('status', 1)->leftJoin('quality', 'production.id', '=', 'quality.productionId')
@@ -47,6 +47,7 @@ class DeveloperController extends Controller
 
     public function data_control() {
         $record = DB::table('production')->leftJoin('product', 'product.id', '=', 'production.model_no')->leftJoin('quality', 'production.id', '=', 'quality.productionId')
+        ->where('production.status', 0)
         ->select('production.id as id', 'production.barcode as barcode', 'production.lotno as lotno', 'production.shift as shift', 'product.model_no as model_no', 
         'production.fg_1 as finish_goods', 'production.name_1 as pic', 'production.status as status', 'quality.judgement as judgement')->get();
         return view('control.data_control', ['data' => $record]);
@@ -54,7 +55,7 @@ class DeveloperController extends Controller
 
     public function closed_data($id) {
         if (DB::table('quality')->where('productionId', $id)->exists()) {
-            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'User NIK Already Exists']);
+            return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error! Data Already Processed']);
         } else {
             DB::table('production')->where('id', $id)->update([
                 'status' => 99

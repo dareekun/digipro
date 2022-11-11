@@ -46,7 +46,8 @@ Route::post('/del_lotcard', [UserController::class, 'del_lotcard'])->middleware(
 
 Route::get('/show_lotcard/{id}', [UserController::class, 'show_lotcard'])->middleware('can:isUser')->name('show_lotcard');
 Route::get('/show_inspection/{id}', [UserController::class, 'show_inspection'])->middleware('can:isUser')->name('show_inspection');
-Route::get('/show_pdf_form/{id}', [UserController::class, 'show_pdf_form'])->middleware('can:isUser')->name('show_pdf_form');
+Route::get('/show_pdf_form/{id}', [UserController::class, 'show_excel_form'])->middleware('can:isUser')->name('show_pdf_form');
+Route::get('/show_excel_form/{id}', [UserController::class, 'show_excel_form'])->middleware('can:isUser')->name('show_excel_form');
 
 // Admin Control
 Route::get('/product_control', [AdminController::class, 'product_control'])->middleware('can:isAdmin')->name('product_control');
