@@ -2,23 +2,27 @@
 
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use App\Exports\Sheets\DetailData;
+use App\Exports\Sheets\RecapData;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 
-class FinishProduction implements FromView, WithCustomCsvSettings
+class FinishProduction implements WithMultipleSheets
 {
+    
+    use Exportable;
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function view(): View
+    public function sheets(): array
     {
-        $record = DB::table('production')->where('status', '>', 0)->leftJoin('quality', 'production.id', '=', 'quality.productionId')
-        ->leftJoin('product', 'product.id', '=', 'production.model_no')->leftJoin('users', 'quality.userId', '=', 'users.id')
-        ->select('production.barcode as id', 'product.section as section', 'product.line as line', 'product.model_no as model_no',
-        'production.lotno as lotno', 'production.shift as shift', 'production.fg_1 as finish_goods',
-        'quality.judgement as judgement', 'users.name as checker')->get();
-        return view('exports.finish_data', ['data' => $record, 'i' => 1]);
+        $sheets = [];
+        $sheets[] = new RecapData();
+        $record = DB::table('product')->select('line')->distinct()->get();
+        foreach ($record as $rcd) {
+            $sheets[] = new DetailData($rcd->line);
+        }
+        return $sheets;
     }
 }

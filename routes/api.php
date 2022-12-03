@@ -51,3 +51,5 @@ Route::post('/data/parts',  [ApiController::class, 'data_parts'])->name('data_pa
 Route::post('/data/printer',  [ApiController::class, 'data_printer'])->name('data_printer');
 
 Route::post('/delete/parts',  [ApiController::class, 'delete_parts'])->name('delete_parts');
+
+Route::get('/data/finish_production',  [ApiController::class, 'finish_production'])->name('finish_production');

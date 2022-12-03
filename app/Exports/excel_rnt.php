@@ -22,15 +22,7 @@ class excel_rnt implements FromView, WithEvents
                 ],
             ],
         ];
-        $this->thick_allboarders = [
-            'borders' => [
-                'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                    'color' => ['argb' => '00000000'],
-                ],
-            ],
-        ];
-        $this->medium_allboarders = [
+        $this->thin_allboarders = [
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -78,8 +70,8 @@ class excel_rnt implements FromView, WithEvents
 
                 // Border Setting
                 $event->sheet->getStyle('A1:J51')->applyFromArray($this->thick_outline);
-                $event->sheet->getStyle('F4:I10')->applyFromArray($this->thick_allboarders);
-                $event->sheet->getStyle('B12:I45')->applyFromArray($this->medium_allboarders);
+                $event->sheet->getStyle('F4:I10')->applyFromArray($this->thin_allboarders);
+                $event->sheet->getStyle('B12:I45')->applyFromArray($this->thin_allboarders);
 
                 // Set Font Style 
                 $event->sheet->getStyle('C2')->getFont()->setBold(true);

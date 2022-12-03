@@ -87,4 +87,31 @@ class ApiController extends Controller
         $data2 = DB::table('produk')->where('line', $request->get('temt'))->pluck('model_no');
         return response()->json($data2);
     }
+
+    public function finish_production() {
+        // $record = [];
+        // $loop = DB::table('product')->where('product.line', 'Manual Switch')->get();
+        // foreach ($loop  as $lp) {
+        //     $regular = [];
+        //     $regular["model_no"] = $lp->model_no;
+        //     $regular["last_month"] = DB::table('production')->whereYear('date', date('Y'))->whereMonth('date', date("m", strtotime("-1 month")))->where('model_no', $lp->id)->sum("fg_1");
+        //     $array_a = [];
+        //     $sum = 0;
+        //     for ($i = 1; $i < 32 ; $i++ ) {
+        //         $array_b = [];
+        //         $array_b["finish_goods"]  = DB::table('production')->where('date',date("Y-m-d", strtotime(date("Y-").date("m-").$i)))->where('model_no', $lp->id)->sum('fg_1');
+        //         $array_b["lots_ize"]      = DB::table('production')->where('date',date("Y-m-d", strtotime(date("Y-").date("m-").$i)))->where('model_no', $lp->id)->count('lotno');
+        //         $sum = $sum + $array_b["finish_goods"];
+        //         $array_b["total_size"]    =  $sum;
+        //         array_push($array_a, $array_b);
+        //     }
+        //     $regular["detail_data"] = $array_a;
+        //     array_push($record, $regular);
+        // }
+        // $object = json_decode(json_encode($record));
+        // return view('dll.table', ['data' => $object]);
+        // return $object;
+        $object = DB::table('production')->whereYear('production.date', date('Y'))->whereMonth('production.date', date("m"))->whereDay('date', 25)->where('model_no', 730)->sum('fg_1');
+        return $object;
+    }
 }

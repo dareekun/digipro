@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+
+use App\Exports\excel_rnt;
 use PDF;
 
 class MobileController extends Controller
@@ -303,6 +306,7 @@ class MobileController extends Controller
                     'status' => 0,
                     'userId' => $user
                 ]);
+                Excel::store(new excel_rnt($current), 'Form Request & Transfers - '.$current.rand(1000, 9999).'.xlsx', 'mounting');
                 return response([
                     'message' => "Data Was Successfully Generated",
                     'status' => 200

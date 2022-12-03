@@ -33,7 +33,6 @@
                             <thead>
                                 <tr>
                                     <th>Barcode</th>
-                                    <th>Line</th>
                                     <th>Model Product</th>
                                     <th>Lot Number</th>
                                     <th>Shift</th>
@@ -46,7 +45,6 @@
                                 @foreach ($data as $dt)
                                 <tr>
                                     <td><a href="{{route('show_inspection', $dt->id)}}" style="text-decoration: none;" target="_blank">{{$dt->id}}</a></td>
-                                    <td>{{$dt->line}}</td>
                                     <td>
                                     @if ($dt->judgement == 1) 
                                     <span class="text-success">{{$dt->model_no}}</span> <i class="fa fa-check text-success" aria-hidden="false"></i>
@@ -60,11 +58,19 @@
                                     <td>{{$dt->shift}}</td>
                                     <td>{{$dt->finish_goods}}</td>
                                     <td>{{$dt->checker}}</td>
+                                    @can('isDeveloper')
+                                    <td>
+                                    <a class="btn btn-sm btn-outline-primary" href="{{route('closed_data', $dt->proid)}}"><i class="fa fa-window-close-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-sm btn-outline-success" href="{{route('print_lotcard', $dt->proid)}}"><i class="fa fa-print" aria-hidden="true"></i></a>
+                                    <a class="btn btn-sm btn-outline-danger" href="{{route('delete_data', $dt->proid)}}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                    </td>
+                                    @else 
                                     <td>
                                         <a href="{{route('modify_quality', $dt->id)}}" class="btn btn-sm btn-outline-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Modify</a> 
                                             <span> </span>
                                         <a href="{{route('print_inspection', $dt->id)}}" class="btn btn-sm btn-outline-info"><i class="fa fa-print" aria-hidden="true"></i> Print</a>
                                     </td>
+                                    @endcan
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -81,6 +87,9 @@
 <script>
 $(document).ready(function() {
     var table = $('#table_records').DataTable({
+        order: [
+            [2, 'desc']
+        ],
         dom: "<'row'<'col-sm-6'i><'col-sm-6'f>>tp",
     });
 });

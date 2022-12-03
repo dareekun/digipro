@@ -73,11 +73,11 @@
                                     <a class="btn btn-sm btn-outline-primary" href="{{route('closed_data', $dt->id)}}"><i class="fa fa-window-close-o" aria-hidden="true"></i></a>
                                     <a class="btn btn-sm btn-outline-success" href="{{route('print_lotcard', $dt->id)}}"><i class="fa fa-print" aria-hidden="true"></i></a>
                                     <a class="btn btn-sm btn-outline-danger" href="{{route('delete_data', $dt->id)}}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                                        @else
-                                    <a disable class="btn btn-sm btn-outline-primary disabled" href="{{route('closed_data', $dt->id)}}"><i class="fa fa-window-close-o" aria-hidden="true"></i></a>
-                                    <a disable class="btn btn-sm btn-outline-success disabled" href="{{route('print_lotcard', $dt->id)}}"><i class="fa fa-print" aria-hidden="true"></i></a>
-                                    <a disable class="btn btn-sm btn-outline-danger disabled" href="{{route('delete_data', $dt->id)}}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                                        @endif
+                                    @else
+                                    <a disable class="btn btn-sm btn-outline-primary disabled"><i class="fa fa-window-close-o" aria-hidden="true"></i></a>
+                                    <a disable class="btn btn-sm btn-outline-success disabled"><i class="fa fa-print" aria-hidden="true"></i></a>
+                                    <a disable class="btn btn-sm btn-outline-danger disabled"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                    @endif
                                     </td>
                                 </tr>
                                 @endforeach

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Exports\excel_rnt;
+use App\Exports\production_control;
 
 use Illuminate\Support\Facades\Http;
 
@@ -257,13 +258,15 @@ class UserController extends Controller
                 return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Data Was Not Found']);
             } else {
                 return Excel::download(new excel_rnt($id), 'Form Request & Transfers - '.$id.rand(1000, 9999).'.xlsx');
-                // $transl = DB::table('transfers')->where('refer', $id)->value('transfers_date');
-                // $record = DB::table('transaction')->leftJoin('production', 'production.id', '=', 'transaction.productionId')
-                // ->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
-                // ->select('product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'product.packing as packing', 'production.fg_2 as total_box', 'production.fg_1 as total_qty', 'quality.remark as remark')
-                // ->where('transaction.referTransfers', $id)->get();
-                // return view('dll.excel_rnt', ['data' => $record, 'tanggal' => $transl, 'i' => 1]);
             }
+        } else {
+            return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
+        }
+    }
+
+    public function download_data_qc(){
+        if (Auth::user()->department == 4 || Auth::user()->department == 1) {
+            return Excel::download(new production_control(), 'Form Request & Transfers - '.$id.rand(1000, 9999).'.xlsx');
         } else {
             return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
         }

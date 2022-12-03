@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Validator;
 
 use Illuminate\Support\Facades\Http;
+use Maatwebsite\Excel\Facades\Excel;
 
 use App\Exports\FinishProduction;
 use App\Exports\ProductionData;
@@ -78,10 +79,10 @@ class HomeController extends Controller
     }
     public function finish_data() 
     {
-        $record = DB::table('production')->where('status', '>', 0)->leftJoin('quality', 'production.id', '=', 'quality.productionId')
+        $record = DB::table('production')->where('production.status', '>', 0)->leftJoin('quality', 'production.id', '=', 'quality.productionId')
         ->leftJoin('product', 'product.id', '=', 'production.model_no')
         ->select('production.barcode as id', 'product.section as section', 'product.line as line', 'product.model_no as model_no',
-        'production.lotno as lotno', 'production.shift as shift', 'production.fg_1 as finish_goods',
+        'production.lotno as lotno', 'production.shift as shift', 'production.fg_1 as finish_goods', 'production.id as proid',
         'quality.judgement as judgement', 'quality.userId as checker')->get();
         return view('finish_data', ['data' => $record]);
     }

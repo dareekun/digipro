@@ -53,6 +53,9 @@
 <script>
 $(document).ready(function() {
     var table = $('#table_records').DataTable({
+        order: [
+            [1, 'desc']
+        ],
         dom: "<'row'<'col-sm-6'i><'col-sm-6'f>>tp",
     });
 });
