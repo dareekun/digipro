@@ -156,6 +156,7 @@ class AdminController extends Controller
                 'packing' => $request->packing_add,
                 'time' => $request->time_add,
                 'std_mp' => $request->man_add,
+                'market' => $request->market_add
             ]);
             return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Product Successfully Added']);
         } 
@@ -177,6 +178,7 @@ class AdminController extends Controller
                 'packing' => $request->packing_edit,
                 'time' => $request->time_edit,
                 'std_mp' => $request->man_edit,
+                'market' => $request->market_edit
             ]);
             return back()->with('alerts', ['type' => 'alert-success', 'message' => 'Data Product Successfully Update']);
         }

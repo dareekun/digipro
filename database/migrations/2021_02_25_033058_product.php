@@ -18,6 +18,7 @@ class Product extends Migration
             $table->string('model_no');
             $table->string('line');
             $table->string('section');
+            $table->string('market')->default('domestic');
             $table->integer('packing')->default(0);
             $table->decimal('time', $precision = 8, $scale = 2);
             $table->integer('std_mp');

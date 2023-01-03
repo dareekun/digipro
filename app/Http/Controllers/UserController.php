@@ -134,6 +134,10 @@ class UserController extends Controller
                     'userId'       => $request->checker
                 ]);
                 DB::table('production')->where('barcode', $request->barcode_id)->update([
+                    'shift'  => $request->shift,
+                    'lotno'  => date('Ymd', strtotime($request->tanggal)),
+                    'date_1' => $request->tanggal,
+                    'date_2' => $request->tanggal,
                     'fg_1'   => $request->lot_size != NULL ? $request->lot_size : 0,
                     'fg_2'   => $request->total_box != NULL ? $request->total_box : 0,
                     'status' => 1
@@ -152,7 +156,6 @@ class UserController extends Controller
                     Storage::put('inspection_'.$random.$request->barcode_id.'.pdf', $content);
                     exec('lp /var/www/digipro/storage/app/inspection_'.$random.$request->barcode_id.'.pdf -o fit-to-page -d'.Auth::user()->printer);
                     exec('rm /var/www/digipro/storage/app/inspection_'.$random.$request->barcode_id.'.pdf');
-    
                 return redirect(route('show_inspection', $request->barcode_id));
             } else {
                 return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 500, Modify Force Input']);
@@ -182,7 +185,9 @@ class UserController extends Controller
             ]);
             DB::table('production')->where('barcode', $request->barcode_id)->update([
                 'model_no' => $request->model_no,
-                'lotno'    => $request->lotno,
+                'lotno'    => date('Ymd', strtotime($request->lotno)),
+                'date_1'   => $request->lotno,
+                'date_2'   => $request->lotno,
                 'shift'    => $request->shift,
                 'fg_1'     => $request->lot_size,
                 'fg_2'     => $request->total_box,
@@ -257,7 +262,7 @@ class UserController extends Controller
             if (DB::table('transfers')->where('refer', $id)->doesntExist()) {
                 return back()->with('alerts', ['type' => 'alert-danger', 'message' => 'Data Was Not Found']);
             } else {
-                return Excel::download(new excel_rnt($id), 'Form Request & Transfers - '.$id.rand(1000, 9999).'.xlsx');
+                return Excel::download(new excel_rnt($id), 'Form Request & Transfers - '.$id.rand(10, 99).'.xlsx');
             }
         } else {
             return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
@@ -266,7 +271,7 @@ class UserController extends Controller
 
     public function download_data_qc(){
         if (Auth::user()->department == 4 || Auth::user()->department == 1) {
-            return Excel::download(new production_control(), 'Form Request & Transfers - '.$id.rand(1000, 9999).'.xlsx');
+            return Excel::download(new production_control(), 'Production Control Data - '.$id.rand(10, 99).'.xlsx');
         } else {
             return redirect(route('dashboard'))->with('alerts', ['type' => 'alert-danger', 'message' => 'Error 403, Forbidden User Input']);
         }

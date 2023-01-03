@@ -90,19 +90,51 @@
                         <td align="center">Total Qty</td>
                         <td align="center">Keterangan</td>
                     </tr>
-                    @foreach ($data as $dt)
+                    @foreach ($domestic as $dom)
                     <tr>
                         <td>{{$i++}}</td>
-                        <td>{{$dt->model_no}}</td>
-                        <td align="center">{{date('Ymd', strtotime($dt->lotno))}}</td>
-                        <td align="center">{{$dt->shift}}</td>
-                        <td align="center">{{$dt->packing}}</td>
-                        <td align="center">{{$dt->total_box}}</td>
-                        <td align="center">{{$dt->total_qty}}</td>
-                        <td>{{$dt->remark}}</td>
+                        <td>{{$dom->model_no}}</td>
+                        <td align="center">{{date('Ymd', strtotime($dom->lotno))}}</td>
+                        <td align="center">{{$dom->shift}}</td>
+                        <td align="center">{{$dom->packing}}</td>
+                        <td align="center">{{$dom->total_box}}</td>
+                        <td align="center">{{$dom->total_qty}}</td>
+                        <td>{{$dom->remark}}</td>
                     </tr>
                     @endforeach
-                    @for($n = $i ; $n < 34; $n++)
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Export</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    @foreach ($export as $exp)
+                    <tr>
+                        <td>{{$i++}}</td>
+                        <td>{{$exp->model_no}}</td>
+                        <td align="center">{{date('Ymd', strtotime($exp->lotno))}}</td>
+                        <td align="center">{{$exp->shift}}</td>
+                        <td align="center">{{$exp->packing}}</td>
+                        <td align="center">{{$exp->total_box}}</td>
+                        <td align="center">{{$exp->total_qty}}</td>
+                        <td>{{$exp->remark}}</td>
+                    </tr>
+                    @endforeach
+                    @for($n = $i ; $n < 32; $n++)
                     <tr>
                         <td>{{$n}}</td>
                         <td></td>

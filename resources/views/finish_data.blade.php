@@ -60,15 +60,15 @@
                                     <td>{{$dt->checker}}</td>
                                     @can('isDeveloper')
                                     <td>
-                                    <a class="btn btn-sm btn-outline-primary" href="{{route('closed_data', $dt->proid)}}"><i class="fa fa-window-close-o" aria-hidden="true"></i></a>
-                                    <a class="btn btn-sm btn-outline-success" href="{{route('print_lotcard', $dt->proid)}}"><i class="fa fa-print" aria-hidden="true"></i></a>
+                                    <a class="btn btn-sm btn-outline-success" href="{{route('modify_quality', $dt->id)}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a class="btn btn-sm btn-outline-primary" href="{{route('print_inspection', $dt->id)}}"><i class="fa fa-print" aria-hidden="true"></i></a>
                                     <a class="btn btn-sm btn-outline-danger" href="{{route('delete_data', $dt->proid)}}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                                     </td>
                                     @else 
                                     <td>
-                                        <a href="{{route('modify_quality', $dt->id)}}" class="btn btn-sm btn-outline-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Modify</a> 
+                                        <a href="{{route('modify_quality', $dt->id)}}" class="btn btn-sm btn-outline-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> 
                                             <span> </span>
-                                        <a href="{{route('print_inspection', $dt->id)}}" class="btn btn-sm btn-outline-info"><i class="fa fa-print" aria-hidden="true"></i> Print</a>
+                                        <a href="{{route('print_inspection', $dt->id)}}" class="btn btn-sm btn-outline-info"><i class="fa fa-print" aria-hidden="true"></i></a>
                                     </td>
                                     @endcan
                                 </tr>

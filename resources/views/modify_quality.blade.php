@@ -19,7 +19,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-12">
-                            Modify Data Inspection Check Sheet
+                            Modify Data Production
                         </div>
                     </div>
                 </div>
@@ -33,19 +33,18 @@
                                 <div class="row my-2">
                                     <div class="col-md-3">Product Name</div>
                                     <div class="col-md-9">
-                                        <select name="model_no" id="model_no" class="selectpicker w-100" required
+                                        <select name="model_no" id="model_no" class="selectpicker" required
                                             data-live-search="true" data-toggle="popover" data-placement="top"
                                             data-content="Please Select Model Number" data-size="10">
                                             @foreach ($products as $pd)
-                                            <option @if ($dt->model_no == $pd->id) selected @else @endif value="{{$pd->id}}">{{$pd->model_no}}</option>
+                                            <option @if ($dt->model_id == $pd->id) selected @else @endif value="{{$pd->id}}">{{$pd->model_no}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row my-2">
                                     <div class="col-md-3">Lot Number</div>
-                                    <div class="col-md-9"><input type="number" name="lotno" value="{{$dt->lotno}}"
-                                            class="form-control">
+                                    <div class="col-md-9"><input type="date" required name="lotno" id="lotno" value="{{date('Y-m-d', strtotime($dt->lotno))}}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row my-2">
@@ -129,8 +128,6 @@
             </div>
         </div>
     </div>
-
     @stop
-
     @push('scripts')
     @endpush

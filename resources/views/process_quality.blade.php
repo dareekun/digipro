@@ -36,14 +36,17 @@
                                 </div>
                                 <div class="row my-2">
                                     <div class="col-md-3">Lot Number</div>
-                                    <div class="col-md-9"><input type="text" value="{{$dt->lotno}}" disabled
-                                            class="form-control">
+                                    <div class="col-md-9"><input type="date" name="tanggal" id="tanggal" value="{{date('Y-m-d', strtotime($dt->lotno))}}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row my-2">
                                     <div class="col-md-3">Shift</div>
-                                    <div class="col-md-9"><input type="text" value="{{$dt->shift}}" disabled
-                                            class="form-control">
+                                    <div class="col-md-9">
+                                    <select class="form-control" name="shift" id="shift">
+                                            <option @if ($dt->shift == 1) selected @else @endif value="1">Shift 1</option>
+                                            <option @if ($dt->shift == 2) selected @else @endif value="2">Shift 2</option>
+                                            <option @if ($dt->shift == 3) selected @else @endif value="3">Shift 3</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row my-2">

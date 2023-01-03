@@ -90,10 +90,10 @@
     </tr>
     <tr>
         <td></td>
-        <td></td>
         <td>
             Tanggal Produksi: {{date('Y - m - d', strtotime($tanggal))}}
         </td>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -162,21 +162,72 @@
         <td>Keterangan</td>
         <td></td>
     </tr>
-    @foreach ($data as $dt)
+    @foreach ($domestic as $dom)
     <tr>
         <td></td>
         <td>{{$i++}}</td>
-        <td>{{$dt->model_no}}</td>
-        <td>{{date('Ymd', strtotime($dt->lotno))}}</td>
-        <td>{{$dt->shift}}</td>
-        <td>{{$dt->packing}}</td>
-        <td>{{$dt->total_box}}</td>
-        <td>{{$dt->total_qty}}</td>
-        <td>{{$dt->remark}}</td>
+        <td>{{$dom->model_no}}</td>
+        <td>{{date('Ymd', strtotime($dom->lotno))}}</td>
+        <td>{{$dom->shift}}</td>
+        <td>{{$dom->packing}}</td>
+        <td>{{$dom->total_box}}</td>
+        <td>{{$dom->total_qty}}</td>
+        <td>{{$dom->remark}}</td>
         <td></td>
     </tr>
     @endforeach
-    @for($n = $i ; $n < 34; $n++)
+    
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>Export</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    @foreach ($export as $exp)
+    <tr>
+        <td></td>
+        <td>{{$i++}}</td>
+        <td>{{$exp->model_no}}</td>
+        <td>{{date('Ymd', strtotime($exp->lotno))}}</td>
+        <td>{{$exp->shift}}</td>
+        <td>{{$exp->packing}}</td>
+        <td>{{$exp->total_box}}</td>
+        <td>{{$exp->total_qty}}</td>
+        <td>{{$exp->remark}}</td>
+        <td></td>
+    </tr>
+    @endforeach
+    @for($n = $i ; $n < 31; $n++)
     <tr>
         <td></td>
         <td>{{$n}}</td>
@@ -252,18 +303,6 @@
         <td>
             4. Setelah petugas produksi selesai input hasil produksi, form diserahkan kepada PC
         </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
         <td></td>
         <td></td>
         <td></td>

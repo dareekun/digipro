@@ -35,11 +35,16 @@ class excel_rnt implements FromView, WithEvents
     public function view(): View
     {
         $transl = DB::table('transfers')->where('refer', $this->refer)->value('transfers_date');
-        $record = DB::table('transaction')->leftJoin('production', 'production.id', '=', 'transaction.productionId')
+        $record1 = DB::table('transaction')->leftJoin('production', 'production.id', '=', 'transaction.productionId')
         ->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
         ->select('product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'product.packing as packing', 'production.fg_2 as total_box', 'production.fg_1 as total_qty', 'quality.remark as remark')
-        ->where('transaction.referTransfers', $this->refer)->get();
-        return view('dll.excel_rnt', ['data' => $record, 'tanggal' => $transl, 'i' => 1]);
+        ->where('transaction.referTransfers', $this->refer)->where('product.market', 'Domestic')->get();
+        
+        $record2 = DB::table('transaction')->leftJoin('production', 'production.id', '=', 'transaction.productionId')
+        ->leftJoin('product', 'production.model_no', '=', 'product.id')->leftJoin('quality', 'quality.productionId', '=', 'production.id')
+        ->select('product.model_no as model_no', 'production.lotno as lotno', 'production.shift as shift', 'product.packing as packing', 'production.fg_2 as total_box', 'production.fg_1 as total_qty', 'quality.remark as remark')
+        ->where('transaction.referTransfers', $this->refer)->where('product.market', 'Export')->get();
+        return view('dll.excel_rnt', ['domestic' => $record1, 'export' => $record2, 'tanggal' => $transl, 'i' => 1]);
     }
     
     public function registerEvents(): array
@@ -48,15 +53,15 @@ class excel_rnt implements FromView, WithEvents
         return [
             AfterSheet::class    => function(AfterSheet $event) {
                 // Judul Excel
-                $event->sheet->mergeCells('C2:I2', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::MERGE_CELL_CONTENT_MERGE); 
+                $event->sheet->mergeCells('B2:I2', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::MERGE_CELL_CONTENT_MERGE); 
                 $event->sheet->mergeCells('B46:I46', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::MERGE_CELL_CONTENT_MERGE); 
                 $event->sheet->mergeCells('C47:I47', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::MERGE_CELL_CONTENT_MERGE); 
                 $event->sheet->mergeCells('C48:I48', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::MERGE_CELL_CONTENT_MERGE); 
                 $event->sheet->mergeCells('C49:I49', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::MERGE_CELL_CONTENT_MERGE); 
                 $event->sheet->mergeCells('C50:I50', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::MERGE_CELL_CONTENT_MERGE); 
-                $event->sheet->mergeCells('C53:I53', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::MERGE_CELL_CONTENT_MERGE); 
-                $event->sheet->getStyle('C2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getStyle('C53')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->mergeCells('C52:I52', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::MERGE_CELL_CONTENT_MERGE); 
+                $event->sheet->getStyle('B2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getStyle('C52')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
                 // Tanda Tangan 
                 $event->sheet->mergeCells('F4:G4', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::MERGE_CELL_CONTENT_MERGE);
@@ -74,23 +79,23 @@ class excel_rnt implements FromView, WithEvents
                 $event->sheet->getStyle('B12:I45')->applyFromArray($this->thin_allboarders);
 
                 // Set Font Style 
-                $event->sheet->getStyle('C2')->getFont()->setBold(true);
+                $event->sheet->getStyle('B2')->getFont()->setBold(true);
                 $event->sheet->getStyle('B46')->getFont()->setBold(true);
-                $event->sheet->getStyle('C7')->getFont()->setBold(true);
+                $event->sheet->getStyle('B7')->getFont()->setBold(true);
                 $event->sheet->getStyle('B46')->getFont()->setSize(14);
-                $event->sheet->getStyle('C2')->getFont()->setSize(18);
-                $event->sheet->getStyle('C7')->getFont()->setSize(13);
+                $event->sheet->getStyle('B2')->getFont()->setSize(16);
+                $event->sheet->getStyle('B7')->getFont()->setSize(13);
 
                 // Width Column
                 $event->sheet->getColumnDimension('A')->setWidth(1);
-                $event->sheet->getColumnDimension('B')->setWidth(4);
-                $event->sheet->getColumnDimension('C')->setWidth(30);
+                $event->sheet->getColumnDimension('B')->setWidth(3);
+                $event->sheet->getColumnDimension('C')->setWidth(20);
                 $event->sheet->getColumnDimension('D')->setWidth(10);
-                $event->sheet->getColumnDimension('E')->setWidth(6);
-                $event->sheet->getColumnDimension('F')->setWidth(16);
-                $event->sheet->getColumnDimension('G')->setWidth(16);
-                $event->sheet->getColumnDimension('H')->setWidth(16);
-                $event->sheet->getColumnDimension('I')->setWidth(16);
+                $event->sheet->getColumnDimension('E')->setWidth(5);
+                $event->sheet->getColumnDimension('F')->setWidth(15);
+                $event->sheet->getColumnDimension('G')->setWidth(15);
+                $event->sheet->getColumnDimension('H')->setWidth(15);
+                $event->sheet->getColumnDimension('I')->setWidth(15);
                 $event->sheet->getColumnDimension('J')->setWidth(1);
             },
         ];

@@ -39,12 +39,11 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Market</th>
                                         <th>Section</th>
                                         <th>Line</th>
                                         <th>Model Number</th>
                                         <th>Packing</th>
-                                        <th>Time</th>
-                                        <th>Std_MP</th>
                                         <th>Option</th>
                                     </tr>
                                 </thead>
@@ -52,12 +51,11 @@
                                     @foreach ($products as $dt)
                                     <tr>
                                         <td>{{$i++}}</td>
+                                        <td>{{$dt->market}}</td>
                                         <td>{{$dt->section}}</td>
                                         <td>{{$dt->line}}</td>
                                         <td><a href="{{route('detail_product', $dt->id)}}" style="text-decoration: none;">{{$dt->model_no}}</a></td>
                                         <td>{{$dt->packing}}</td>
-                                        <td>{{$dt->time}}</td>
-                                        <td>{{$dt->std_mp}}</td>
                                         <td>
                                             <button class="btn btn-sm btn-outline-primary"
                                                 onclick="throw_edit({{$dt->id}})"><i class="fa fa-pencil-square-o"
@@ -88,6 +86,15 @@
                     <form action="{{route('add_product')}}" method="post">
                         @csrf
                         <div class="modal-body">
+                        <div class="row mt-1">
+                                <div class="col-md-5">Market</div>
+                                <div class="col-md-7">
+                                    <select class="form-control" name="market_add">
+                                            <option value="Domestic">Domestic</option>
+                                            <option value="Export">Export</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="row mt-1">
                                 <div class="col-md-5">Section</div>
                                 <div class="col-md-7"><input type="text" required class="form-control"
@@ -143,6 +150,15 @@
                         @csrf
                         <div class="modal-body">
                             <div class="row mt-1">
+                                <div class="col-md-5">Market</div>
+                                <div class="col-md-7">
+                                    <select class="form-control" name="market_edit" id="market_edit">
+                                            <option value="Domestic">Domestic</option>
+                                            <option value="Export">Export</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
                                 <div class="col-md-5">Section</div>
                                 <div class="col-md-7"><input type="text" required class="form-control"
                                         name="section_edit" id="section_edit"></div>
@@ -194,6 +210,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="row mt-1">
+                            <div class="col-md-5">Market</div>
+                            <div class="col-md-7">: <span id="market_delete"></span></div>
+                        </div>
+                        <div class="row mt-1">
                             <div class="col-md-5">Section</div>
                             <div class="col-md-7">: <span id="section_delete"></span></div>
                         </div>
@@ -244,6 +264,7 @@ function throw_delete(uid) {
         })
         .then(function(response) {
             document.getElementById("value_uid_delete").value = uid;
+            document.getElementById("market_delete").innerHTML = response.data[0].market;
             document.getElementById("section_delete").innerHTML = response.data[0].section;
             document.getElementById("line_delete").innerHTML = response.data[0].line;
             document.getElementById("model_delete").innerHTML = response.data[0].model_no;
@@ -260,6 +281,7 @@ function throw_edit(uid) {
         })
         .then(function(response) {
             document.getElementById("value_uid_edit").value = uid;
+            document.getElementById("market_edit").value = response.data[0].market;
             document.getElementById("section_edit").value = response.data[0].section;
             document.getElementById("line_edit").value = response.data[0].line;
             document.getElementById("model_edit").value = response.data[0].model_no;
